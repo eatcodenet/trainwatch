@@ -4,8 +4,7 @@ services:
     image: eatcode/hazelcast
     container_name: hazelcast
     ports:
-      - "5071:5071"
-  
+      - "5701:5701"
   zookeeper:
     image: eatcode/zookeeper
     container_name: zookeeper
