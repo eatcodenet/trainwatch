@@ -1,10 +1,5 @@
 version: "2"
 services:
-  hazelcast:
-    image: eatcode/hazelcast
-    container_name: hazelcast
-    ports:
-      - "5701:5701"
   zookeeper:
     image: eatcode/zookeeper
     container_name: zookeeper
@@ -15,14 +10,20 @@ services:
     volumes:
       - /tmp/docker/zk1/logs:/logs
 
+  hazelcast:
+    image: eatcode/hazelcast
+    container_name: hazelcast
+    ports:
+      - "5701:5701"
+  
   kafka:
     image: eatcode/kafka
     container_name: kafka
     ports:
       - "9092:9092"
-    links:
-      - zookeeper
     depends_on:
+      - zookeeper
+    links:
       - zookeeper
     environment:
       ADVERTISED_HOST: "${DOCKER_MACHINE_IP}"
