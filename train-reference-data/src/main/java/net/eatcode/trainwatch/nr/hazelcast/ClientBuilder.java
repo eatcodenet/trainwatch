@@ -32,7 +32,7 @@ public class ClientBuilder {
 
     private void configureNetwork() {
         config.setNetworkConfig(new ClientNetworkConfig()
-                .addAddress("localhost", "dev.docker-machine", "dev.hazelcast")
+                .addAddress("localhost", "dev.docker-machine", "192.168.99.100")
                 .setConnectionAttemptLimit(1));
     }
 }

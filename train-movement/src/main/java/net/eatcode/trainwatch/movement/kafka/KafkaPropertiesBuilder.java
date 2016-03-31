@@ -8,7 +8,7 @@ class KafkaPropertiesBuilder {
         Properties props = new Properties();
         props.put("bootstrap.servers", bootstrapServers);
         props.put("acks", "all");
-        props.put("batch.size", 16384);
+        props.put("batch.size", 32);
         props.put("buffer.memory", 33554432);
         props.put("client.id", "");
         props.put("compression.type", "none");
