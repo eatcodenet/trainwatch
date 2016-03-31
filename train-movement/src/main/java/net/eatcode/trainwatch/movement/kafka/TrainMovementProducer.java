@@ -26,7 +26,7 @@ public class TrainMovementProducer {
             public void onTrainMovement(TrustTrainMovement tm) {
                 System.out.println(tm);
                 byte[] data = KryoUtils.toByteArray(tm);
-                producer.send(new ProducerRecord<>(topicName, data));
+                producer.send(new ProducerRecord<>(topicName, tm.body.actual_timestamp, data));
             }
         });
     }
