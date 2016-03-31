@@ -24,18 +24,3 @@ task populateGeoStanoxes(type: JavaExec) {
 
 }
 
-task populateTiplocs(type: JavaExec) {
-    classpath = sourceSets.main.runtimeClasspath
-    main = 'net.eatcode.trains.darwin.PopulateTiplocs'
-    if (project.hasProperty("dataFile")) {
-        args project.property('dataFile')
-    }
-}
-
-task populateCrsCodes(type: JavaExec) {
-    classpath = sourceSets.main.runtimeClasspath
-    main = 'net.eatcode.trains.darwin.PopulateCrsCodes'
-    if (project.hasProperty("dataFile")) {
-        args project.property('dataFile')
-    }
-}

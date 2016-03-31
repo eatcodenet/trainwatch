@@ -7,12 +7,11 @@ import com.hazelcast.config.SerializationConfig;
 import com.hazelcast.config.SerializerConfig;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.nio.serialization.Serializer;
-import net.eatcode.trainwatch.nr.Crs;
 import net.eatcode.trainwatch.nr.GeoStanox;
 
 public class ClientBuilder {
 
-    private ClientConfig config = new ClientConfig();
+    private final ClientConfig config = new ClientConfig();
 
     public HazelcastInstance build() {
         configureSerialization();
@@ -23,7 +22,6 @@ public class ClientBuilder {
     private void configureSerialization() {
         SerializationConfig sc = config.getSerializationConfig();
         sc.addSerializerConfig(add(new GeoStanoxSerializer(), GeoStanox.class));
-        sc.addSerializerConfig(add(new CrsSerializer(), Crs.class));
     }
 
     private SerializerConfig add(Serializer serializer, Class clazz) {
