@@ -1,11 +1,16 @@
 version: "2"
 services:
+  hazelcast:
+    image: eatcode/hazelcast
+    container_name: hazelcast
+    ports:
+      - "5071:5071"
+  
   zookeeper:
     image: eatcode/zookeeper
     container_name: zookeeper
     ports:
       - "2181:2181"
-      - "2888:2888"
     environment:
       ZK_SERVER_ID: 1
     volumes:
@@ -26,8 +31,3 @@ services:
     volumes:
     - /tmp/docker/kafka1/logs:/logs
 
-  hazelcast:
-    image: eatcode/hazelcast
-    container_name: hazelcast
-    ports:
-      - "5071:5071"

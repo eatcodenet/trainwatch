@@ -1,4 +1,4 @@
-package net.eatcode.trainwatch.nr.hazelcast;
+package net.eatcode.trainwatch.movement.kafka;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.pool.KryoFactory;
