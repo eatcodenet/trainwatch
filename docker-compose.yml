@@ -25,11 +25,9 @@ services:
       KAFKA_OFFSETS_STORAGE: kafka
     volumes:
     - /tmp/docker/kafka1/logs:/logs
-    #command: 
- 
-#  hazelcast:
-#    image: eatcode/hazelcast
-#    container_name: hazelcast
-#    ports:
-#      - "5071:5071"
 
+  hazelcast:
+    image: eatcode/hazelcast
+    container_name: hazelcast
+    ports:
+      - "5071:5071"
