@@ -1,14 +1,48 @@
 group 'net.eatcode'
-version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
+allprojects {
 
-sourceCompatibility = 1.5
+    repositories {
+        mavenCentral()
+    }
 
-repositories {
-    mavenCentral()
-}
+    project.ext {
+        someProperty = 'someValue'
+    }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+    apply plugin: 'java'
+
+    apply plugin: 'eclipse'
+
+    version = '1.0-SNAPSHOT'
+
+    sourceCompatibility = '1.8'
+
+    compileJava {
+        options.encoding = "UTF-8"
+    }
+
+    compileTestJava {
+        options.encoding = 'UTF-8'
+    }
+
+    // exclude commons-logging
+    configurations {
+        all*.exclude group: 'commons-logging', module: 'commons-logging'
+    }
+
+    dependencies {
+        compile 'com.google.code.gson:gson:2.6.2'
+        compile 'org.slf4j:slf4j-api:1.7.19'
+        compile 'ch.qos.logback:logback-classic:1.1.6'
+
+        testCompile('junit:junit-dep:4.11')
+    }
+
+    eclipse {
+        classpath {
+            downloadSources = true
+            downloadJavadoc = false
+        }
+    }
 }
