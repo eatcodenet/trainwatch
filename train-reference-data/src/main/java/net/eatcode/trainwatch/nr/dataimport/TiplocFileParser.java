@@ -11,8 +11,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicInteger;
 
 class TiplocFileParser {
 
@@ -25,21 +23,15 @@ class TiplocFileParser {
         this.sourceFile = sourceFile;
     }
 
-    CompletableFuture<Integer> parse(ParsedItemProcessor<Tiploc> processor) {
-        CompletableFuture<Integer> result = new CompletableFuture<>();
-        CompletableFuture.runAsync(() -> {
-            try (BufferedReader reader = Files.newBufferedReader(Paths.get(sourceFile))) {
-                parseJson(reader, processor, result);
-            } catch (IOException e) {
-                log.error("tiploc file parse error", e);
-                result.completeExceptionally(e);
-            }
-        });
-        return result;
+    void parse(ParsedItemProcessor<Tiploc> processor) {
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(sourceFile))) {
+            parseJson(reader, processor);
+        } catch (IOException e) {
+            log.error("tiploc file parse error", e);
+        }
     }
 
-    private void parseJson(BufferedReader reader, ParsedItemProcessor<Tiploc> processor, CompletableFuture<Integer> result) {
-        final AtomicInteger count = new AtomicInteger(0);
+    private void parseJson(BufferedReader reader, ParsedItemProcessor<Tiploc> processor) {
         JsonArray data = parser.parse(reader).getAsJsonObject().getAsJsonArray("TIPLOCDATA");
         data.forEach(o -> {
             JsonObject tld = o.getAsJsonObject();
@@ -52,10 +44,8 @@ class TiplocFileParser {
                 item.tiploc = tld.get("TIPLOC").getAsString().trim();
                 item.description = tld.get("NLCDESC").getAsString().trim();
                 processor.process(item);
-                count.getAndIncrement();
             }
         });
-        result.complete(count.intValue());
     }
 
 }

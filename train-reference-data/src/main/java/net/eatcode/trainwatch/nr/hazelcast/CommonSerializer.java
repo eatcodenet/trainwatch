@@ -6,6 +6,7 @@ import com.esotericsoftware.kryo.io.Output;
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.nio.serialization.StreamSerializer;
+import org.objenesis.strategy.StdInstantiatorStrategy;
 
 import java.io.IOException;
 import java.io.InputStream;

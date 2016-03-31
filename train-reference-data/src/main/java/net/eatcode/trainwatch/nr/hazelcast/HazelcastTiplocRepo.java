@@ -5,6 +5,9 @@ import com.hazelcast.core.IMap;
 import net.eatcode.trainwatch.nr.Tiploc;
 import net.eatcode.trainwatch.nr.TiplocRepo;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class HazelcastTiplocRepo implements TiplocRepo {
 
     private final HazelcastInstance client = new ClientBuilder().build();
@@ -19,6 +22,11 @@ public class HazelcastTiplocRepo implements TiplocRepo {
     @Override
     public Tiploc getByStanox(String stanox) {
         return map.get(stanox);
+    }
+
+    @Override
+    public List<Tiploc> findAll() {
+        return map.values().stream().collect(Collectors.toList());
     }
 
     public void shutdown() {

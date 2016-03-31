@@ -11,6 +11,19 @@ task populateSchedules(type: JavaExec) {
     }
 }
 
+task populateGeoStanoxes(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'net.eatcode.trainwatch.nr.dataimport.PopulateGeoStanoxesApp'
+    if (project.hasProperty("tiplocFile")) {
+        args project.property('tiplocFile')
+    }
+
+    if (project.hasProperty("crsFile")) {
+        args project.property('crsFile')
+    }
+
+}
+
 task populateTiplocs(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = 'net.eatcode.trains.darwin.PopulateTiplocs'

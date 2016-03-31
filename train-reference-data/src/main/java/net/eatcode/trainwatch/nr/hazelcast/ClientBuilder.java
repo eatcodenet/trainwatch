@@ -3,9 +3,12 @@ package net.eatcode.trainwatch.nr.hazelcast;
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.client.config.ClientNetworkConfig;
+import com.hazelcast.config.SerializationConfig;
 import com.hazelcast.config.SerializerConfig;
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.nio.serialization.Serializer;
 import net.eatcode.trainwatch.nr.Crs;
+import net.eatcode.trainwatch.nr.GeoStanox;
 
 public class ClientBuilder {
 
@@ -18,10 +21,15 @@ public class ClientBuilder {
     }
 
     private void configureSerialization() {
-        // TODO: this is not the best way
+        SerializationConfig sc = config.getSerializationConfig();
+        sc.addSerializerConfig(add(new GeoStanoxSerializer(), GeoStanox.class));
+        sc.addSerializerConfig(add(new CrsSerializer(), Crs.class));
+    }
+
+    private SerializerConfig add(Serializer serializer, Class clazz) {
         SerializerConfig sc = new SerializerConfig();
-        sc.setImplementation(new CrsSerializer()).setTypeClass(Crs.class);
-        config.getSerializationConfig().addSerializerConfig(sc);
+        sc.setImplementation(serializer).setTypeClass(clazz);
+        return sc;
     }
 
     private void configureNetwork() {

@@ -6,7 +6,7 @@ public class CrsSerializer extends CommonSerializer<Crs> {
 
     @Override
     public int getTypeId() {
-        return 1;
+        return 100;
     }
 
     @Override

@@ -1,8 +1,10 @@
 package net.eatcode.trainwatch.nr;
 
+import java.util.Optional;
+
 public interface CrsRepo {
 
     void put(Crs crs);
 
-    Crs get(String crsCode);
+    Optional<Crs> get(String crsCode);
 }

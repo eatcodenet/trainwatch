@@ -22,4 +22,8 @@ public class Crs implements Serializable {
                 ", toc='" + toc + '\'' +
                 '}';
     }
+
+    public LatLon latLon() {
+        return new LatLon(lat, lon);
+    }
 }

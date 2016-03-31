@@ -5,6 +5,8 @@ import com.hazelcast.core.IMap;
 import net.eatcode.trainwatch.nr.Crs;
 import net.eatcode.trainwatch.nr.CrsRepo;
 
+import java.util.Optional;
+
 public class HazelcastCrsRepo implements CrsRepo {
 
     private final HazelcastInstance client = new ClientBuilder().build();
@@ -17,8 +19,12 @@ public class HazelcastCrsRepo implements CrsRepo {
     }
 
     @Override
-    public Crs get(String crsCode) {
-        return map.get(crsCode);
+    public Optional<Crs> get(String crsCode) {
+        Crs crs = map.get(crsCode);
+        if (crs == null) {
+            return Optional.empty();
+        }
+        return Optional.of(crs);
     }
 
     public void shutdown() {

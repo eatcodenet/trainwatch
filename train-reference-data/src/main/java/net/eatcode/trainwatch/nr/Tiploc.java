@@ -21,4 +21,7 @@ public class Tiploc implements Serializable {
                 '}';
     }
 
+    public boolean hasStanox() {
+        return !(stanox == null || stanox.isEmpty());
+    }
 }

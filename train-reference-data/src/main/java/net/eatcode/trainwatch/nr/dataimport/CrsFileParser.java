@@ -21,6 +21,7 @@ public class CrsFileParser {
     }
 
     public void parse(ParsedItemProcessor<Crs> crsProcessor) {
+        log.debug("sourceFile: {}", sourceFile);
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(sourceFile))) {
             CrsWrapper wrapper = new Gson().fromJson(reader, CrsWrapper.class);
             wrapper.locations.forEach(crs -> crsProcessor.process(crs));
