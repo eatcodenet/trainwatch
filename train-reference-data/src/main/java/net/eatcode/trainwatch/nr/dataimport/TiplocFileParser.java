@@ -14,18 +14,18 @@ import java.nio.file.Paths;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class TiplocFileParser {
+class TiplocFileParser {
 
     private final Logger log = LoggerFactory.getLogger(TiplocFileParser.class);
 
     private final String sourceFile;
     private final JsonParser parser = new JsonParser();
 
-    public TiplocFileParser(String sourceFile) {
+    TiplocFileParser(String sourceFile) {
         this.sourceFile = sourceFile;
     }
 
-    public CompletableFuture<Integer> parse(ParsedItemProcessor<Tiploc> processor) {
+    CompletableFuture<Integer> parse(ParsedItemProcessor<Tiploc> processor) {
         CompletableFuture<Integer> result = new CompletableFuture<>();
         CompletableFuture.runAsync(() -> {
             try (BufferedReader reader = Files.newBufferedReader(Paths.get(sourceFile))) {
@@ -38,7 +38,7 @@ public class TiplocFileParser {
         return result;
     }
 
-    private void parseJson(BufferedReader reader, ParsedItemProcessor processor, CompletableFuture<Integer> result) {
+    private void parseJson(BufferedReader reader, ParsedItemProcessor<Tiploc> processor, CompletableFuture<Integer> result) {
         final AtomicInteger count = new AtomicInteger(0);
         JsonArray data = parser.parse(reader).getAsJsonObject().getAsJsonArray("TIPLOCDATA");
         data.forEach(o -> {

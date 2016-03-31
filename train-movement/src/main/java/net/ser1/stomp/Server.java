@@ -40,6 +40,7 @@ import java.util.*;
  * <p>
  * (c)2005 Sean Russell
  */
+@SuppressWarnings("unchecked")
 public class Server {
     private Queue _message_queue;
     private Map _transactions;

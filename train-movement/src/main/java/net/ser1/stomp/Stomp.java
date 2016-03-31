@@ -17,6 +17,7 @@ import java.util.*;
  * <p>
  * (c)2005 Sean Russell
  */
+@SuppressWarnings("unchecked")
 public abstract class Stomp {
     /**
      * A map of channel => listener pairs.  String => Listener.

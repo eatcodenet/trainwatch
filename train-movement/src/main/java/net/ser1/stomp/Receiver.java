@@ -6,6 +6,7 @@ import java.util.HashMap;
 /**
  * (c)2005 Sean Russell
  */
+@SuppressWarnings("unchecked")
 public class Receiver extends Thread {
     private MessageReceiver _receiver;
     private BufferedReader _input;

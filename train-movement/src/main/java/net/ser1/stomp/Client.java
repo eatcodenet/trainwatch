@@ -23,6 +23,7 @@ import javax.security.auth.login.LoginException;
  * <p>
  * (c)2005 Sean Russell
  */
+@SuppressWarnings("unchecked")
 public class Client extends Stomp implements MessageReceiver {
     private Thread _listener;
     private OutputStream _output;

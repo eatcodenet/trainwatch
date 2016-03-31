@@ -8,4 +8,9 @@ public class CrsSerializer extends CommonSerializer<Crs> {
     public int getTypeId() {
         return 1;
     }
+
+    @Override
+    protected Class<Crs> getClassToSerialize() {
+        return Crs.class;
+    }
 }
