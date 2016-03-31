@@ -1,4 +1,4 @@
-package net.eatcode.trains.model.kafka;
+package net.eatcode.trainwatch.movement.kafka;
 
 import java.util.Properties;
 

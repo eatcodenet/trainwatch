@@ -1,7 +1,8 @@
-package net.eatcode.trains.darwin;
+package net.eatcode.trainwatch.nr;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.eatcode.trainwatch.movement.TrustTrainMovement;
 import org.junit.Test;
 
 public class TrainMovementTest {

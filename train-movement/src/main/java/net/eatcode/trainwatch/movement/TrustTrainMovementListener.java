@@ -1,4 +1,4 @@
-package net.eatcode.trains.darwin;
+package net.eatcode.trainwatch.movement;
 
 @FunctionalInterface
 public interface TrustTrainMovementListener {

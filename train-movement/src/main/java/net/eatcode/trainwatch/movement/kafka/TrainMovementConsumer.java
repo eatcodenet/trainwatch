@@ -1,4 +1,4 @@
-package net.eatcode.trains.model.kafka;
+package net.eatcode.trainwatch.movement.kafka;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;

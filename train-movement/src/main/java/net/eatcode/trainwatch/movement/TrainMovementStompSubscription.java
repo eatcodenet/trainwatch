@@ -1,14 +1,12 @@
-package net.eatcode.trains.darwin;
+package net.eatcode.trainwatch.movement;
 
 import com.google.gson.Gson;
 import net.ser1.stomp.Client;
-import net.ser1.stomp.Listener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
-import java.util.Map;
 
 public class TrainMovementStompSubscription {
 
@@ -20,10 +18,8 @@ public class TrainMovementStompSubscription {
 
     private final String username;
     private final String password;
-
-    private Client client;
-
     private final Gson gson = new Gson();
+    private Client client;
 
     public TrainMovementStompSubscription(String username, String password) {
         this.username = username;
