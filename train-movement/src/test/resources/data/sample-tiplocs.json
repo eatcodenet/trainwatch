@@ -1,0 +1,67 @@
+{
+  "TIPLOCDATA": [
+    {
+      "STANOX": "S1",
+      "UIC": " ",
+      "3ALPHA": "C1",
+      "NLCDESC16": " ",
+      "TIPLOC": "T1",
+      "NLC": "N1",
+      "NLCDESC": "CAMBUSLANG STATION"
+    },
+    {
+      "STANOX": "06509",
+      "UIC": " ",
+      "3ALPHA": " ",
+      "NLCDESC16": " ",
+      "TIPLOC": "SPRNMCP",
+      "NLC": "999760",
+      "NLCDESC": "M.C. METALS"
+    },
+    {
+      "STANOX": "06221",
+      "UIC": "99980",
+      "3ALPHA": "WES",
+      "NLCDESC16": "WESTERTON",
+      "TIPLOC": "WESTRTN",
+      "NLC": "999800",
+      "NLCDESC": "WESTERTON"
+    },
+    {
+      "STANOX": "06221",
+      "UIC": " ",
+      "3ALPHA": " ",
+      "NLCDESC16": " ",
+      "TIPLOC": "WEST530",
+      "NLC": "999815",
+      "NLCDESC": "WESTERTON SIG YH530"
+    },
+    {
+      "STANOX": "06308",
+      "UIC": " ",
+      "3ALPHA": " ",
+      "NLCDESC16": " ",
+      "TIPLOC": "WEST533",
+      "NLC": "999816",
+      "NLCDESC": "WESTERTON SIG YH533"
+    },
+    {
+      "STANOX": "06307",
+      "UIC": "99981",
+      "3ALPHA": " ",
+      "NLCDESC16": " ",
+      "TIPLOC": "WEST536",
+      "NLC": "999817",
+      "NLCDESC": "WESTERTON JN SIG YH536"
+    },
+    {
+      "STANOX": "",
+      "UIC": " ",
+      "3ALPHA": " ",
+      "NLCDESC16": " ",
+      "TIPLOC": " ",
+      "NLC": "999818",
+      "NLCDESC": "WESTERTON JN SIG YH536"
+    }
+  ]
+}
