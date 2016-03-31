@@ -2,8 +2,6 @@ package net.eatcode.trains.darwin;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.eatcode.trains.darwin.TrustTrainMovement;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class TrainMovementTest {

@@ -2,7 +2,7 @@ package net.eatcode.trains.model.kafka;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
-import net.eatcode.trains.model.Crs;
+import net.eatcode.trainwatch.nr.Crs;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
