@@ -36,11 +36,6 @@ public class HazelcastScheduleRepo implements ScheduleRepo {
         return new ArrayList<>(map.values(predicate));
     }
 
-    @Override
-    public long getCount() {
-        return map.size();
-    }
-
     public void shutdown() {
         client.shutdown();
     }

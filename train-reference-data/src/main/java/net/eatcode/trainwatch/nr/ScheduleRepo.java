@@ -10,5 +10,4 @@ public interface ScheduleRepo {
 
     List<Schedule> getForServiceCode(String trainServiceCode);
 
-    long getCount();
 }

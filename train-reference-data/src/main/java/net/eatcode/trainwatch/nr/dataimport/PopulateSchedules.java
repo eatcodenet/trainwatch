@@ -17,11 +17,12 @@ public class PopulateSchedules {
         assertFileExists(fileName);
 
         HazelcastScheduleRepo repo = new HazelcastScheduleRepo();
-        new ScheduleRepositoryPopulator(repo).populateFromFile(fileName).whenCompleteAsync((v, e) -> {
+        new ScheduleRepositoryPopulator(repo).populateFromFile(fileName).whenCompleteAsync((v, error) -> {
+            if (error == null)
             log.info("Done populating!");
+
+            repo.shutdown();
         }).get();
-        log.info("Schedule count: {}", repo.getCount());
-        repo.shutdown();
     }
 
     private static void assertFileExists(String fileName) {

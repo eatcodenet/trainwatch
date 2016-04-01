@@ -11,6 +11,7 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.nio.serialization.Serializer;
 
 import net.eatcode.trainwatch.nr.GeoStanox;
+import net.eatcode.trainwatch.nr.Schedule;
 
 public class ClientBuilder {
 
@@ -25,6 +26,7 @@ public class ClientBuilder {
     private void configureSerialization() {
         SerializationConfig sc = config.getSerializationConfig();
         sc.addSerializerConfig(add(new GeoStanoxSerializer(), GeoStanox.class));
+        sc.addSerializerConfig(add(new ScheduleSerializer(), Schedule.class));
     }
 
     private SerializerConfig add(Serializer serializer, Class<? extends Serializable> clazz) {
