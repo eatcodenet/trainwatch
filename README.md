@@ -1,6 +1,6 @@
 # TrainWatch
 
-Real time UK Train monitoring. Created to experiment with Apache Kafka and streaming data etc.
+Real time UK Train monitoring. Created to _experiment_ with Apache Kafka and streaming data etc.
 
 Very much a work in progress. [Also trying out Docker automated builds!] (https://hub.docker.com/r/eatcode/)
 
