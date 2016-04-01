@@ -1,32 +1,31 @@
 package net.eatcode.trainwatch.movement.kafka;
 
-import net.eatcode.trainwatch.movement.TrainMovementStompSubscription;
-import net.eatcode.trainwatch.movement.TrustTrainMovement;
-import net.eatcode.trainwatch.movement.TrustTrainMovementListener;
+import java.util.Properties;
+
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
-import java.util.Properties;
+import net.eatcode.trainwatch.movement.TrainMovementStomp;
+import net.eatcode.trainwatch.movement.TrainMovementListener;
 
-public class TrainMovementProducer {
+public class TrainMovementProducer extends CreateTopic {
 
-    private final String topicName = "trust-train-movements";
+    private static final String topicName = "trust-train-movements2";
     private final Properties props;
-    private final KafkaProducer<String, byte[]> producer;
+    private final KafkaProducer<String, String> producer;
 
     public TrainMovementProducer(String boostrapServers) {
         this.props = new KafkaPropertiesBuilder().producerProperties(boostrapServers);
         this.producer = new KafkaProducer<>(props);
     }
 
-    public void produceTrainMovementMessagesFromStomp(String username, String password) {
-        TrainMovementStompSubscription stompSubscription = new TrainMovementStompSubscription(username, password);
-        stompSubscription.subscribe(new TrustTrainMovementListener() {
+    public void produceMessages(String nrUsername, String nrPassword) {
+        TrainMovementStomp stomp = new TrainMovementStomp(nrUsername, nrPassword);
+        stomp.subscribe(new TrainMovementListener() {
             @Override
-            public void onTrainMovement(TrustTrainMovement tm) {
-                System.out.println(tm);
-                byte[] data = KryoUtils.toByteArray(tm);
-                producer.send(new ProducerRecord<>(topicName, tm.body.actual_timestamp, data));
+            public void onTrainMovement(String movements) {
+                String key = null;
+                producer.send(new ProducerRecord<>(topicName, key, movements));
             }
         });
     }
@@ -36,10 +35,13 @@ public class TrainMovementProducer {
     }
 
     public static void main(String[] args) {
-        String username = args[0];
-        String password = args[1];
-        System.out.println("username = " + username);
-        new TrainMovementProducer("192.168.99.100:9092")
-                .produceTrainMovementMessagesFromStomp(username, password);
+
+        String networkRailUsername = args[0];
+        String networkRailPassword= args[1];
+
+        // new CreateTopic().createTopic(topicName);
+
+        System.out.println("username = " + networkRailUsername);
+        new TrainMovementProducer("192.168.99.100:9092").produceMessages(networkRailUsername, networkRailPassword);
     }
 }

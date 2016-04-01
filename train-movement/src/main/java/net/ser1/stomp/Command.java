@@ -1,14 +1,11 @@
 package net.ser1.stomp;
 
-import java.io.OutputStream;
-import java.io.IOException;
-
 /**
  * (c)2005 Sean Russell
  */
 public class Command {
     public final static String ENCODING = "US-ASCII";
-    private String _command;
+    private final String _command;
 
     private Command(String msg) {
         _command = msg;
@@ -45,6 +42,7 @@ public class Command {
         throw new Error("Unrecognised command " + v);
     }
 
+    @Override
     public String toString() {
         return _command;
     }

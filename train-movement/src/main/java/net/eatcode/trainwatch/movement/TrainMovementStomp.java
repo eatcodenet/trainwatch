@@ -1,16 +1,17 @@
 package net.eatcode.trainwatch.movement;
 
-import com.google.gson.Gson;
-import net.ser1.stomp.Client;
+import java.io.IOException;
+
+import javax.security.auth.login.LoginException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.security.auth.login.LoginException;
-import java.io.IOException;
+import net.ser1.stomp.Client;
 
-public class TrainMovementStompSubscription {
+public class TrainMovementStomp {
 
-    private final Logger log = LoggerFactory.getLogger(TrainMovementStompSubscription.class);
+    private final Logger log = LoggerFactory.getLogger(TrainMovementStomp.class);
 
     private final String host = "datafeeds.networkrail.co.uk";
     private final Integer port = 61618;
@@ -18,15 +19,14 @@ public class TrainMovementStompSubscription {
 
     private final String username;
     private final String password;
-    private final Gson gson = new Gson();
     private Client client;
 
-    public TrainMovementStompSubscription(String username, String password) {
+    public TrainMovementStomp(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    public void subscribe(TrustTrainMovementListener listener) {
+    public void subscribe(TrainMovementListener listener) {
         try {
             connectToHost();
             subscribeToTopic(listener);
@@ -35,16 +35,10 @@ public class TrainMovementStompSubscription {
         }
     }
 
-    private void subscribeToTopic(TrustTrainMovementListener listener) {
+    private void subscribeToTopic(TrainMovementListener listener) {
         client.subscribe(trainMovementTopic, (headers, body) -> {
-            notifyListenerOfTrainMovements(listener, body);
+            listener.onTrainMovement(body);
         });
-    }
-
-    private void notifyListenerOfTrainMovements(TrustTrainMovementListener listener, String body) {
-        for (TrustTrainMovement tm : gson.fromJson(body, TrustTrainMovement[].class)) {
-            listener.onTrainMovement(tm);
-        }
     }
 
     private void connectToHost() throws IOException, LoginException {

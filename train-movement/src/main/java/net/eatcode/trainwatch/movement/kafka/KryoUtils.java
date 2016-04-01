@@ -4,25 +4,28 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
-import java.io.ByteArrayInputStream;
-
 class KryoUtils {
+
+    private static final int _1K = 1024;
+    private static final int _16K = 16324;
 
     static <T> byte[] toByteArray(T object) {
         Kryo kryo = KryoInstances.get();
-        Output output = new Output();
-        kryo.writeObject(output, object);
-        output.flush();
-        KryoInstances.release(kryo);
-        return output.getBuffer();
+        try (Output output = new Output(_1K, _16K)) {
+            kryo.writeObject(output, object);
+            return output.getBuffer();
+        } finally {
+            KryoInstances.release(kryo);
+        }
     }
 
     static <T> T fromByteArray(byte[] data, Class<T> clazz) {
-        Input input = new Input(new ByteArrayInputStream(data));
         Kryo kryo = KryoInstances.get();
-        T result = kryo.readObject(input, clazz);
-        KryoInstances.release(kryo);
-        return result;
+        try (Input input = new Input(data)) {
+            return kryo.readObject(input, clazz);
+        } finally {
+            KryoInstances.release(kryo);
+        }
     }
 
 }

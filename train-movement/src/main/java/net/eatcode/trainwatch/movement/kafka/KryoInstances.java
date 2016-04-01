@@ -1,10 +1,12 @@
 package net.eatcode.trainwatch.movement.kafka;
 
+import org.objenesis.strategy.StdInstantiatorStrategy;
+
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.pool.KryoFactory;
 import com.esotericsoftware.kryo.pool.KryoPool;
-import net.eatcode.trainwatch.nr.GeoStanox;
-import org.objenesis.strategy.StdInstantiatorStrategy;
+
+import net.eatcode.trainwatch.movement.TrustTrainMovement;
 
 class KryoInstances {
 
@@ -14,10 +16,13 @@ class KryoInstances {
         return kryo;
     };
 
-    private static KryoPool pool = new KryoPool.Builder(factory).softReferences().build();
+    private static KryoPool pool = new KryoPool.Builder(factory)
+            .softReferences().build();
 
     static Kryo get() {
-        return pool.borrow();
+        Kryo k = pool.borrow();
+        k.register(TrustTrainMovement.class, 100);
+        return k;
     }
 
     static void release(Kryo instance) {

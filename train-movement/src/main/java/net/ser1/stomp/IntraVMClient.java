@@ -1,7 +1,6 @@
 package net.ser1.stomp;
 
 import java.util.Map;
-import java.util.Iterator;
 
 /**
  * A client that is connected directly to a server.  Messages sent via
@@ -19,11 +18,13 @@ public class IntraVMClient extends Stomp implements Listener, Authenticatable {
         _connected = true;
     }
 
+    @Override
     public boolean isClosed() {
         return false;
     }
 
 
+    @Override
     public Object token() {
         return "IntraVMClient";
     }
@@ -32,16 +33,19 @@ public class IntraVMClient extends Stomp implements Listener, Authenticatable {
     /**
      * Transmit a message to clients and listeners.
      */
+    @Override
     public void transmit(Command c, Map h, String b) {
         _server.receive(c, h, b, this);
     }
 
 
+    @Override
     public void disconnect(Map h) {
         _server.receive(Command.DISCONNECT, null, null, this);
         _server = null;
     }
 
+    @Override
     public void message(Map headers, String body) {
         receive(Command.MESSAGE, headers, body);
     }
@@ -50,6 +54,7 @@ public class IntraVMClient extends Stomp implements Listener, Authenticatable {
         receive(Command.RECEIPT, headers, null);
     }
 
+    @Override
     public void error(Map headers, String body) {
         receive(Command.ERROR, headers, body);
     }

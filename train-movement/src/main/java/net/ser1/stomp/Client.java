@@ -1,9 +1,12 @@
 package net.ser1.stomp;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.security.auth.login.LoginException;
 
 /**
@@ -25,10 +28,10 @@ import javax.security.auth.login.LoginException;
  */
 @SuppressWarnings("unchecked")
 public class Client extends Stomp implements MessageReceiver {
-    private Thread _listener;
-    private OutputStream _output;
-    private InputStream _input;
-    private Socket _socket;
+    private final Thread _listener;
+    private final OutputStream _output;
+    private final InputStream _input;
+    private final Socket _socket;
 
     /**
      * Connects to a server
@@ -61,7 +64,7 @@ public class Client extends Stomp implements MessageReceiver {
         try {
             String error = null;
             while (!isConnected() && ((error = nextError()) == null)) {
-                Thread.sleep(100);
+                Thread.sleep(50);
             }
             if (error != null) {
                 _listener.interrupt();
@@ -71,10 +74,12 @@ public class Client extends Stomp implements MessageReceiver {
         }
     }
 
+    @Override
     public boolean isClosed() {
         return _socket.isClosed();
     }
 
+    @Override
     public void disconnect(Map header) {
         if (!isConnected()) return;
         transmit(Command.DISCONNECT, header, null);
@@ -96,6 +101,7 @@ public class Client extends Stomp implements MessageReceiver {
     /**
      * Transmit a message to the server
      */
+    @Override
     public void transmit(Command c, Map h, String b) {
         try {
             Transmitter.transmit(c, h, b, _output);

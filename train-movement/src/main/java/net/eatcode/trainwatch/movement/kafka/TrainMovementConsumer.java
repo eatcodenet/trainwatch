@@ -1,16 +1,17 @@
 package net.eatcode.trainwatch.movement.kafka;
 
-import net.eatcode.trainwatch.movement.TrustTrainMovement;
+import java.util.Arrays;
+import java.util.Properties;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
-import java.util.Arrays;
-import java.util.Properties;
+import net.eatcode.trainwatch.movement.TrustTrainMovement;
 
 public class TrainMovementConsumer {
 
-    private final String topicName = "trust-train-movements";
+    private final String topicName = "trust-train-movements2";
     private final Properties props;
     private final KafkaConsumer<String, byte[]> consumer;
 

@@ -1,6 +1,10 @@
 package net.ser1.stomp;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 /**
@@ -10,7 +14,7 @@ import java.util.HashMap;
 public class Receiver extends Thread {
     private MessageReceiver _receiver;
     private BufferedReader _input;
-    private InputStream _stream;
+    //private InputStream _stream;
 
     protected Receiver() {
         super();
@@ -24,13 +28,14 @@ public class Receiver extends Thread {
     protected void setup(MessageReceiver m, InputStream input) {
         _receiver = m;
         try {
-            _stream = input;
+
             _input = new BufferedReader(new InputStreamReader(input, Command.ENCODING));
         } catch (UnsupportedEncodingException e) {
             // No, no, no.  Stupid Java.
         }
     }
 
+    @Override
     public void run() {
         // Loop reading from stream, calling receive()
         try {

@@ -1,13 +1,21 @@
 package net.eatcode.trainwatch.movement;
 
+/*
+ *  auto generated from sample JSON message
+ */
 public class TrustTrainMovement {
 
     public Header header;
     public Body body;
 
-    TrustTrainMovement(Header header, Body body) {
+    public TrustTrainMovement(Header header, Body body) {
         this.header = header;
         this.body = body;
+    }
+
+    public TrustTrainMovement() {
+        this.header = new Header();
+        this.body = new Body();
     }
 
     @Override
@@ -25,7 +33,7 @@ public class TrustTrainMovement {
     }
 
     public static class Body {
-        public String event_type;
+        public String event_type =" meh";
         public String gbtt_timestamp;
         public String original_loc_stanox;
         public String planned_timestamp;

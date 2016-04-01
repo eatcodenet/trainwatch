@@ -1,8 +1,16 @@
 package net.ser1.stomp;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implements a Stomp server.  This is a tiny embeddable server that
@@ -42,9 +50,9 @@ import java.util.*;
  */
 @SuppressWarnings("unchecked")
 public class Server {
-    private Queue _message_queue;
-    private Map _transactions;
-    private Map _listeners;
+
+    private final Map _transactions;
+    private final Map _listeners;
     private ConnectionListener _connection_listener;
     private Authenticator _authenticator = new AllowAllAuthenticator();
 
@@ -57,7 +65,7 @@ public class Server {
      * @see listen()
      */
     public Server() {
-        _message_queue = new FileQueue();
+
         _transactions = new HashMap();
         _listeners = new HashMap();
     }
@@ -132,10 +140,10 @@ public class Server {
      * client connections.
      */
     private class ConnectionListener extends Thread {
-        private int _port;
-        private Server _server;
+        private final int _port;
+        private final Server _server;
         private ServerSocket _serve_sock;
-        private List _handlers = new ArrayList();
+        private final List _handlers = new ArrayList();
 
 
         protected ConnectionListener(int port, Server server) {
@@ -144,6 +152,7 @@ public class Server {
         }
 
 
+        @Override
         public void run() {
             Socket sock = null;
             try {
@@ -220,7 +229,6 @@ public class Server {
      * @param queue
      */
     public void setQueue(Queue q) {
-        _message_queue = q;
     }
 
 
@@ -257,10 +265,10 @@ public class Server {
     protected class SocketHandler
         extends Receiver
         implements Listener, Authenticatable {
-        private InputStream _input;
-        private OutputStream _output;
-        private Socket _socket;
-        private Server _server;
+        private final InputStream _input;
+        private final OutputStream _output;
+        private final Socket _socket;
+        private final Server _server;
         private Object _client_token;
         private boolean _authenticated = false;
 
@@ -278,11 +286,13 @@ public class Server {
         }
 
 
+        @Override
         public Object token() {
             return _client_token;
         }
 
 
+        @Override
         public boolean isClosed() {
             return _socket.isClosed();
         }
@@ -319,6 +329,7 @@ public class Server {
         }
 
 
+        @Override
         public void disconnect() {
             close();
         }
@@ -330,6 +341,7 @@ public class Server {
          * DISCONNECT, and ERROR messages.  It is also responsible for sending
          * RECEIPTs back to the client.
          */
+        @Override
         public void receive(Command c, Map h, String b) {
             if (c == Command.CONNECT) {
                 String login = (String) h.get("login");
@@ -375,6 +387,7 @@ public class Server {
         /**
          * Called by the server; sends a message to this client.
          */
+        @Override
         public void message(Map headers, String body) {
             transmit(Command.MESSAGE, headers, body);
         }
@@ -391,6 +404,7 @@ public class Server {
         /**
          * Called by the server.  Sends an error to the client.
          */
+        @Override
         public void error(Map headers, String message) {
             transmit(Command.ERROR, headers, message);
         }
@@ -412,15 +426,6 @@ public class Server {
     }
 
 
-    private String mapToStr(Map m) {
-        StringBuffer b = new StringBuffer("[ ");
-        for (Iterator keys = m.keySet().iterator(); keys.hasNext(); ) {
-            String k = keys.next().toString();
-            b.append(k + " => " + m.get(k) + ", ");
-        }
-        b.append("]");
-        return b.toString();
-    }
 
     /**
      * Incoming mesages from clients come here, and are delivered to listeners,
@@ -432,7 +437,6 @@ public class Server {
      * @param y the thing that received the message and passed it to us
      */
     protected void receive(Command c, Map h, String b, Authenticatable y) {
-        long id = (int) (Math.random() * 10000);
         try {
             // Convert to MESSAGE and distribute
             if (c == Command.COMMIT) {
