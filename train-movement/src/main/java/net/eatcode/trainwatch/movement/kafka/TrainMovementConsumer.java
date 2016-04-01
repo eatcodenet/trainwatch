@@ -7,7 +7,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
-import net.eatcode.trainwatch.movement.TrustTrainMovement;
+import net.eatcode.trainwatch.movement.TrainMovement;
 
 public class TrainMovementConsumer {
 
@@ -26,7 +26,7 @@ public class TrainMovementConsumer {
         while (true) {
             ConsumerRecords<String, byte[]> records = consumer.poll(100);
             for (ConsumerRecord<String, byte[]> record : records) {
-                TrustTrainMovement tm = KryoUtils.fromByteArray(record.value(), TrustTrainMovement.class);
+                TrainMovement tm = KryoUtils.fromByteArray(record.value(), TrainMovement.class);
                 System.out.println(tm);
             }
         }

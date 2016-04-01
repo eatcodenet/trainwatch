@@ -5,8 +5,8 @@ import java.util.Properties;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
-import net.eatcode.trainwatch.movement.TrainMovementStomp;
 import net.eatcode.trainwatch.movement.TrainMovementListener;
+import net.eatcode.trainwatch.movement.TrainMovementStomp;
 
 public class TrainMovementProducer extends CreateTopic {
 
@@ -24,6 +24,7 @@ public class TrainMovementProducer extends CreateTopic {
         stomp.subscribe(new TrainMovementListener() {
             @Override
             public void onTrainMovement(String movements) {
+                System.out.println("\n" + movements + "\n");
                 String key = null;
                 producer.send(new ProducerRecord<>(topicName, key, movements));
             }

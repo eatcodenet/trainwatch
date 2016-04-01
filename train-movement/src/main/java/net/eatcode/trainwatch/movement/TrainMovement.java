@@ -3,17 +3,17 @@ package net.eatcode.trainwatch.movement;
 /*
  *  auto generated from sample JSON message
  */
-public class TrustTrainMovement {
+public class TrainMovement {
 
     public Header header;
     public Body body;
 
-    public TrustTrainMovement(Header header, Body body) {
+    public TrainMovement(Header header, Body body) {
         this.header = header;
         this.body = body;
     }
 
-    public TrustTrainMovement() {
+    public TrainMovement() {
         this.header = new Header();
         this.body = new Body();
     }

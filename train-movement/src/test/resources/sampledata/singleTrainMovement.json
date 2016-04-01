@@ -1,0 +1,40 @@
+{
+   "header":{
+      "msg_type":"0003",
+      "source_dev_id":"VP67",
+      "user_id":"#QRPETBR",
+      "original_data_source":"SDR",
+      "msg_queue_timestamp":"1459519502000",
+      "source_system_id":"TRUST"
+   },
+   "body":{
+      "event_type":"ARRIVAL",
+      "gbtt_timestamp":"1459522860000",
+      "original_loc_stanox":"",
+      "planned_timestamp":"1459522830000",
+      "timetable_variation":"0",
+      "original_loc_timestamp":"",
+      "current_train_id":"",
+      "delay_monitoring_point":"true",
+      "next_report_run_time":"4",
+      "reporting_stanox":"40036",
+      "actual_timestamp":"1459522800000",
+      "correction_ind":"false",
+      "event_source":"MANUAL",
+      "platform":"",
+      "division_code":"71",
+      "train_terminated":"false",
+      "train_id":"401V97MP01",
+      "offroute_ind":"false",
+      "variation_status":"ON TIME",
+      "train_service_code":"22340000",
+      "toc_id":"71",
+      "loc_stanox":"40036",
+      "auto_expected":"false",
+      "direction_ind":"",
+      "route":"0",
+      "planned_event_type":"ARRIVAL",
+      "next_report_stanox":"40037",
+      "line_ind":""
+   }
+}
