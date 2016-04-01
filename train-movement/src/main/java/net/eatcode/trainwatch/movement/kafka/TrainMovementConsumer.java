@@ -4,32 +4,34 @@ import java.util.Arrays;
 import java.util.Properties;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.eatcode.trainwatch.movement.TrainMovement;
 
 public class TrainMovementConsumer {
-
-    private final String topicName = "trust-train-movements2";
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    private final String topicName = "trust-train-movements";
     private final Properties props;
     private final KafkaConsumer<String, byte[]> consumer;
 
     public TrainMovementConsumer(String kafkaServers) {
-        this.props = new PropertiesBuilder().forConsumer(kafkaServers).build();
+        this.props = new PropertiesBuilder().forConsumer(kafkaServers).withByteArrayValueDeserializer().build();
         this.consumer = new KafkaConsumer<>(props);
     }
 
     public void subscribeToTrainMovementTopic() {
         consumer.subscribe(Arrays.asList(topicName));
-        System.out.println("Waiting...");
+        log.debug("Waiting...");
         while (true) {
-            ConsumerRecords<String, byte[]> records = consumer.poll(100);
-            for (ConsumerRecord<String, byte[]> record : records) {
-                TrainMovement tm = KryoUtils.fromByteArray(record.value(), TrainMovement.class);
-                System.out.println(tm);
-            }
+            consumer.poll(100).forEach(record -> consume(record));
         }
+    }
+
+    private void consume(ConsumerRecord<String, byte[]> r) {
+        TrainMovement tm = KryoUtils.fromByteArray(r.value(), TrainMovement.class);
+        log.debug("{}", tm);
     }
 
     public static void main(String[] args) {

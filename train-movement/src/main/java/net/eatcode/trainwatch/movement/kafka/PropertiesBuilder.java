@@ -19,7 +19,6 @@ class PropertiesBuilder {
     }
 
     PropertiesBuilder forConsumer(String bootstrapServers) {
-        Properties props = new Properties();
         props.put("bootstrap.servers", bootstrapServers);
         props.put("group.id", "net.eatcode");
         props.put("enable.auto.commit", "true");
@@ -38,8 +37,8 @@ class PropertiesBuilder {
         props.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
         return this;
     }
-    public PropertiesBuilder withByteArrayValueDeSserializer() {
-        props.put("value.deserializerÏ", "org.apache.kafka.common.serialization.ByteArraySerializer");
+    public PropertiesBuilder withByteArrayValueDeserializer() {
+        props.put("value.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
         return this;
     }
 
