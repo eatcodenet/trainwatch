@@ -2,10 +2,11 @@ package net.eatcode.trainwatch.movement.kafka;
 
 import java.util.Properties;
 
-class KafkaPropertiesBuilder {
+class PropertiesBuilder {
 
-    Properties producerProperties(String bootstrapServers) {
-        Properties props = new Properties();
+    private final Properties props = new Properties();
+
+    PropertiesBuilder forProducer(String bootstrapServers) {
         props.put("bootstrap.servers", bootstrapServers);
         props.put("acks", "all");
         props.put("retries", 0);
@@ -14,10 +15,10 @@ class KafkaPropertiesBuilder {
         props.put("buffer.memory", 33554432);
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        return props;
+        return this;
     }
 
-    Properties consumerProperties(String bootstrapServers) {
+    PropertiesBuilder forConsumer(String bootstrapServers) {
         Properties props = new Properties();
         props.put("bootstrap.servers", bootstrapServers);
         props.put("group.id", "net.eatcode");
@@ -26,7 +27,20 @@ class KafkaPropertiesBuilder {
         props.put("session.timeout.ms", "30000");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        return this;
+    }
+
+    Properties build() {
         return props;
+    }
+
+    public PropertiesBuilder withByteArrayValueSerializer() {
+        props.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
+        return this;
+    }
+    public PropertiesBuilder withByteArrayValueDeSserializer() {
+        props.put("value.deserializerÏ", "org.apache.kafka.common.serialization.ByteArraySerializer");
+        return this;
     }
 
 }

@@ -15,8 +15,8 @@ public class TrainMovementConsumer {
     private final Properties props;
     private final KafkaConsumer<String, byte[]> consumer;
 
-    public TrainMovementConsumer(String boostrapServers) {
-        this.props = new KafkaPropertiesBuilder().consumerProperties(boostrapServers);
+    public TrainMovementConsumer(String kafkaServers) {
+        this.props = new PropertiesBuilder().forConsumer(kafkaServers).build();
         this.consumer = new KafkaConsumer<>(props);
     }
 
