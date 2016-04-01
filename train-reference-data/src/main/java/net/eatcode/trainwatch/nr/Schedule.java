@@ -6,6 +6,8 @@ import java.util.List;
 
 public class Schedule implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     public final List<Location> locations = new ArrayList<>();
 
     public String id;
@@ -39,6 +41,7 @@ public class Schedule implements Serializable {
     }
 
     public static class Location implements Serializable {
+        private static final long serialVersionUID = 1L;
         public String type;
         public String tipLoc;
         public String publicDeparture;

@@ -5,7 +5,7 @@ dependencies {
 
 task populateSchedules(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
-    main = 'net.eatcode.trains.darwin.PopulateSchedules'
+    main = 'net.eatcode.trainwatch.nr.dataimport.PopulateSchedules'
     if (project.hasProperty("dataFile")) {
         args project.property('dataFile')
     }

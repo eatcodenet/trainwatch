@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class Crs implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     public String lat;
     public String lon;
     public String tiploc;

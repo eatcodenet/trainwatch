@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Tiploc implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     public String stanox;
     public String tiploc;
     public String nlc;

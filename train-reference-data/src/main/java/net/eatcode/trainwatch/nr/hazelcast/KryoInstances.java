@@ -1,10 +1,10 @@
 package net.eatcode.trainwatch.nr.hazelcast;
 
+import org.objenesis.strategy.StdInstantiatorStrategy;
+
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.pool.KryoFactory;
 import com.esotericsoftware.kryo.pool.KryoPool;
-import net.eatcode.trainwatch.nr.GeoStanox;
-import org.objenesis.strategy.StdInstantiatorStrategy;
 
 class KryoInstances {
 

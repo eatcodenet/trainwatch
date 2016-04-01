@@ -1,12 +1,12 @@
 package net.eatcode.trainwatch.nr.dataimport;
 
-import net.eatcode.trainwatch.nr.ScheduleRepo;
-import net.eatcode.trainwatch.nr.hazelcast.HazelcastScheduleRepo;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import net.eatcode.trainwatch.nr.hazelcast.HazelcastScheduleRepo;
 
 public class PopulateSchedules {
 

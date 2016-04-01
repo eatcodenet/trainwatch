@@ -5,6 +5,7 @@ import java.util.Objects;
 
 public class GeoStanox implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     public final String stanox;
     public final String description;
     public final String crs;
