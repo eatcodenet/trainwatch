@@ -9,6 +9,7 @@ public class GeoStanoxSerializer extends CommonSerializer<GeoStanox> {
         return 1;
     }
 
+
     @Override
     protected Class<GeoStanox> getClassToSerialize() {
         return GeoStanox.class;

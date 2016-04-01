@@ -3,10 +3,11 @@ package net.eatcode.trainwatch.nr;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Schedule implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     public final List<Location> locations = new ArrayList<>();
 
@@ -24,20 +25,20 @@ public class Schedule implements Serializable {
 
     @Override
     public String toString() {
-        return "Schedule{" +
-                "locations=" + locations +
-                ", id='" + id + '\'' +
-                ", trainServiceCode='" + trainServiceCode + '\'' +
-                ", startDate='" + startDate + '\'' +
-                ", endDate='" + endDate + '\'' +
-                ", atocCode='" + atocCode + '\'' +
-                ", origin='" + origin + '\'' +
-                ", destination='" + destination + '\'' +
-                ", headcode='" + headcode + '\'' +
-                ", publicDeparture='" + publicDeparture + '\'' +
-                ", publicArrival='" + publicArrival + '\'' +
-                ", runDays='" + runDays + '\'' +
-                '}';
+        return "Schedule [id=" + id + ", trainServiceCode=" + trainServiceCode + ", startDate=" + startDate
+                + ", endDate=" + endDate + ", atocCode=" + atocCode + ", origin=" + origin + ", destination="
+                + destination + ", headcode=" + headcode + ", publicDeparture=" + publicDeparture + ", publicArrival="
+                + publicArrival + ", runDays=" + runDays + ", locations=" + locations + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return Objects.equals(this.id, ((Schedule) obj).id);
     }
 
     public static class Location implements Serializable {
@@ -49,12 +50,8 @@ public class Schedule implements Serializable {
 
         @Override
         public String toString() {
-            return "Location{" +
-                    "type='" + type + '\'' +
-                    ", tipLoc='" + tipLoc + '\'' +
-                    ", publicDeparture='" + publicDeparture + '\'' +
-                    ", publicArrival='" + publicArrival + '\'' +
-                    '}';
+            return "Location{" + "type='" + type + '\'' + ", tipLoc='" + tipLoc + '\'' + ", publicDeparture='"
+                    + publicDeparture + '\'' + ", publicArrival='" + publicArrival + '\'' + '}';
         }
     }
 }

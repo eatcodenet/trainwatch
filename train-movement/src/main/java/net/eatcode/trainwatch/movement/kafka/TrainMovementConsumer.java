@@ -37,9 +37,9 @@ public class TrainMovementConsumer {
 
     private void consume(ConsumerRecord<String, byte[]> r) {
         TrainMovement tm = KryoUtils.fromByteArray(r.value(), TrainMovement.class);
-        List<Schedule> scheds = scheduleRepo.getForServiceCode(tm.body.train_service_code);
-        log.debug("{}", scheds.get(0));
-        log.debug("{}", tm);
+        List<Schedule> s = scheduleRepo.getForServiceCode("G50746");
+        log.debug("{}", s);
+        log.debug("{}", tm.body.train_service_code);
     }
 
     public static void main(String[] args) {

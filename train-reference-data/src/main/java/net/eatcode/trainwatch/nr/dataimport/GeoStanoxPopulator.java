@@ -31,7 +31,7 @@ public class GeoStanoxPopulator {
                 Map<String, Crs> crsMap = new HashMap<>();
                 new CrsFileParser(crsFile).parse(crs -> crsMap.put(crs.crs, crs));
                 log.info("Crs count: {}", crsMap.size());
-                new TiplocFileParser(tiplocFile).parse(tiploc -> processTiploc(tiploc, crsMap));
+                new TiplocFileParser(tiplocFile).parse(tiploc -> makeStanoxFrom(tiploc, crsMap));
                 result.complete(null);
             } catch (Exception e) {
                 result.completeExceptionally(e);
@@ -39,7 +39,7 @@ public class GeoStanoxPopulator {
         });
     }
 
-    private void processTiploc(Tiploc tiploc, Map<String, Crs> crsMap) {
+    private void makeStanoxFrom(Tiploc tiploc, Map<String, Crs> crsMap) {
         if (tiploc.hasStanox()) {
             Crs crs = crsMap.get(tiploc.crsCode);
             if (crs != null) {

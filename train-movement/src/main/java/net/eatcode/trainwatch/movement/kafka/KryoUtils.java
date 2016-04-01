@@ -11,6 +11,7 @@ class KryoUtils {
 
     static <T> byte[] toByteArray(T object) {
         Kryo kryo = KryoInstances.get();
+
         try (Output output = new Output(_1K, _16K)) {
             kryo.writeObject(output, object);
             return output.getBuffer();

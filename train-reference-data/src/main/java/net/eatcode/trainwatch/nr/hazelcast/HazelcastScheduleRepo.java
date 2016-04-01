@@ -2,12 +2,11 @@ package net.eatcode.trainwatch.nr.hazelcast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
-import com.hazelcast.query.EntryObject;
-import com.hazelcast.query.Predicate;
-import com.hazelcast.query.PredicateBuilder;
+import com.hazelcast.query.SqlPredicate;
 
 import net.eatcode.trainwatch.nr.Schedule;
 import net.eatcode.trainwatch.nr.ScheduleRepo;
@@ -29,14 +28,15 @@ public class HazelcastScheduleRepo implements ScheduleRepo {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<Schedule> getForServiceCode(String trainServiceCode) {
-        EntryObject e = new PredicateBuilder().getEntryObject();
-        Predicate<String, Schedule> predicate = e.get("trainServiceCode").equal(trainServiceCode);
-        return new ArrayList<>(map.values(predicate));
+        return new ArrayList<>(map.values(new SqlPredicate( "active AND age < 30" )));
     }
 
     public void shutdown() {
         client.shutdown();
+    }
+
+    public Stream<Schedule> all() {
+        return map.values().stream();
     }
 }

@@ -1,10 +1,11 @@
 package net.eatcode.trainwatch.nr.dataimport;
 
-import net.eatcode.trainwatch.nr.ScheduleRepo;
+import java.util.concurrent.CompletableFuture;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.CompletableFuture;
+import net.eatcode.trainwatch.nr.ScheduleRepo;
 
 public class ScheduleRepositoryPopulator {
 
@@ -20,5 +21,4 @@ public class ScheduleRepositoryPopulator {
         log.info("Starting populating repo from: {}", fileName);
         return new ScheduleFileParser(fileName).parse(schedule -> repo.put(schedule));
     }
-
 }

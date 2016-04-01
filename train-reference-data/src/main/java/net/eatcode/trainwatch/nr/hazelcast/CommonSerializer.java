@@ -1,6 +1,5 @@
 package net.eatcode.trainwatch.nr.hazelcast;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -12,23 +11,25 @@ import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.nio.serialization.StreamSerializer;
 
 /**
- * Mostly cribbed from http://blog.hazelcast.com/comparing-serialization-methods/
+ * Mostly cribbed from
+ * http://blog.hazelcast.com/comparing-serialization-methods/
  */
 public abstract class CommonSerializer<T> implements StreamSerializer<T> {
 
     protected abstract Class<T> getClassToSerialize();
 
     @Override
-    public void write(ObjectDataOutput objectDataOutput, T object) throws IOException {
-        Kryo kryo = KryoInstances.get();
+    public void write(ObjectDataOutput objectDataOutput, T object) {
         Output output = new Output((OutputStream) objectDataOutput);
+        Kryo kryo = KryoInstances.get();
         kryo.writeObject(output, object);
-        output.close();
+        output.flush(); // do not close!
         KryoInstances.release(kryo);
     }
 
+
     @Override
-    public T read(ObjectDataInput objectDataInput) throws IOException {
+    public T read(ObjectDataInput objectDataInput) {
         Input input = new Input((InputStream) objectDataInput);
         Kryo kryo = KryoInstances.get();
         T result = kryo.readObject(input, getClassToSerialize());

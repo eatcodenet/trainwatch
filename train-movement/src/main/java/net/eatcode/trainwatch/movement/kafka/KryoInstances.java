@@ -21,6 +21,7 @@ class KryoInstances {
 
     static Kryo get() {
         Kryo k = pool.borrow();
+        //TODO: move T
         k.register(TrainMovement.class, 100);
         return k;
     }
