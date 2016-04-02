@@ -1,5 +1,7 @@
 package net.eatcode.trainwatch.nr.dataimport;
 
+import java.time.DayOfWeek;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
@@ -25,8 +27,14 @@ public class ScheduleRepositoryPopulator {
     }
 
     private void generateDailySchedulesFromTrustSchedule(TrustSchedule ts) {
-        RunDays.from(ts.runDays);
+        Set<DayOfWeek> days = RunDays.from(ts.runDays);
+        String orig = ts.origin;
+        String dest = ts.destination;
+        String arrival = ts.publicArrival;
+        String depart = ts.publicDeparture;
+        String headcode = ts.headcode;
+        String trainServiceCode = ts.trainServiceCode;
+        String atoc = ts.atocCode;
     }
-
 
 }
