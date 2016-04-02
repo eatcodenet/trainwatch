@@ -14,9 +14,9 @@ public class TransformTrustScheduleTest {
 
     @Test
     public void toDaySchedule() throws IOException {
-        TrustSchedule ts = trustScheduleFromFile();
-        DaySchedule daySchedule = new TransformTrustSchedule().toDaySchedule(ts);
-        assertThat(daySchedule.trainServiceCode, is("57610314"));
+        DaySchedule ds = new TransformTrustSchedule().toDaySchedule(trustScheduleFromFile());
+        assertThat(ds.trainServiceCode, is("57610314"));
+        assertThat(ds.origin.stanox, is("WMBYEFT"));
     }
 
     private TrustSchedule trustScheduleFromFile() throws IOException {

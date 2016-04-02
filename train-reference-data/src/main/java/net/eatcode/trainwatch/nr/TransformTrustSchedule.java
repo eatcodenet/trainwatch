@@ -14,12 +14,17 @@ public class TransformTrustSchedule {
         JsonScheduleV1 s = ts.JsonScheduleV1;
         Set<DayOfWeek> days = RunDays.from(s.schedule_days_runs);
         List<Schedule_location> locs = Arrays.asList(s.schedule_segment.schedule_location);
+        Schedule_location o = getLocationByType(locs, "LO");
         String headcode = s.schedule_segment.signalling_id;
         String trainServiceCode = s.schedule_segment.CIF_train_service_code;
         String atoc = s.atoc_code;
         DaySchedule ds = new DaySchedule();
-        ds.origin = null;
+        ds.origin = new GeoStanox(o.tiploc_code, "", "", new LatLon("1", "2"));
         ds.trainServiceCode = trainServiceCode;
         return ds;
+    }
+
+    private Schedule_location getLocationByType(List<Schedule_location> locs, String type) {
+        return locs.stream().filter(sl -> sl.location_type.equals(type)).findFirst().get();
     }
 }
