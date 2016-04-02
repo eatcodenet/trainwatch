@@ -1,13 +1,9 @@
 package net.eatcode.trainwatch.nr;
 
-import java.util.List;
-
 public interface ScheduleRepo {
 
-    void put(TrustSchedule schedule);
+    void put(DaySchedule schedule);
 
-    TrustSchedule get(String id);
-
-    List<TrustSchedule> getForServiceCode(String trainServiceCode);
+    DaySchedule get(String id);
 
 }

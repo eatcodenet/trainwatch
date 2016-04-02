@@ -12,6 +12,7 @@ import com.hazelcast.nio.serialization.StreamSerializer;
 
 import net.eatcode.trainwatch.nr.TrustSchedule;
 
+@Deprecated
 public class ScheduleSerializer implements StreamSerializer<TrustSchedule> {
 
     @Override

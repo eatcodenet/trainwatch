@@ -9,11 +9,6 @@ public class SpikeStuff {
         HazelcastScheduleRepo repo = new HazelcastScheduleRepo();
         TrustSchedule schedule = new TrustSchedule();
         String id = "aruba" + +System.currentTimeMillis();
-        schedule.id = id;
-        schedule.startDate = "mummy!";
-        repo.put(schedule);
-        System.out.println(id + " " + repo.get(id));
-        repo.getForServiceCode("W60003");
-        repo.shutdown();
+
     }
 }

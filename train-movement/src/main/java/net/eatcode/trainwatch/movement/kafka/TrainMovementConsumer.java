@@ -1,7 +1,6 @@
 package net.eatcode.trainwatch.movement.kafka;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -10,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.eatcode.trainwatch.movement.TrainMovement;
-import net.eatcode.trainwatch.nr.TrustSchedule;
 import net.eatcode.trainwatch.nr.ScheduleRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HazelcastScheduleRepo;
 
@@ -37,8 +35,6 @@ public class TrainMovementConsumer {
 
     private void consume(ConsumerRecord<String, byte[]> r) {
         TrainMovement tm = KryoUtils.fromByteArray(r.value(), TrainMovement.class);
-        List<TrustSchedule> s = scheduleRepo.getForServiceCode("G50746");
-        log.debug("{}", s);
         log.debug("{}", tm.body.train_service_code);
     }
 

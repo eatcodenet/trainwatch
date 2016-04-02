@@ -1,16 +1,20 @@
 package net.eatcode.trainwatch.nr;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+
 public class DaySchedule {
 
-    private DaySchedule(Builder builder) {
+    GeoStanox origin;
+    GeoStanox destination;
+    LocalDateTime departure;
+    LocalDateTime arrival;
+    String trainServiceCode;
+    String headCode;
+    DayOfWeek runDay;
+    String atocCode;
+
+    String id() {
+        return trainServiceCode + headCode + runDay.getValue();
     }
-
-    public static class Builder {
-
-        public DaySchedule build() {
-            return new DaySchedule(this);
-        }
-
-    }
-
 }
