@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Schedule implements Serializable {
+public class TrustSchedule implements Serializable {
 
     private static final long serialVersionUID = 2L;
 
@@ -38,7 +38,7 @@ public class Schedule implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        return Objects.equals(this.id, ((Schedule) obj).id);
+        return Objects.equals(this.id, ((TrustSchedule) obj).id);
     }
 
     public static class Location implements Serializable {

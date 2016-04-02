@@ -3,7 +3,7 @@ package net.eatcode.trainwatch.nr.dataimport;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.eatcode.trainwatch.nr.Schedule;
+import net.eatcode.trainwatch.nr.TrustSchedule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +24,7 @@ public class ScheduleFileParser {
         this.sourceFile = sourceFile;
     }
 
-    public CompletableFuture<Void> parse(ParsedItemProcessor<Schedule> scheduleProcessor) {
+    public CompletableFuture<Void> parse(ParsedItemProcessor<TrustSchedule> scheduleProcessor) {
         log.debug("sourceFile: {}", this.sourceFile);
         CompletableFuture<Void> result = new CompletableFuture<>();
         CompletableFuture.runAsync(() -> {
@@ -47,9 +47,9 @@ public class ScheduleFileParser {
         return (line) -> line.contains("schedule_location");
     }
 
-    private Schedule toSchedule(String json) {
+    private TrustSchedule toSchedule(String json) {
         JsonObject o = parser.parse(json).getAsJsonObject().getAsJsonObject("JsonScheduleV1");
-        Schedule schedule = new Schedule();
+        TrustSchedule schedule = new TrustSchedule();
         schedule.startDate = o.get("schedule_start_date").getAsString();
         schedule.endDate = o.get("schedule_end_date").getAsString();
         schedule.runDays = getOrBlank(o, "schedule_days_runs");
@@ -60,7 +60,7 @@ public class ScheduleFileParser {
         schedule.headcode = getOrBlank(segment, "signalling_id");
         segment.getAsJsonArray("schedule_location").forEach(sl -> {
             JsonObject loc = sl.getAsJsonObject();
-            Schedule.Location location = new Schedule.Location();
+            TrustSchedule.Location location = new TrustSchedule.Location();
             location.type = loc.get("location_type").getAsString();
             location.tipLoc = loc.get("tiploc_code").getAsString();
             location.publicDeparture = getOrBlank(loc, "public_departure");

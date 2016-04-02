@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.eatcode.trainwatch.movement.TrainMovement;
-import net.eatcode.trainwatch.nr.Schedule;
+import net.eatcode.trainwatch.nr.TrustSchedule;
 import net.eatcode.trainwatch.nr.ScheduleRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HazelcastScheduleRepo;
 
@@ -37,7 +37,7 @@ public class TrainMovementConsumer {
 
     private void consume(ConsumerRecord<String, byte[]> r) {
         TrainMovement tm = KryoUtils.fromByteArray(r.value(), TrainMovement.class);
-        List<Schedule> s = scheduleRepo.getForServiceCode("G50746");
+        List<TrustSchedule> s = scheduleRepo.getForServiceCode("G50746");
         log.debug("{}", s);
         log.debug("{}", tm.body.train_service_code);
     }

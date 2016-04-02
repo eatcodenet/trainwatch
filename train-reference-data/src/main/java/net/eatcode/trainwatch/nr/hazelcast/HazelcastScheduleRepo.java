@@ -8,35 +8,35 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import com.hazelcast.query.SqlPredicate;
 
-import net.eatcode.trainwatch.nr.Schedule;
+import net.eatcode.trainwatch.nr.TrustSchedule;
 import net.eatcode.trainwatch.nr.ScheduleRepo;
 
 public class HazelcastScheduleRepo implements ScheduleRepo {
 
     private final HazelcastInstance client = new ClientBuilder().build();
 
-    private final IMap<String, Schedule> map = client.getMap("schedule");
+    private final IMap<String, TrustSchedule> map = client.getMap("schedule");
 
     @Override
-    public void put(Schedule schedule) {
+    public void put(TrustSchedule schedule) {
         map.put(schedule.id, schedule);
     }
 
     @Override
-    public Schedule get(String id) {
+    public TrustSchedule get(String id) {
         return map.get(id);
     }
 
     @Override
-    public List<Schedule> getForServiceCode(String trainServiceCode) {
-        return new ArrayList<>(map.values(new SqlPredicate( "active AND age < 30" )));
+    public List<TrustSchedule> getForServiceCode(String trainServiceCode) {
+        return new ArrayList<>(map.values(new SqlPredicate( "id = " + "W60003" )));
     }
 
     public void shutdown() {
         client.shutdown();
     }
 
-    public Stream<Schedule> all() {
+    public Stream<TrustSchedule> all() {
         return map.values().stream();
     }
 }

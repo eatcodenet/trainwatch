@@ -4,10 +4,10 @@ import java.util.List;
 
 public interface ScheduleRepo {
 
-    void put(Schedule schedule);
+    void put(TrustSchedule schedule);
 
-    Schedule get(String id);
+    TrustSchedule get(String id);
 
-    List<Schedule> getForServiceCode(String trainServiceCode);
+    List<TrustSchedule> getForServiceCode(String trainServiceCode);
 
 }
