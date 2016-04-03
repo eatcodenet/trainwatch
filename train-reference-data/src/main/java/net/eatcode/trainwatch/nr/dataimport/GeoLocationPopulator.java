@@ -8,13 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-public class GeoStanoxPopulator {
+public class GeoLocationPopulator {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    private final GeoStanoxRepo repo;
+    private final GeoLocationRepo repo;
 
-    public GeoStanoxPopulator(GeoStanoxRepo repo) {
+    public GeoLocationPopulator(GeoLocationRepo repo) {
         this.repo = repo;
     }
 
@@ -44,15 +44,15 @@ public class GeoStanoxPopulator {
             Crs crs = crsMap.get(tiploc.crsCode);
             if (crs != null) {
                 log.debug("tiploc stanox: {}", tiploc.stanox);
-                GeoStanox stanox = newStanoxFrom(tiploc, crs);
+                GeoLocation stanox = newStanoxFrom(tiploc, crs);
                 log.debug("{}", stanox);
                 repo.put(stanox);
             }
         }
     }
 
-    private GeoStanox newStanoxFrom(Tiploc tiploc, Crs crs) {
-        return new GeoStanox(tiploc.stanox, tiploc.description, tiploc.crsCode, new LatLon(crs.lat, crs.lon));
+    private GeoLocation newStanoxFrom(Tiploc tiploc, Crs crs) {
+        return new GeoLocation(tiploc.stanox, tiploc.description, tiploc.crsCode, new LatLon(crs.lat, crs.lon));
     }
 
 }

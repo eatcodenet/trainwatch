@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 
 public class DaySchedule {
 
-    GeoStanox origin;
-    GeoStanox destination;
+    GeoLocation origin;
+    GeoLocation destination;
     LocalDateTime departure;
     LocalDateTime arrival;
     String trainServiceCode;

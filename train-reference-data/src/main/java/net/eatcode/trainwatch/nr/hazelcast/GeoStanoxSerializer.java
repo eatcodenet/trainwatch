@@ -1,8 +1,8 @@
 package net.eatcode.trainwatch.nr.hazelcast;
 
-import net.eatcode.trainwatch.nr.GeoStanox;
+import net.eatcode.trainwatch.nr.GeoLocation;
 
-public class GeoStanoxSerializer extends CommonSerializer<GeoStanox> {
+public class GeoStanoxSerializer extends CommonSerializer<GeoLocation> {
 
     @Override
     public int getTypeId() {
@@ -11,8 +11,8 @@ public class GeoStanoxSerializer extends CommonSerializer<GeoStanox> {
 
 
     @Override
-    protected Class<GeoStanox> getClassToSerialize() {
-        return GeoStanox.class;
+    protected Class<GeoLocation> getClassToSerialize() {
+        return GeoLocation.class;
     }
 
 }

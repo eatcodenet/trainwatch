@@ -13,7 +13,7 @@ task populateSchedules(type: JavaExec) {
 
 task populateGeoStanoxes(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
-    main = 'net.eatcode.trainwatch.nr.dataimport.PopulateGeoStanoxesApp'
+    main = 'net.eatcode.trainwatch.nr.dataimport.PopulateGeoLocationsApp'
     if (project.hasProperty("tiplocFile")) {
         args project.property('tiplocFile')
     }

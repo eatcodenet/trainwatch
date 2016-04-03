@@ -19,7 +19,7 @@ public class TransformTrustSchedule {
         String trainServiceCode = s.schedule_segment.CIF_train_service_code;
         String atoc = s.atoc_code;
         DaySchedule ds = new DaySchedule();
-        ds.origin = new GeoStanox(o.tiploc_code, "", "", new LatLon("1", "2"));
+        ds.origin = new GeoLocation(o.tiploc_code, "", "", new LatLon("1", "2"));
         ds.trainServiceCode = trainServiceCode;
         return ds;
     }
