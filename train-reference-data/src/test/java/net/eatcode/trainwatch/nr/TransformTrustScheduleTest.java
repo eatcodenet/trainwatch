@@ -30,7 +30,6 @@ public class TransformTrustScheduleTest {
         assertThat(ds.headCode, is("SI01"));
         assertThat(ds.atocCode, is("ZZ"));
         assertThat(ds.runDay, is(DayOfWeek.MONDAY));
-        assertThat(ds.id, is("H65878"));
         assertThat(ds.key(), is("57610314SI011"));
     }
 

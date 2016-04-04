@@ -18,8 +18,8 @@ public class HazelcastDayScheduleRepo implements DayScheduleRepo {
     }
 
     @Override
-    public DaySchedule get(String id) {
-        return map.get(id);
+    public DaySchedule get(String key) {
+        return map.get(key);
     }
 
     public void shutdown() {

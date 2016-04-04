@@ -36,7 +36,6 @@ public class TransformTrustSchedule {
     private DaySchedule makeDaySchedule(String id, DayOfWeek dow, Schedule_location origin, Schedule_location dest,
             String headcode, String trainServiceCode, String atoc) {
         DaySchedule ds = new DaySchedule();
-        ds.id = id;
         ds.runDay = dow;
         ds.origin = getLocation(origin);
         ds.departure = LocalTime.parse(origin.departure.substring(0, 4), fmt);

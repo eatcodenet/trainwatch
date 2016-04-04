@@ -9,7 +9,6 @@ public class DaySchedule implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    String id;
     Location origin;
     Location destination;
     LocalTime departure;
@@ -25,7 +24,7 @@ public class DaySchedule implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(key());
     }
 
     @Override
@@ -39,7 +38,7 @@ public class DaySchedule implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        return Objects.equals(id, ((DaySchedule) obj).id);
+        return Objects.equals(key(), ((DaySchedule) obj).key());
     }
 
 }
