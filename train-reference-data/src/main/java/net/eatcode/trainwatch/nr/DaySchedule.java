@@ -1,14 +1,14 @@
 package net.eatcode.trainwatch.nr;
 
 import java.time.DayOfWeek;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class DaySchedule {
 
     GeoLocation origin;
     GeoLocation destination;
-    LocalDateTime departure;
-    LocalDateTime arrival;
+    LocalTime departure;
+    LocalTime arrival;
     String trainServiceCode;
     String headCode;
     DayOfWeek runDay;

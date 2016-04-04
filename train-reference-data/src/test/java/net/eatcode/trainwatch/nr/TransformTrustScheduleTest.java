@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalTime;
 
 import org.junit.Test;
 
@@ -17,7 +18,10 @@ public class TransformTrustScheduleTest {
 
         DaySchedule ds = new TransformTrustSchedule(new StubRepo()).toDaySchedule(trustScheduleFromFile());
         assertThat(ds.trainServiceCode, is("57610314"));
+        assertThat(ds.destination.stanox, is("a stanox"));
         assertThat(ds.origin.stanox, is("a stanox"));
+        assertThat(ds.headCode, is("SI01"));
+        assertThat(ds.departure, is(LocalTime.parse("12:54")));
     }
 
     private TrustSchedule trustScheduleFromFile() throws IOException {

@@ -12,7 +12,7 @@
 		"schedule_days_runs" : "1111000",
 		"schedule_end_date" : "2016-05-12",
 		"schedule_segment" : {
-			"signalling_id" : null,
+			"signalling_id" : "SI01",
 			"CIF_train_category" : null,
 			"CIF_headcode" : "",
 			"CIF_course_indicator" : 1,
