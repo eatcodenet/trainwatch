@@ -2,7 +2,7 @@ package net.eatcode.trainwatch.nr.hazelcast;
 
 import net.eatcode.trainwatch.nr.GeoLocation;
 
-public class GeoStanoxSerializer extends CommonSerializer<GeoLocation> {
+public class GeoLocationSerializer extends CommonSerializer<GeoLocation> {
 
     @Override
     public int getTypeId() {

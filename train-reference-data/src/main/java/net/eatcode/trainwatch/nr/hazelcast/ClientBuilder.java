@@ -25,7 +25,7 @@ public class ClientBuilder {
 
     private void configureSerialization() {
         SerializationConfig sc = config.getSerializationConfig();
-        sc.addSerializerConfig(add(new GeoStanoxSerializer(), GeoLocation.class));
+        sc.addSerializerConfig(add(new GeoLocationSerializer(), GeoLocation.class));
         sc.addSerializerConfig(add(new ScheduleSerializer(), TrustSchedule.class));
     }
 

@@ -22,8 +22,8 @@ public class GeoLocation implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GeoLocation geoStanox = (GeoLocation) o;
-        return Objects.equals(stanox, geoStanox.stanox);
+        GeoLocation location = (GeoLocation) o;
+        return Objects.equals(stanox, location.stanox);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class GeoLocation implements Serializable {
 
     @Override
     public String toString() {
-        return "GeoStanox{" +
+        return "GeoLocation{" +
                 "stanox='" + stanox + '\'' +
                 ", description='" + description + '\'' +
                 ", crs='" + crs + '\'' +
