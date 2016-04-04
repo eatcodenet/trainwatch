@@ -36,8 +36,7 @@ public class DaySchedule {
             return false;
         }
         DaySchedule other = (DaySchedule) obj;
-        Objects.equals(id(), other.id());
-        return true;
+        return Objects.equals(id(), other.id());
     }
 
 }
