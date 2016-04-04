@@ -18,7 +18,7 @@ public class HazelcastGeoLocationRepo implements GeoLocationRepo {
     }
 
     @Override
-    public GeoLocation get(String location) {
+    public GeoLocation getByStanox(String location) {
         return map.get(location);
     }
 

@@ -10,10 +10,12 @@ public class GeoLocation implements Serializable {
     public final String description;
     public final String crs;
     public final LatLon latLon;
+    private final String tiploc;
 
-    public GeoLocation(String stanox, String description, String crs, LatLon latLon) {
+    public GeoLocation(String stanox, String description, String tiploc, String crs, LatLon latLon) {
         this.stanox = stanox;
         this.description = description;
+        this.tiploc = tiploc;
         this.crs = crs;
         this.latLon = latLon;
     }
@@ -36,6 +38,7 @@ public class GeoLocation implements Serializable {
         return "GeoLocation{" +
                 "stanox='" + stanox + '\'' +
                 ", description='" + description + '\'' +
+                ", tiploc='" + tiploc + '\'' +
                 ", crs='" + crs + '\'' +
                 ", latLon=" + latLon +
                 '}';

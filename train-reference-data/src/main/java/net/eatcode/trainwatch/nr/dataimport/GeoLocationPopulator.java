@@ -1,12 +1,17 @@
 package net.eatcode.trainwatch.nr.dataimport;
 
-import net.eatcode.trainwatch.nr.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import net.eatcode.trainwatch.nr.Crs;
+import net.eatcode.trainwatch.nr.GeoLocation;
+import net.eatcode.trainwatch.nr.GeoLocationRepo;
+import net.eatcode.trainwatch.nr.LatLon;
+import net.eatcode.trainwatch.nr.Tiploc;
 
 public class GeoLocationPopulator {
 
@@ -52,7 +57,8 @@ public class GeoLocationPopulator {
     }
 
     private GeoLocation newStanoxFrom(Tiploc tiploc, Crs crs) {
-        return new GeoLocation(tiploc.stanox, tiploc.description, tiploc.crsCode, new LatLon(crs.lat, crs.lon));
+        return new GeoLocation(tiploc.stanox, tiploc.description, tiploc.tiploc, tiploc.crsCode,
+                new LatLon(crs.lat, crs.lon));
     }
 
 }

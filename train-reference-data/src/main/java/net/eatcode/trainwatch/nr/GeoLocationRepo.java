@@ -2,7 +2,7 @@ package net.eatcode.trainwatch.nr;
 
 public interface GeoLocationRepo {
 
-    void put(GeoLocation stanox);
+    void put(GeoLocation location);
 
-    GeoLocation get(String stanox);
+    GeoLocation getByStanox(String stanox);
 }
