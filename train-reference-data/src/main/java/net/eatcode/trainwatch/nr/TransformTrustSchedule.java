@@ -30,8 +30,8 @@ public class TransformTrustSchedule {
         return ds;
     }
 
-    private GeoLocation getLocation(Schedule_location origin) {
-        return null;
+    private GeoLocation getLocation(Schedule_location loc) {
+        return repo.getByTiploc(loc.tiploc_code);
     }
 
     private Schedule_location getLocationByType(List<Schedule_location> locs, String type) {

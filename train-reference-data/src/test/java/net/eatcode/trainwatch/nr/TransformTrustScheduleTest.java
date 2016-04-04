@@ -14,10 +14,10 @@ public class TransformTrustScheduleTest {
 
     @Test
     public void toDaySchedule() throws IOException {
-        GeoLocationRepo repo = null;
-        DaySchedule ds = new TransformTrustSchedule(repo).toDaySchedule(trustScheduleFromFile());
+
+        DaySchedule ds = new TransformTrustSchedule(new StubRepo()).toDaySchedule(trustScheduleFromFile());
         assertThat(ds.trainServiceCode, is("57610314"));
-        assertThat(ds.origin.stanox, is("WMBYEFT"));
+        assertThat(ds.origin.stanox, is("a stanox"));
     }
 
     private TrustSchedule trustScheduleFromFile() throws IOException {
@@ -25,4 +25,22 @@ public class TransformTrustScheduleTest {
                 TrustSchedule.class);
     }
 
+    private static class StubRepo implements GeoLocationRepo {
+
+        final GeoLocation location = new GeoLocation("a stanox", "desc", "a tiploc", "a crs", new LatLon("1", "2"));
+
+        @Override
+        public void put(GeoLocation location) {
+        }
+
+        @Override
+        public GeoLocation getByStanox(String stanox) {
+            return location;
+        }
+
+        @Override
+        public GeoLocation getByTiploc(String tiploc) {
+            return location;
+        }
+    }
 }

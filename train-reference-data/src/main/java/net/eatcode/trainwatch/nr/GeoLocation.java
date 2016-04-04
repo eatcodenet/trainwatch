@@ -10,7 +10,7 @@ public class GeoLocation implements Serializable {
     public final String description;
     public final String crs;
     public final LatLon latLon;
-    private final String tiploc;
+    public final String tiploc;
 
     public GeoLocation(String stanox, String description, String tiploc, String crs, LatLon latLon) {
         this.stanox = stanox;
