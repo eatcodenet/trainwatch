@@ -1,6 +1,6 @@
 package net.eatcode.trainwatch.nr;
 
-public interface ScheduleRepo {
+public interface DayScheduleRepo {
 
     void put(DaySchedule schedule);
 

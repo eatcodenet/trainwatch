@@ -20,6 +20,7 @@ public class TransformTrustScheduleTest {
 
         List<DaySchedule> schedules = new TransformTrustSchedule(new StubGeoLocatiobRepo())
                 .toDaySchedules(trustScheduleFromFile());
+        assertThat(schedules.size(), is(5));
         DaySchedule ds = schedules.get(0);
         assertThat(ds.destination.stanox, is("a stanox"));
         assertThat(ds.origin.stanox, is("a stanox"));

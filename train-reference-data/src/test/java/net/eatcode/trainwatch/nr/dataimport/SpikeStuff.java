@@ -1,12 +1,12 @@
 package net.eatcode.trainwatch.nr.dataimport;
 
 import net.eatcode.trainwatch.nr.TrustSchedule;
-import net.eatcode.trainwatch.nr.hazelcast.HazelcastScheduleRepo;
+import net.eatcode.trainwatch.nr.hazelcast.HazelcastDayScheduleRepo;
 
 public class SpikeStuff {
 
     public static void main(String[] args) {
-        HazelcastScheduleRepo repo = new HazelcastScheduleRepo();
+        HazelcastDayScheduleRepo repo = new HazelcastDayScheduleRepo();
         TrustSchedule schedule = new TrustSchedule();
         String id = "aruba" + +System.currentTimeMillis();
 

@@ -4,24 +4,23 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 
 import net.eatcode.trainwatch.nr.DaySchedule;
-import net.eatcode.trainwatch.nr.ScheduleRepo;
+import net.eatcode.trainwatch.nr.DayScheduleRepo;
 
-public class HazelcastScheduleRepo implements ScheduleRepo {
+public class HazelcastDayScheduleRepo implements DayScheduleRepo {
 
     private final HazelcastInstance client = new ClientBuilder().build();
 
-    private final IMap<String, DaySchedule> map = client.getMap("schedule");
+    private final IMap<String, DaySchedule> map = client.getMap("daySchedule");
 
     @Override
     public void put(DaySchedule schedule) {
-        map.put(schedule.toString(), schedule);
+        map.put(schedule.id(), schedule);
     }
 
     @Override
     public DaySchedule get(String id) {
         return map.get(id);
     }
-
 
     public void shutdown() {
         client.shutdown();
