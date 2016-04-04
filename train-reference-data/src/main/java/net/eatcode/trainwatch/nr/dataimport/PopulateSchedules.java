@@ -6,8 +6,8 @@ import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.eatcode.trainwatch.nr.hazelcast.HazelcastLocationRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HazelcastDayScheduleRepo;
+import net.eatcode.trainwatch.nr.hazelcast.HazelcastLocationRepo;
 
 public class PopulateSchedules {
 
@@ -19,12 +19,13 @@ public class PopulateSchedules {
 
         HazelcastDayScheduleRepo scheduleRepo = new HazelcastDayScheduleRepo();
         HazelcastLocationRepo locationRepo = new HazelcastLocationRepo();
-        new ScheduleRepositoryPopulator(scheduleRepo, locationRepo).populateFromFile(fileName).whenCompleteAsync((v, error) -> {
-            if (error == null)
-            log.info("Done populating!");
-
-            scheduleRepo.shutdown();
-        }).get();
+        new ScheduleRepositoryPopulator(scheduleRepo, locationRepo).populateFromFile(fileName)
+                .whenCompleteAsync((v, error) -> {
+                    if (error == null)
+                        log.info("Done populating!");
+                    scheduleRepo.shutdown();
+                    locationRepo.shutdown();
+                }).get();
     }
 
     private static void assertFileExists(String fileName) {

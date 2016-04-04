@@ -27,7 +27,6 @@ public abstract class CommonSerializer<T> implements StreamSerializer<T> {
         KryoInstances.release(kryo);
     }
 
-
     @Override
     public T read(ObjectDataInput objectDataInput) {
         Input input = new Input((InputStream) objectDataInput);

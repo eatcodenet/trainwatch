@@ -37,9 +37,9 @@ public class TransformTrustSchedule {
         DaySchedule ds = new DaySchedule();
         ds.runDay = dow;
         ds.origin = getLocation(origin);
-        ds.departure = LocalTime.parse(origin.departure, fmt);
+        ds.departure = LocalTime.parse(origin.departure.substring(0,4), fmt);
         ds.destination = getLocation(dest);
-        ds.arrival = LocalTime.parse(dest.arrival, fmt);
+        ds.arrival = LocalTime.parse(dest.arrival.substring(0,4), fmt);
         ds.trainServiceCode = trainServiceCode;
         ds.headCode = headcode;
         ds.atocCode = atoc;

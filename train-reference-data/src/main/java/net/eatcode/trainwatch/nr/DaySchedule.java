@@ -1,10 +1,15 @@
 package net.eatcode.trainwatch.nr;
 
+import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-public class DaySchedule {
+public class DaySchedule implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    private static final DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HHmm");
 
     Location origin;
     Location destination;
@@ -16,12 +21,12 @@ public class DaySchedule {
     String atocCode;
 
     public String id() {
-        return trainServiceCode + headCode + runDay.getValue();
+        return trainServiceCode + headCode + runDay.getValue() + departure.format(fmt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(trainServiceCode, headCode, runDay);
+        return Objects.hash(trainServiceCode, headCode, runDay, departure);
     }
 
     @Override

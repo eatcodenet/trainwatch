@@ -30,7 +30,7 @@ public class TransformTrustScheduleTest {
         assertThat(ds.headCode, is("SI01"));
         assertThat(ds.atocCode, is("ZZ"));
         assertThat(ds.runDay, is(DayOfWeek.MONDAY));
-        assertThat(ds.id(), is("57610314SI011"));
+        assertThat(ds.id(), is("57610314SI0111254"));
     }
 
     private TrustSchedule trustScheduleFromFile() throws IOException {
