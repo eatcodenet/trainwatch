@@ -38,21 +38,21 @@ public class TransformTrustScheduleTest {
                 TrustSchedule.class);
     }
 
-    private static class StubGeoLocatiobRepo implements GeoLocationRepo {
+    private static class StubGeoLocatiobRepo implements LocationRepo {
 
-        GeoLocation location = new GeoLocation("a stanox", "desc", "a tiploc", "a crs", new LatLon("1", "2"));
+        Location location = new Location("a stanox", "desc", "a tiploc", "a crs", new LatLon("1", "2"));
 
         @Override
-        public void put(GeoLocation location) {
+        public void put(Location location) {
         }
 
         @Override
-        public GeoLocation getByStanox(String stanox) {
+        public Location getByStanox(String stanox) {
             return location;
         }
 
         @Override
-        public GeoLocation getByTiploc(String tiploc) {
+        public Location getByTiploc(String tiploc) {
             return location;
         }
     }

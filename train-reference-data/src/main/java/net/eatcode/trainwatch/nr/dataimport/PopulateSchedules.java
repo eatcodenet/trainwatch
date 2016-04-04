@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.eatcode.trainwatch.nr.hazelcast.HazelcastGeoLocationRepo;
+import net.eatcode.trainwatch.nr.hazelcast.HazelcastLocationRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HazelcastDayScheduleRepo;
 
 public class PopulateSchedules {
@@ -18,7 +18,7 @@ public class PopulateSchedules {
         assertFileExists(fileName);
 
         HazelcastDayScheduleRepo scheduleRepo = new HazelcastDayScheduleRepo();
-        HazelcastGeoLocationRepo locationRepo = new HazelcastGeoLocationRepo();
+        HazelcastLocationRepo locationRepo = new HazelcastLocationRepo();
         new ScheduleRepositoryPopulator(scheduleRepo, locationRepo).populateFromFile(fileName).whenCompleteAsync((v, error) -> {
             if (error == null)
             log.info("Done populating!");

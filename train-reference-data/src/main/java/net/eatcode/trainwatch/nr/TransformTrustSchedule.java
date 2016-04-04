@@ -12,10 +12,10 @@ import net.eatcode.trainwatch.nr.TrustSchedule.JsonScheduleV1.Schedule_segment.S
 
 public class TransformTrustSchedule {
 
-    private final GeoLocationRepo repo;
+    private final LocationRepo repo;
     private final DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HHmm");
 
-    public TransformTrustSchedule(GeoLocationRepo repo) {
+    public TransformTrustSchedule(LocationRepo repo) {
         this.repo = repo;
     }
 
@@ -46,7 +46,7 @@ public class TransformTrustSchedule {
         return ds;
     }
 
-    private GeoLocation getLocation(Schedule_location loc) {
+    private Location getLocation(Schedule_location loc) {
         return repo.getByTiploc(loc.tiploc_code);
     }
 

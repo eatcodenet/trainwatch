@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import net.eatcode.trainwatch.nr.DaySchedule;
 import net.eatcode.trainwatch.nr.DayScheduleRepo;
-import net.eatcode.trainwatch.nr.GeoLocationRepo;
+import net.eatcode.trainwatch.nr.LocationRepo;
 import net.eatcode.trainwatch.nr.TransformTrustSchedule;
 import net.eatcode.trainwatch.nr.TrustSchedule;
 
@@ -17,9 +17,9 @@ public class ScheduleRepositoryPopulator {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private final DayScheduleRepo scheduleRepo;
-    private final GeoLocationRepo locationRepo;
+    private final LocationRepo locationRepo;
 
-    public ScheduleRepositoryPopulator(DayScheduleRepo scheduleRepo, GeoLocationRepo locationRepo) {
+    public ScheduleRepositoryPopulator(DayScheduleRepo scheduleRepo, LocationRepo locationRepo) {
         this.scheduleRepo = scheduleRepo;
         this.locationRepo = locationRepo;
     }

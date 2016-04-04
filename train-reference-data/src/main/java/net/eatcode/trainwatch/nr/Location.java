@@ -3,7 +3,7 @@ package net.eatcode.trainwatch.nr;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class GeoLocation implements Serializable {
+public class Location implements Serializable {
 
     private static final long serialVersionUID = 1L;
     public final String stanox;
@@ -12,7 +12,7 @@ public class GeoLocation implements Serializable {
     public final LatLon latLon;
     public final String tiploc;
 
-    public GeoLocation(String stanox, String description, String tiploc, String crs, LatLon latLon) {
+    public Location(String stanox, String description, String tiploc, String crs, LatLon latLon) {
         this.stanox = stanox;
         this.description = description;
         this.tiploc = tiploc;
@@ -26,7 +26,7 @@ public class GeoLocation implements Serializable {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        GeoLocation location = (GeoLocation) o;
+        Location location = (Location) o;
         return Objects.equals(stanox, location.stanox);
     }
 
@@ -37,7 +37,7 @@ public class GeoLocation implements Serializable {
 
     @Override
     public String toString() {
-        return "GeoLocation [stanox=" + stanox + ", description=" + description + ", crs=" + crs + ", latLon=" + latLon
+        return "Location [stanox=" + stanox + ", description=" + description + ", crs=" + crs + ", latLon=" + latLon
                 + ", tiploc=" + tiploc + "]";
     }
 

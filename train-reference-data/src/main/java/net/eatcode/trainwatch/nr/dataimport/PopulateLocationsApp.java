@@ -1,15 +1,15 @@
 package net.eatcode.trainwatch.nr.dataimport;
 
-import net.eatcode.trainwatch.nr.hazelcast.HazelcastGeoLocationRepo;
+import net.eatcode.trainwatch.nr.hazelcast.HazelcastLocationRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class PopulateGeoLocationsApp {
+public class PopulateLocationsApp {
 
-    private static final Logger log = LoggerFactory.getLogger(PopulateGeoLocationsApp.class);
+    private static final Logger log = LoggerFactory.getLogger(PopulateLocationsApp.class);
 
     public static void main(String[] args) throws Exception {
         String crsFile = args[0];
@@ -18,9 +18,9 @@ public class PopulateGeoLocationsApp {
         String tiplocFile = args[1];
         assertFileExists(tiplocFile);
 
-        HazelcastGeoLocationRepo repo = new HazelcastGeoLocationRepo();
+        HazelcastLocationRepo repo = new HazelcastLocationRepo();
 
-        new GeoLocationPopulator(repo).populateFromFiles(tiplocFile, crsFile).whenCompleteAsync((value, err) -> {
+        new LocationPopulator(repo).populateFromFiles(tiplocFile, crsFile).whenCompleteAsync((value, err) -> {
             if (err == null) {
                 log.info("Done populating!");
             }

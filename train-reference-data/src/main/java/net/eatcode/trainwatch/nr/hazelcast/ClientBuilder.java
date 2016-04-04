@@ -10,7 +10,7 @@ import com.hazelcast.config.SerializerConfig;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.nio.serialization.Serializer;
 
-import net.eatcode.trainwatch.nr.GeoLocation;
+import net.eatcode.trainwatch.nr.Location;
 import net.eatcode.trainwatch.nr.TrustSchedule;
 
 public class ClientBuilder {
@@ -25,7 +25,7 @@ public class ClientBuilder {
 
     private void configureSerialization() {
         SerializationConfig sc = config.getSerializationConfig();
-        sc.addSerializerConfig(add(new GeoLocationSerializer(), GeoLocation.class));
+        sc.addSerializerConfig(add(new LocationSerializer(), Location.class));
         sc.addSerializerConfig(add(new ScheduleSerializer(), TrustSchedule.class));
     }
 

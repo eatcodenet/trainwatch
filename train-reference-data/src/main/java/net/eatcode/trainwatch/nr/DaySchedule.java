@@ -6,8 +6,8 @@ import java.util.Objects;
 
 public class DaySchedule {
 
-    GeoLocation origin;
-    GeoLocation destination;
+    Location origin;
+    Location destination;
     LocalTime departure;
     LocalTime arrival;
     String trainServiceCode;
@@ -35,8 +35,7 @@ public class DaySchedule {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        DaySchedule other = (DaySchedule) obj;
-        return Objects.equals(id(), other.id());
+        return Objects.equals(id(), ((DaySchedule) obj).id());
     }
 
 }
