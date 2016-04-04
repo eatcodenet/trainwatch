@@ -28,18 +28,20 @@ public class TransformTrustSchedule {
         String headcode = s.schedule_segment.signalling_id;
         String trainServiceCode = s.schedule_segment.CIF_train_service_code;
         String atoc = s.atoc_code;
-        return days.stream().map(dow -> makeDaySchedule(dow, origin, dest, headcode, trainServiceCode, atoc))
+        String id = s.CIF_train_uid;
+        return days.stream().map(dow -> makeDaySchedule(id, dow, origin, dest, headcode, trainServiceCode, atoc))
                 .collect(Collectors.toList());
     }
 
-    private DaySchedule makeDaySchedule(DayOfWeek dow, Schedule_location origin, Schedule_location dest,
+    private DaySchedule makeDaySchedule(String id, DayOfWeek dow, Schedule_location origin, Schedule_location dest,
             String headcode, String trainServiceCode, String atoc) {
         DaySchedule ds = new DaySchedule();
+        ds.id = id;
         ds.runDay = dow;
         ds.origin = getLocation(origin);
-        ds.departure = LocalTime.parse(origin.departure.substring(0,4), fmt);
+        ds.departure = LocalTime.parse(origin.departure.substring(0, 4), fmt);
         ds.destination = getLocation(dest);
-        ds.arrival = LocalTime.parse(dest.arrival.substring(0,4), fmt);
+        ds.arrival = LocalTime.parse(dest.arrival.substring(0, 4), fmt);
         ds.trainServiceCode = trainServiceCode;
         ds.headCode = headcode;
         ds.atocCode = atoc;

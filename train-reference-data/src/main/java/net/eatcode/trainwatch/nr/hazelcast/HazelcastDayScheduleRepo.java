@@ -14,7 +14,7 @@ public class HazelcastDayScheduleRepo implements DayScheduleRepo {
 
     @Override
     public void put(DaySchedule schedule) {
-        map.put(schedule.id(), schedule);
+        map.put(schedule.key(), schedule);
     }
 
     @Override

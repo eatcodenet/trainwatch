@@ -25,7 +25,8 @@ public class TrainMovementProducer extends CreateTopic {
     public void produceMessages(String nrUsername, String nrPassword) {
         TrainMovementStomp stomp = new TrainMovementStomp(nrUsername, nrPassword);
         stomp.subscribe(movements -> {
-            parser.parseArray(movements).forEach((tm) -> sendMessage(tm));
+            //parser.parseArray(movements).forEach((tm) -> sendMessage(tm));
+            parser.parseArray(movements).forEach(System.out::println);
         });
     }
 

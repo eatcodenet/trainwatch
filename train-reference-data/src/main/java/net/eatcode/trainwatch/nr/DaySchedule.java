@@ -3,14 +3,13 @@ package net.eatcode.trainwatch.nr;
 import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class DaySchedule implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static final DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HHmm");
 
+    String id;
     Location origin;
     Location destination;
     LocalTime departure;
@@ -20,13 +19,13 @@ public class DaySchedule implements Serializable {
     DayOfWeek runDay;
     String atocCode;
 
-    public String id() {
-        return trainServiceCode + headCode + runDay.getValue() + departure.format(fmt);
+    public String key() {
+        return trainServiceCode + headCode + runDay.getValue();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(trainServiceCode, headCode, runDay, departure);
+        return Objects.hash(id);
     }
 
     @Override
@@ -40,7 +39,7 @@ public class DaySchedule implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        return Objects.equals(id(), ((DaySchedule) obj).id());
+        return Objects.equals(id, ((DaySchedule) obj).id);
     }
 
 }
