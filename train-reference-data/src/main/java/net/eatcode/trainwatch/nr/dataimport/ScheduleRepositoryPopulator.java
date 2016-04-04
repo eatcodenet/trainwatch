@@ -3,7 +3,6 @@ package net.eatcode.trainwatch.nr.dataimport;
 import java.time.DayOfWeek;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
@@ -32,7 +31,7 @@ public class ScheduleRepositoryPopulator {
 
     private void generateDailySchedulesFromTrustSchedule(TrustSchedule ts) {
         JsonScheduleV1 s = ts.JsonScheduleV1;
-        Set<DayOfWeek> days = RunDays.from(s.schedule_days_runs);
+        List<DayOfWeek> days = RunDays.from(s.schedule_days_runs);
         List<Schedule_location> locs = Arrays.asList(s.schedule_segment.schedule_location);
         String headcode = s.schedule_segment.signalling_id;
         String trainServiceCode = s.schedule_segment.CIF_train_service_code;

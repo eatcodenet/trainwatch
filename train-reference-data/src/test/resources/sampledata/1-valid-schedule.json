@@ -9,7 +9,7 @@
 			"traction_class" : "",
 			"uic_code" : "45406"
 		},
-		"schedule_days_runs" : "1111000",
+		"schedule_days_runs" : "1111100",
 		"schedule_end_date" : "2016-05-12",
 		"schedule_segment" : {
 			"signalling_id" : "SI01",

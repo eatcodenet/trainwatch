@@ -12,7 +12,7 @@ import static org.junit.Assert.assertThat;
 
 import java.time.DayOfWeek;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -22,19 +22,19 @@ public class RunDaysTest {
 
     @Test
     public void toDaysOfWeek() throws Exception {
-        assertThat(RunDays.from("0000000"), equalTo(set()));
-        assertThat(RunDays.from("1111111"), equalTo(set(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY)));
-        assertThat(RunDays.from("1111110"), equalTo(set(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY)));
-        assertThat(RunDays.from("1111100"), equalTo(set(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY)));
-        assertThat(RunDays.from("1111000"), equalTo(set(MONDAY, TUESDAY, WEDNESDAY, THURSDAY)));
-        assertThat(RunDays.from("1110000"), equalTo(set(MONDAY, TUESDAY, WEDNESDAY)));
-        assertThat(RunDays.from("1100000"), equalTo(set(MONDAY, TUESDAY)));
-        assertThat(RunDays.from("1000000"), equalTo(set(MONDAY)));
+        assertThat(RunDays.from("0000000"), equalTo(list()));
+        assertThat(RunDays.from("1111111"), equalTo(list(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY)));
+        assertThat(RunDays.from("1111110"), equalTo(list(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY)));
+        assertThat(RunDays.from("1111100"), equalTo(list(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY)));
+        assertThat(RunDays.from("1111000"), equalTo(list(MONDAY, TUESDAY, WEDNESDAY, THURSDAY)));
+        assertThat(RunDays.from("1110000"), equalTo(list(MONDAY, TUESDAY, WEDNESDAY)));
+        assertThat(RunDays.from("1100000"), equalTo(list(MONDAY, TUESDAY)));
+        assertThat(RunDays.from("1000000"), equalTo(list(MONDAY)));
 
     }
 
-    private HashSet<DayOfWeek> set(DayOfWeek... d) {
-        return new HashSet<>(Arrays.asList(d));
+    private List<DayOfWeek> list(DayOfWeek... d) {
+        return Arrays.asList(d);
     }
 
 }
