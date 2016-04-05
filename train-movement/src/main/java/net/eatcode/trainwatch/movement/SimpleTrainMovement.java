@@ -14,18 +14,21 @@ public class SimpleTrainMovement implements Serializable {
     private final String arrival;
     private final String trainId;
 
-    public SimpleTrainMovement(String origin, String departure, String destination, String arrival, String trainId) {
+    private final String delay;
+
+    public SimpleTrainMovement(String origin, String departure, String destination, String arrival, String trainId,
+            String delay) {
         this.origin = origin;
         this.departure = departure;
         this.destination = destination;
         this.arrival = arrival;
         this.trainId = trainId;
+        this.delay = delay;
     }
 
     @Override
     public String toString() {
-        return "SimpleTrainMovement [origin=" + origin + ", departure=" + departure + ", destination=" + destination
-                + ", arrival=" + arrival + ", trainId=" + trainId + "]";
+        return new Formatted().format(this);
     }
 
     @Override
@@ -36,6 +39,12 @@ public class SimpleTrainMovement implements Serializable {
     @Override
     public boolean equals(Object obj) {
         return Objects.equals(trainId, ((SimpleTrainMovement) obj).trainId);
+    }
+
+    static class Formatted {
+        public String format(SimpleTrainMovement stm) {
+            return String.format("%1$-20s | %2$-20s ", stm.origin, stm.destination);
+        }
     }
 
 }

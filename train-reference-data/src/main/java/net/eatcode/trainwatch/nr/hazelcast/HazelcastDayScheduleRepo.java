@@ -10,16 +10,23 @@ public class HazelcastDayScheduleRepo implements DayScheduleRepo {
 
     private final HazelcastInstance client = new ClientBuilder().build();
 
-    private final IMap<String, DaySchedule> map = client.getMap("daySchedule");
+    private final IMap<String, DaySchedule> idMap = client.getMap("idDaySchedule");
+    private final IMap<String, DaySchedule> keyMap = client.getMap("keyDaySchedule");
 
     @Override
     public void put(DaySchedule schedule) {
-        map.put(schedule.key(), schedule);
+        idMap.put(schedule.id, schedule);
+        keyMap.put(schedule.key(), schedule);
     }
 
     @Override
     public DaySchedule get(String key) {
-        return map.get(key);
+        return idMap.get(key);
+    }
+
+    @Override
+    public DaySchedule getByDaykey(String key) {
+        return keyMap.get(key);
     }
 
     public void shutdown() {

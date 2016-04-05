@@ -9,14 +9,16 @@ public class DaySchedule implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    Location origin;
-    Location destination;
-    LocalTime departure;
-    LocalTime arrival;
-    String trainServiceCode;
+    public String id;
+    public Location origin;
+    public Location destination;
+    public LocalTime departure;
+    public LocalTime arrival;
+    public String trainServiceCode;
     String headCode;
     DayOfWeek runDay;
     String atocCode;
+    public boolean estimate = false;
 
     public String key() {
         return trainServiceCode + headCode + runDay.getValue();
