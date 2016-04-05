@@ -20,6 +20,7 @@ public class ScheduleFileParser {
 
     private final String sourceFile;
     private final Gson gson = new GsonBuilder().create();
+    private final boolean stopOnError = true;
 
     public ScheduleFileParser(String sourceFile) {
         this.sourceFile = sourceFile;
@@ -30,13 +31,14 @@ public class ScheduleFileParser {
         CompletableFuture<Void> result = new CompletableFuture<>();
         CompletableFuture.runAsync(() -> {
             try (Stream<String> lines = Files.lines(Paths.get(sourceFile))) {
-                lines.filter(onlyLinesWithLocation()).map(this::toScheduleGson)
-                        .filter(s -> s.JsonScheduleV1.schedule_segment.CIF_train_service_code != null)
+                lines.parallel()
+                    .filter(onlyLinesWithLocation()).map(this::toScheduleGson)
+                        //.filter(s -> s.JsonScheduleV1.schedule_segment.CIF_train_service_code != null)
                         .forEach(s -> scheduleProcessor.process(s));
                 result.complete(null);
             } catch (Exception e) {
                 log.error("schedule file parse error", e);
-                result.completeExceptionally(e);
+                if (stopOnError) result.completeExceptionally(e);
             }
         });
         return result;
