@@ -35,7 +35,6 @@ public class TrainMovementProducer extends CreateTopic {
     }
 
     public static void main(String[] args) {
-
         String networkRailUsername = args[0];
         String networkRailPassword = args[1];
         System.out.println("username = " + networkRailUsername);

@@ -14,14 +14,6 @@ import org.junit.Test;
 public class GsonTrainMovementParserTest {
 
     @Test
-    public void parseSingleMessage() throws Exception {
-        String json = readFile("src/test/resources/sampledata/singleTrainMovement.json");
-        TrainMovementCombinedMessage tm = new GsonTrainMovementParser().parse(json);
-        assertThat(tm.header.msg_type, is("0003"));
-        assertThat(tm.body.train_id, is("401V97MP01"));
-    }
-
-    @Test
     public void parseArrayOfMessages() throws Exception {
         String json = readFile("src/test/resources/sampledata/32TrainMovementsArray.json");
         List<TrainMovementCombinedMessage> movements = new GsonTrainMovementParser().parseArray(json);

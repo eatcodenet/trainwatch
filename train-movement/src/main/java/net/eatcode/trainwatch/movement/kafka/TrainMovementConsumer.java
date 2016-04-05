@@ -9,16 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.eatcode.trainwatch.movement.TrainMovementCombinedMessage;
-import net.eatcode.trainwatch.nr.DayScheduleRepo;
-import net.eatcode.trainwatch.nr.hazelcast.HazelcastDayScheduleRepo;
 
 public class TrainMovementConsumer {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final String topicName = "trust-train-movements";
     private final Properties props;
     private final KafkaConsumer<String, byte[]> consumer;
-
-    private final DayScheduleRepo scheduleRepo = new HazelcastDayScheduleRepo();
 
     public TrainMovementConsumer(String kafkaServers) {
         this.props = new PropertiesBuilder().forConsumer(kafkaServers).withByteArrayValueDeserializer().build();

@@ -48,10 +48,4 @@ public class TrainMovementStomp {
         }
     }
 
-    public void stop() {
-        if (client.isConnected()) {
-            client.disconnect();
-        }
-    }
-
 }
