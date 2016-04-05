@@ -9,18 +9,18 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
-import net.eatcode.trainwatch.movement.TrainMovement;
+import net.eatcode.trainwatch.movement.TrainMovementMessage;
 
 public class KryoUtilsTest {
 
-    private final TrainMovement ttm = new TrainMovement(
-            new TrainMovement.Header(), new TrainMovement.Body());
+    private final TrainMovementMessage ttm = new TrainMovementMessage(
+            new TrainMovementMessage.Header(), new TrainMovementMessage.Body());
 
     @Test
     public void toByteArray() {
         ttm.body.train_id = "BigTrain";
         byte[] buffer = KryoUtils.toByteArray(ttm);
-        TrainMovement ttm2 = deserialize(buffer);
+        TrainMovementMessage ttm2 = deserialize(buffer);
         assertThat(ttm2.body.train_id, is("BigTrain"));
     }
 
@@ -28,13 +28,13 @@ public class KryoUtilsTest {
     public void fromByteArray() {
         ttm.body.train_id = "SmallTrain";
         Output output = serialize(ttm);
-        TrainMovement ttm2 = KryoUtils.fromByteArray(output.getBuffer(),
-                TrainMovement.class);
+        TrainMovementMessage ttm2 = KryoUtils.fromByteArray(output.getBuffer(),
+                TrainMovementMessage.class);
         System.out.println(ttm2);
         assertThat(ttm2.body.train_id, is("SmallTrain"));
     }
 
-    private Output serialize(TrainMovement ttm2) {
+    private Output serialize(TrainMovementMessage ttm2) {
         Kryo kryo = KryoInstances.get();
         Output output = new Output(1024, 16384);
         kryo.writeObject(output, ttm);
@@ -43,10 +43,10 @@ public class KryoUtilsTest {
         return output;
     }
 
-    private TrainMovement deserialize(byte[] buffer) {
+    private TrainMovementMessage deserialize(byte[] buffer) {
         Kryo kryo = KryoInstances.get();
-        TrainMovement ttm2 = kryo.readObject(new Input(buffer),
-                TrainMovement.class);
+        TrainMovementMessage ttm2 = kryo.readObject(new Input(buffer),
+                TrainMovementMessage.class);
         KryoInstances.release(kryo);
         return ttm2;
     }

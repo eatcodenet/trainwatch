@@ -11,13 +11,13 @@ public class GsonTrainMovementParser implements TrainMovementParser {
     private final Gson gson = new GsonBuilder().create();
 
     @Override
-    public TrainMovement parse(String json) {
-        return gson.fromJson(json, TrainMovement.class);
+    public TrainMovementMessage parse(String json) {
+        return gson.fromJson(json, TrainMovementMessage.class);
     }
 
     @Override
-    public List<TrainMovement> parseArray(String json) {
-        return Arrays.asList(gson.fromJson(json, TrainMovement[].class));
+    public List<TrainMovementMessage> parseArray(String json) {
+        return Arrays.asList(gson.fromJson(json, TrainMovementMessage[].class));
     }
 
 }
