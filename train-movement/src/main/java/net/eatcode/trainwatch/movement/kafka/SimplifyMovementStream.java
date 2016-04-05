@@ -1,4 +1,4 @@
-package net.eatcode.trainwatch.analysis;
+package net.eatcode.trainwatch.movement.kafka;
 
 import java.util.Properties;
 
@@ -13,6 +13,7 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KStreamBuilder;
 import org.apache.kafka.streams.kstream.ValueMapper;
 
+import net.eatcode.trainwatch.movement.SimpleTrainMovement;
 import net.eatcode.trainwatch.movement.TrainMovementCombinedMessage;
 
 public class SimplifyMovementStream {

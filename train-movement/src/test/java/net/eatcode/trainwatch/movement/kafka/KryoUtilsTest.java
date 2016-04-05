@@ -35,7 +35,7 @@ public class KryoUtilsTest {
     }
 
     private Output serialize(TrainMovementCombinedMessage msg) {
-        Kryo kryo = KryoInstances.get();
+        Kryo kryo = KryoInstances.get(msg.getClass());
         Output output = new Output(1024, 16384);
         kryo.writeObject(output, msg);
         output.flush();
@@ -44,7 +44,7 @@ public class KryoUtilsTest {
     }
 
     private TrainMovementCombinedMessage deserialize(byte[] buffer) {
-        Kryo kryo = KryoInstances.get();
+        Kryo kryo = KryoInstances.get(TrainMovementCombinedMessage.class);
         TrainMovementCombinedMessage msg = kryo.readObject(new Input(buffer), TrainMovementCombinedMessage.class);
         KryoInstances.release(kryo);
         return msg;

@@ -1,4 +1,4 @@
-package net.eatcode.trainwatch.analysis;
+package net.eatcode.trainwatch.movement;
 
 import java.io.Serializable;
 
