@@ -16,7 +16,7 @@ import org.apache.kafka.streams.kstream.ValueMapper;
 import net.eatcode.trainwatch.movement.SimpleTrainMovement;
 import net.eatcode.trainwatch.movement.TrainMovementCombinedMessage;
 
-public class SimplifyMovementStream {
+public class SimpleMovementStream {
 
     public void process() {
         Properties streamsConfiguration = new Properties();
@@ -38,9 +38,13 @@ public class SimplifyMovementStream {
             @Override
             public SimpleTrainMovement apply(byte[] value) {
                 TrainMovementCombinedMessage msg = KryoUtils.fromByteArray(value, TrainMovementCombinedMessage.class);
-                SimpleTrainMovement simple = new SimpleTrainMovement(msg.body.train_id);
+                SimpleTrainMovement simple = addScheduleInfo(msg);
                 System.out.println(simple);
                 return simple;
+            }
+
+            private SimpleTrainMovement addScheduleInfo(TrainMovementCombinedMessage msg) {
+                return new SimpleTrainMovement(msg.body.train_id, "", "", "", "");
             }
 
         });
@@ -50,7 +54,7 @@ public class SimplifyMovementStream {
     }
 
     public static void main(String[] args) {
-        new SimplifyMovementStream().process();
+        new SimpleMovementStream().process();
     }
 
 }
