@@ -30,7 +30,6 @@ public class KryoUtilsTest {
         Output output = serialize(msg);
         TrainMovementCombinedMessage msg2 = KryoUtils.fromByteArray(output.getBuffer(),
                 TrainMovementCombinedMessage.class);
-        System.out.println(msg2);
         assertThat(msg2.body.train_id, is("SmallTrain"));
     }
 

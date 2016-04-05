@@ -2,6 +2,13 @@ package net.eatcode.trainwatch.movement.kafka;
 
 import java.util.Properties;
 
+import org.apache.kafka.clients.CommonClientConfigs;
+import org.apache.kafka.common.serialization.ByteArrayDeserializer;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.apache.kafka.streams.StreamsConfig;
+
 class PropertiesBuilder {
 
     private final Properties props = new Properties();
@@ -29,6 +36,16 @@ class PropertiesBuilder {
         return this;
     }
 
+    PropertiesBuilder forStream(String bootstrapServers) {
+        props.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        props.put(StreamsConfig.JOB_ID_CONFIG, "simplifyMovements");
+        props.put(StreamsConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        props.put(StreamsConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class);
+        props.put(StreamsConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(StreamsConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class);
+        return this;
+    }
+
     Properties build() {
         return props;
     }
@@ -37,6 +54,7 @@ class PropertiesBuilder {
         props.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
         return this;
     }
+
     public PropertiesBuilder withByteArrayValueDeserializer() {
         props.put("value.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
         return this;
