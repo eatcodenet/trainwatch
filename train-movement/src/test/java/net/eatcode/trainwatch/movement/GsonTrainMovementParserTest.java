@@ -16,15 +16,15 @@ public class GsonTrainMovementParserTest {
     @Test
     public void parseSingleMessage() throws Exception {
         String json = readFile("src/test/resources/sampledata/singleTrainMovement.json");
-        TrainMovementMessage tm = new GsonTrainMovementParser().parse(json);
-        assertThat(tm.header.source_system_id, is("TRUST"));
+        TrainMovementCombinedMessage tm = new GsonTrainMovementParser().parse(json);
+        assertThat(tm.header.msg_type, is("0003"));
         assertThat(tm.body.train_id, is("401V97MP01"));
     }
 
     @Test
     public void parseArrayOfMessages() throws Exception {
         String json = readFile("src/test/resources/sampledata/32TrainMovementsArray.json");
-        List<TrainMovementMessage> movements = new GsonTrainMovementParser().parseArray(json);
+        List<TrainMovementCombinedMessage> movements = new GsonTrainMovementParser().parseArray(json);
         assertThat(movements.size(), is(32));
         assertThat(movements.get(31).body.train_id, is("861H47MT01"));
     }

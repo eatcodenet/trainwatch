@@ -8,7 +8,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.eatcode.trainwatch.movement.TrainMovementMessage;
+import net.eatcode.trainwatch.movement.TrainMovementCombinedMessage;
 import net.eatcode.trainwatch.nr.DayScheduleRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HazelcastDayScheduleRepo;
 
@@ -34,7 +34,7 @@ public class TrainMovementConsumer {
     }
 
     private void consume(ConsumerRecord<String, byte[]> r) {
-        TrainMovementMessage tm = KryoUtils.fromByteArray(r.value(), TrainMovementMessage.class);
+        TrainMovementCombinedMessage tm = KryoUtils.fromByteArray(r.value(), TrainMovementCombinedMessage.class);
         log.debug("{}", tm.body.train_service_code);
     }
 

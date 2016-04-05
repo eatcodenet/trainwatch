@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface TrainMovementParser {
 
-    TrainMovementMessage parse(String json);
+    TrainMovementCombinedMessage parse(String json);
 
-    List<TrainMovementMessage> parseArray(String jsonArray);
+    List<TrainMovementCombinedMessage> parseArray(String jsonArray);
 }

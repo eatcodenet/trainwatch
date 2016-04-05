@@ -6,7 +6,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.pool.KryoFactory;
 import com.esotericsoftware.kryo.pool.KryoPool;
 
-import net.eatcode.trainwatch.movement.TrainMovementMessage;
+import net.eatcode.trainwatch.movement.TrainMovementCombinedMessage;
 
 class KryoInstances {
 
@@ -16,13 +16,12 @@ class KryoInstances {
         return kryo;
     };
 
-    private static KryoPool pool = new KryoPool.Builder(factory)
-            .softReferences().build();
+    private static KryoPool pool = new KryoPool.Builder(factory).softReferences().build();
 
     static Kryo get() {
         Kryo k = pool.borrow();
-        //TODO: move T
-        k.register(TrainMovementMessage.class, 100);
+        // TODO: move T
+        k.register(TrainMovementCombinedMessage.class, 100);
         return k;
     }
 

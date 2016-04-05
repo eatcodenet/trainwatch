@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.eatcode.trainwatch.movement.GsonTrainMovementParser;
-import net.eatcode.trainwatch.movement.TrainMovement;
+import net.eatcode.trainwatch.movement.TrainMovementCombinedMessage;
 import net.eatcode.trainwatch.movement.TrainMovementStomp;
 
 public class TrainMovementProducer extends CreateTopic {
@@ -25,16 +25,13 @@ public class TrainMovementProducer extends CreateTopic {
     public void produceMessages(String nrUsername, String nrPassword) {
         TrainMovementStomp stomp = new TrainMovementStomp(nrUsername, nrPassword);
         stomp.subscribe(movements -> {
-            // parser.parseArray(movements).forEach((tm) -> sendMessage(tm));
-            parser.parseArray(movements).forEach(m -> {
-                System.out.println(m.header.msg_type + ":" + m.body.train_service_code + " " + m.body.loc_stanox);
-            });
+            parser.parseArray(movements).forEach((tm) -> sendMessage(tm));
         });
     }
 
-    private void sendMessage(TrainMovement tm) {
-        log.debug("{}", tm);
-        producer.send(new ProducerRecord<>(topicName, tm.body.train_service_code, KryoUtils.toByteArray(tm)));
+    private void sendMessage(TrainMovementCombinedMessage m) {
+        log.debug("{} {} {}", m.header.msg_type, m.body.train_id, m.body.train_service_code);
+        producer.send(new ProducerRecord<>(topicName, m.body.train_service_code, KryoUtils.toByteArray(m)));
     }
 
     public static void main(String[] args) {
