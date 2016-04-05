@@ -1,6 +1,10 @@
 package net.eatcode.trainwatch.analysis;
 
-public class SimpleTrainMovement {
+import java.io.Serializable;
+
+public class SimpleTrainMovement implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final String train_id;
 
