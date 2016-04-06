@@ -9,7 +9,6 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KStreamBuilder;
-import org.apache.kafka.streams.kstream.ValueMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,24 +37,21 @@ public class SimpleMovementStream {
 
         KStreamBuilder builder = new KStreamBuilder();
         KStream<String, byte[]> movements = builder.stream(kDeserializer, vDeserializer, "trust-train-movements");
-        movements.mapValues(new ValueMapper<byte[], SimpleTrainMovement>() {
-
-            @Override
-            public SimpleTrainMovement apply(byte[] value) {
-                TrainMovementCombinedMessage msg = KryoUtils.fromByteArray(value, TrainMovementCombinedMessage.class);
-                SimpleTrainMovement simple = createSimpleTrainMovement(msg);
-                log.debug("{}", simple);
-                return simple;
-            }
+        movements.mapValues(value -> {
+            TrainMovementCombinedMessage msg = KryoUtils.fromByteArray(value, TrainMovementCombinedMessage.class);
+            return createSimpleTrainMovement(msg);
+        }).filter((key, value) -> {
+            if (value != null) log.debug("{}", value);
+            return (value == null);
         });
 
-        KafkaStreams streams = new KafkaStreams(builder, props);
-        streams.start();
+        new KafkaStreams(builder, props).start();
     }
 
     private SimpleTrainMovement createSimpleTrainMovement(TrainMovementCombinedMessage message) {
         DaySchedule ds = scheduleLookup.lookup(message);
-        if (ds == null) return null;
+        if (ds == null)
+            return null;
         return new SimpleTrainMovement(message.body.train_id, location(ds.origin), time(ds.departure),
                 location(ds.destination), time(ds.arrival), delay(message.body.timetable_variation), ds.estimated);
     }
