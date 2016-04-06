@@ -43,7 +43,7 @@ public class SimpleTrainMovement implements Serializable {
 
     static class Formatted {
         public String format(SimpleTrainMovement stm) {
-            return String.format("%1$-5s %2$-40s %3$-5s %4$-40s delay %5s", stm.departure, stm.origin, stm.arrival,
+            return String.format("%1$-5s %2$-40s %3$-5s %4$-40s delay %5$s", stm.departure, stm.origin, stm.arrival,
                     stm.destination, stm.delay);
         }
     }
