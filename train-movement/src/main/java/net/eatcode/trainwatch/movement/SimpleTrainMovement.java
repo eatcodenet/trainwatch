@@ -16,13 +16,13 @@ public class SimpleTrainMovement implements Serializable {
 
     private final String delay;
 
-    public SimpleTrainMovement(String origin, String departure, String destination, String arrival, String trainId,
-            String delay) {
+    public SimpleTrainMovement(String id, String origin, String departure, String destination, String arrival,
+            String delay, boolean isEstimated) {
+        this.trainId = id;
         this.origin = origin;
-        this.departure = departure;
+        this.departure = isEstimated ? "N/A" : departure;
         this.destination = destination;
-        this.arrival = arrival;
-        this.trainId = trainId;
+        this.arrival = isEstimated ? "N/A" : arrival;
         this.delay = delay;
     }
 
@@ -43,7 +43,8 @@ public class SimpleTrainMovement implements Serializable {
 
     static class Formatted {
         public String format(SimpleTrainMovement stm) {
-            return String.format("%1$-20s | %2$-20s ", stm.origin, stm.destination);
+            return String.format("%1$-5s %2$-30s|%3$-5s %4$-30s", stm.departure, stm.origin, stm.arrival,
+                    stm.destination);
         }
     }
 

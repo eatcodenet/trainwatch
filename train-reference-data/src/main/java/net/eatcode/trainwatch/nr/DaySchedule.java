@@ -18,7 +18,7 @@ public class DaySchedule implements Serializable {
     String headCode;
     DayOfWeek runDay;
     String atocCode;
-    public boolean estimate = false;
+    public boolean estimated = false;
 
     public String key() {
         return trainServiceCode + headCode + runDay.getValue();
@@ -47,7 +47,7 @@ public class DaySchedule implements Serializable {
     public String toString() {
         return "DaySchedule [id=" + id + ", origin=" + origin + ", destination=" + destination + ", departure="
                 + departure + ", arrival=" + arrival + ", trainServiceCode=" + trainServiceCode + ", headCode="
-                + headCode + ", runDay=" + runDay + ", atocCode=" + atocCode + ", estimate=" + estimate + "]";
+                + headCode + ", runDay=" + runDay + ", atocCode=" + atocCode + ", estimated=" + estimated + "]";
     }
 
 

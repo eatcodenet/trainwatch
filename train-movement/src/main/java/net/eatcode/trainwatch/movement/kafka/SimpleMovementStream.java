@@ -44,7 +44,7 @@ public class SimpleMovementStream {
             public SimpleTrainMovement apply(byte[] value) {
                 TrainMovementCombinedMessage msg = KryoUtils.fromByteArray(value, TrainMovementCombinedMessage.class);
                 SimpleTrainMovement simple = createSimpleTrainMovement(msg);
-                log.debug("SIMPLE: {}", simple);
+                log.debug("{}", simple);
                 return simple;
             }
         });
@@ -54,15 +54,14 @@ public class SimpleMovementStream {
     }
 
     private SimpleTrainMovement createSimpleTrainMovement(TrainMovementCombinedMessage message) {
-        DaySchedule schedule = scheduleLookup.lookup(message);
-        log.debug("DS {}", schedule);
-        if (schedule == null) return null;
-        return new SimpleTrainMovement(message.body.train_id, location(schedule.origin), time(schedule.departure),
-                location(schedule.destination), time(schedule.departure), delay(message.body.timetable_variation));
+        DaySchedule ds = scheduleLookup.lookup(message);
+        if (ds == null) return null;
+        return new SimpleTrainMovement(message.body.train_id, location(ds.origin), time(ds.departure),
+                location(ds.destination), time(ds.arrival), delay(message.body.timetable_variation), ds.estimated);
     }
 
     private String location(Location location) {
-        return location.description + "(" + location.crs + ")";
+        return location.description + " (" + location.crs + ")";
     }
 
     private String time(LocalTime departure) {
