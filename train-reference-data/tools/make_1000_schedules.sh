@@ -11,5 +11,5 @@ if [[ -z "${full_schedule_file}" ]]; then
 fi
 
 out_dir=$( dirname ${full_schedule_file} )
-grep JsonScheduleV1 < ${full_schedule_file} | grep schedule_location | head -1000 > ${out_dir}/1000_schedules.json
+grep JsonScheduleV1 < ${full_schedule_file} | grep schedule_location | head -50000 > ${out_dir}/50000_schedules.json
 echo "Done."
