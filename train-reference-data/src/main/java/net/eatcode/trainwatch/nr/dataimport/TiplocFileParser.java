@@ -1,16 +1,18 @@
 package net.eatcode.trainwatch.nr.dataimport;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import net.eatcode.trainwatch.nr.Tiploc;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import net.eatcode.trainwatch.nr.Tiploc;
 
 class TiplocFileParser {
 
@@ -42,7 +44,7 @@ class TiplocFileParser {
                 item.crsCode = tld.get("3ALPHA").getAsString().trim();
                 item.nlc = tld.get("NLC").getAsString().trim();
                 item.tiploc = tld.get("TIPLOC").getAsString().trim();
-                item.description = tld.get("NLCDESC").getAsString().trim();
+                item.description = tld.get("NLCDESC").getAsString().replaceAll("\\(TPS INDIC. ONLY\\)", "") .trim();
                 processor.process(item);
             }
         });
