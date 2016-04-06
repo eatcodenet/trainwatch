@@ -65,7 +65,7 @@ public class SimpleMovementStream {
     }
 
     private String delay(String timetable_variation) {
-        return timetable_variation + "mins";
+        return timetable_variation + " mins";
     }
 
     public static void main(String[] args) {
