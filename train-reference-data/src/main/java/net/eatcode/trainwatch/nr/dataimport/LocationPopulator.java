@@ -36,7 +36,7 @@ public class LocationPopulator {
                 Map<String, Crs> crsMap = new HashMap<>();
                 new CrsFileParser(crsFile).parse(crs -> crsMap.put(crs.crs, crs));
                 log.info("Crs count: {}", crsMap.size());
-                new TiplocFileParser(tiplocFile).parse(tiploc -> makeStanoxFrom(tiploc, crsMap));
+                new TiplocFileParser(tiplocFile).parse(tiploc -> locationFrom(tiploc, crsMap));
                 result.complete(null);
             } catch (Exception e) {
                 result.completeExceptionally(e);
@@ -44,19 +44,21 @@ public class LocationPopulator {
         });
     }
 
-    private void makeStanoxFrom(Tiploc tiploc, Map<String, Crs> crsMap) {
+    private void locationFrom(Tiploc tiploc, Map<String, Crs> crsMap) {
         if (tiploc.hasStanox()) {
-            Crs crs = crsMap.get(tiploc.crsCode);
-            if (crs != null) {
-                log.debug("tiploc stanox: {}", tiploc.stanox);
-                Location stanox = newStanoxFrom(tiploc, crs);
-                log.debug("{}", stanox);
-                repo.put(stanox);
-            }
+            Crs crs = crsFrom(tiploc, crsMap);
+            Location location = newLocation(tiploc, crs);
+            log.debug("{}", location);
+            repo.put(location);
         }
     }
 
-    private Location newStanoxFrom(Tiploc tiploc, Crs crs) {
+    private Crs crsFrom(Tiploc tiploc, Map<String, Crs> crsMap) {
+        Crs crs = crsMap.get(tiploc.crsCode);
+        return (crs == null) ? Crs.empty : crs;
+    }
+
+    private Location newLocation(Tiploc tiploc, Crs crs) {
         return new Location(tiploc.stanox, tiploc.description, tiploc.tiploc, tiploc.crsCode,
                 new LatLon(crs.lat, crs.lon));
     }

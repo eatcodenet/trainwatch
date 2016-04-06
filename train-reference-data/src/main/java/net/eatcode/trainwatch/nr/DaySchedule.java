@@ -43,4 +43,13 @@ public class DaySchedule implements Serializable {
         return Objects.equals(key(), ((DaySchedule) obj).key());
     }
 
+    @Override
+    public String toString() {
+        return "DaySchedule [id=" + id + ", origin=" + origin + ", destination=" + destination + ", departure="
+                + departure + ", arrival=" + arrival + ", trainServiceCode=" + trainServiceCode + ", headCode="
+                + headCode + ", runDay=" + runDay + ", atocCode=" + atocCode + ", estimate=" + estimate + "]";
+    }
+
+
+
 }
