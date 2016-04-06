@@ -3,7 +3,6 @@ package net.eatcode.trainwatch.nr.dataimport;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -30,22 +29,17 @@ public class ScheduleFileParser {
         log.debug("sourceFile: {}", this.sourceFile);
         CompletableFuture<Void> result = new CompletableFuture<>();
         CompletableFuture.runAsync(() -> {
-            try (Stream<String> lines = Files.lines(Paths.get(sourceFile))) {
-                lines.parallel()
-                    .filter(onlyLinesWithLocation()).map(this::toScheduleGson)
-                        //.filter(s -> s.JsonScheduleV1.schedule_segment.CIF_train_service_code != null)
-                        .forEach(s -> scheduleProcessor.process(s));
+            try (Stream<String> lines = Files.lines(Paths.get(sourceFile)).parallel()) {
+                lines.map(this::toScheduleGson)
+                    .forEach(s -> scheduleProcessor.process(s));
                 result.complete(null);
             } catch (Exception e) {
                 log.error("schedule file parse error", e);
-                if (stopOnError) result.completeExceptionally(e);
+                if (stopOnError)
+                    result.completeExceptionally(e);
             }
         });
         return result;
-    }
-
-    private Predicate<String> onlyLinesWithLocation() {
-        return (line) -> line.contains("schedule_location");
     }
 
     private TrustSchedule toScheduleGson(String json) {
