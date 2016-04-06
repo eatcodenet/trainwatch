@@ -7,15 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import net.eatcode.trainwatch.nr.TrustSchedule.JsonScheduleV1;
 import net.eatcode.trainwatch.nr.TrustSchedule.JsonScheduleV1.Schedule_segment.Schedule_location;
 
 public class TransformTrustSchedule {
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final LocationRepo repo;
     private final DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HHmm");
@@ -29,9 +24,7 @@ public class TransformTrustSchedule {
         List<DayOfWeek> days = RunDays.from(s.schedule_days_runs);
         List<Schedule_location> locs = Arrays.asList(s.schedule_segment.schedule_location);
         Schedule_location origin = getLocationByType(locs, "LO");
-        log.debug("ORIGIN: {}", origin.tiploc_code);
         Schedule_location dest = getLocationByType(locs, "LT");
-        log.debug("DESR: {}", dest.tiploc_code);
         String headcode = s.schedule_segment.signalling_id;
         String trainServiceCode = s.schedule_segment.CIF_train_service_code;
         String atoc = s.atoc_code;
@@ -56,9 +49,7 @@ public class TransformTrustSchedule {
     }
 
     private Location getLocation(Schedule_location loc) {
-        Location lookip = repo.getByTiploc(loc.tiploc_code);
-        log.debug("LOOKUP: {}",lookip);
-        return lookip;
+        return repo.getByTiploc(loc.tiploc_code);
     }
 
     private Schedule_location getLocationByType(List<Schedule_location> locs, String type) {

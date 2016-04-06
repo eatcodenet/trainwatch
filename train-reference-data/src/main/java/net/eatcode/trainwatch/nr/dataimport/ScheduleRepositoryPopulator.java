@@ -32,7 +32,6 @@ public class ScheduleRepositoryPopulator {
 
     private void generateDailySchedulesFromTrustSchedule(TrustSchedule ts) {
         List<DaySchedule> daySchedules = new TransformTrustSchedule(locationRepo).toDaySchedules(ts);
-        // log.debug("{}", ts.JsonScheduleV1.CIF_train_uid);
         daySchedules.forEach(schedule -> {
             scheduleRepo.put(schedule);
         });

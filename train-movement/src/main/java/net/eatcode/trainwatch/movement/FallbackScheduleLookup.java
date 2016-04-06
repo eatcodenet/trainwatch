@@ -21,7 +21,7 @@ public class FallbackScheduleLookup implements ScheduleLookup {
 
     @Override
     public DaySchedule lookup(TrainMovementCombinedMessage message) {
-        Optional<String> scheduleId = activationRepo.getScheduleId(headcode(message));
+        Optional<String> scheduleId = activationRepo.getScheduleId(message.body.train_id);
         log.debug("SCHEDID: {}", scheduleId);
         if (scheduleId.isPresent()) {
             return scheduleRepo.get(scheduleId.get());
@@ -31,7 +31,7 @@ public class FallbackScheduleLookup implements ScheduleLookup {
 
     private DaySchedule fallbackSchedule(TrainMovementCombinedMessage m) {
         String key = m.body.train_service_code + headcode(m) + runDay();
-        log.debug("FALLBACK KEY: {}", key);
+        log.debug("FALLBACK KEY: {} {}", m.body.train_id, key);
         return scheduleRepo.getByDaykey(key);
     }
 
