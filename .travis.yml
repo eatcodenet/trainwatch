@@ -6,8 +6,8 @@ cache:
     - $HOME/.gradle
 script: 
   - pwd
-  - ls -l train-reference-data/
-  - ls -l 
+  - ls -l build
+  - ls -l train-reference-data/build
 addons:
   artifacts:
     s3_region: "eu-west-1"
