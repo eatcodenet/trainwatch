@@ -12,5 +12,5 @@ addons:
   artifacts:
     s3_region: "eu-west-1"
     paths:
-      $HOME/train-reference-data/build/libs/*
+      train-reference-data/build/libs/*
 
