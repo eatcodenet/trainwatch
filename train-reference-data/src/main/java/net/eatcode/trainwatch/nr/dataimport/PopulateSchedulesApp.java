@@ -30,7 +30,7 @@ public class PopulateSchedulesApp {
     }
 
     private static void checkUsage(String[] args) {
-        if (args.length != 2) {
+        if (args.length != 1) {
             System.out.println("USAGE: PopulateSchedulesApp <full-schedule-file>");
             System.exit(1);
         }
