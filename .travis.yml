@@ -4,7 +4,7 @@ os: linux
 cache:
   directories:
     - $HOME/.gradle
-script: ./gradlew clean build
+script: ls -l train-reference-data/
 addons:
   artifacts:
     s3_region: "eu-west-1"
