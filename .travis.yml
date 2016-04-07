@@ -2,11 +2,9 @@ language: java
 jdk: oraclejdk8
 cache:
   directories:
-    - $HOME/.ivy2/cache
+    - $HOME/.gradle
 script:
   - ./gradlew clean build
-  - find $HOME/.sbt -name "*.lock" | xargs rm
-  - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
 addons:
   artifacts:
     s3_region: "eu-west-1"
