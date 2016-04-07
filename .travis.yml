@@ -4,8 +4,7 @@ cache:
   directories:
     - $HOME/.ivy2/cache
 script:
-  - gradle test
-  # Tricks to avoid unnecessary cache updates
+  - ./gradlew clean build
   - find $HOME/.sbt -name "*.lock" | xargs rm
   - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
 addons:
