@@ -2,15 +2,25 @@ FROM eatcode/hazelcast
 
 MAINTAINER Ayub Malik <ayub.malik@gmail.com>
 
-RUN mkdir -p /var/trainwatch
+ENV app_home /var/trainwatch
 
-WORKDIR /var/trainwatch
+ENV data_dir $app_home/data
 
-LABEL name="hazelcast" version="$HZ_VERSION"
+ARG nr_username
 
-RUN wget -q -O - "http://download.hazelcast.com/download.jsp?version=hazelcast-$HZ_VERSION&type=tar&p=177120386177120386" | tar -xzf - -C /opt \
-    && ln -s /opt/hazelcast-$HZ_VERSION /opt/hazelcast
+ARG nr_password
 
+RUN mkdir -p $app_home/data
 
-CMD ls -alrt /var/trainwatch
+WORKDIR $app_home
+
+ADD tools/download_full_schedule.sh $app_home
+
+ADD tools/clean_full_schedule.sh $app_home
+
+LABEL name=buildnumber value=1
+
+RUN $app_home/download_full_schedule.sh $nr_username $nr_password $data_dir
+
+CMD ls -alrt $app_home
 
