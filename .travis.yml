@@ -1,10 +1,10 @@
 language: java
 jdk: oraclejdk8
+os: linux
 cache:
   directories:
     - $HOME/.gradle
-script:
-  - ./gradlew clean build
+script: ./gradlew clean build
 addons:
   artifacts:
     s3_region: "eu-west-1"
