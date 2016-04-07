@@ -4,7 +4,10 @@ os: linux
 cache:
   directories:
     - $HOME/.gradle
-script: ls -l train-reference-data/
+script: 
+  - pwd
+  - ls -l train-reference-data/
+  - ls -l 
 addons:
   artifacts:
     s3_region: "eu-west-1"
