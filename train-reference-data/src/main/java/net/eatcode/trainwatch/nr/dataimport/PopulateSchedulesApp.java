@@ -9,11 +9,12 @@ import org.slf4j.LoggerFactory;
 import net.eatcode.trainwatch.nr.hazelcast.HazelcastDayScheduleRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HazelcastLocationRepo;
 
-public class PopulateSchedules {
+public class PopulateSchedulesApp {
 
-    private static final Logger log = LoggerFactory.getLogger(PopulateSchedules.class);
+    private static final Logger log = LoggerFactory.getLogger(PopulateSchedulesApp.class);
 
     public static void main(String[] args) throws Exception {
+        checkUsage(args);
         String fileName = args[0];
         assertFileExists(fileName);
 
@@ -26,6 +27,13 @@ public class PopulateSchedules {
                     scheduleRepo.shutdown();
                     locationRepo.shutdown();
                 }).get();
+    }
+
+    private static void checkUsage(String[] args) {
+        if (args.length != 2) {
+            System.out.println("USAGE: PopulateSchedulesApp <full-schedule-file>");
+            System.exit(1);
+        }
     }
 
     private static void assertFileExists(String fileName) {

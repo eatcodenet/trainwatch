@@ -10,5 +10,4 @@ out
 *.iml
 datafeeds/
 kafkaz.jar
-
-/train-analysis/
+*.swp
