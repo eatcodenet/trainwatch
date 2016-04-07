@@ -8,3 +8,9 @@ script:
   # Tricks to avoid unnecessary cache updates
   - find $HOME/.sbt -name "*.lock" | xargs rm
   - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
+addons:
+  artifacts:
+    s3_region: "eu-west-1"
+  paths:
+    $HOME/train-reference-data/build/libs/*
+
