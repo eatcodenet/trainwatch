@@ -71,19 +71,19 @@ hooks:
 #   in the script specified in "location" starting from the root of the
 #   revision's file bundle.
   ApplicationStop:
-    - location: aws-codedeploy/deploy.sh "application-stop"
+    - location: aws/install-app-ec2.sh "application-stop"
       timeout: 30
 # During the BeforeInstall deployment lifecycle event, run the commands
 #   in the script specified in "location".
   BeforeInstall:
-    - location: aws-codedeploy/deploy.sh "before-install"
+    - location: aws/install-app-ec2.sh "before-install"
       timeout: 30
   ApplicationStart:
-    - location: aws-codedeploy/deploy.sh "application-start"
+    - location: aws/install-app-ec2.sh "application-start"
       timeout: 30
 # During the ValidateService deployment lifecycle event, run the commands
 #   in the script specified in "location".
   ValidateService:
-    - location: aws-codedeploy/deploy.sh "validate-service"
+    - location: aws/install-app-ec2.sh "validate-service"
       timeout: 30
 
