@@ -17,6 +17,12 @@ permissions:
       mode: 555
       type:
         - directory
+    - object: /var/trainwatch
+      pattern: "**"
+      owner: ec2-user
+      group: ec2-user
+      mode: 555
+
 hooks:
   BeforeInstall:
     - location: aws/ec2-before-install.sh

@@ -10,7 +10,7 @@ case "${command}" in
     ;;
 
   before-install)
-    echo "before...
+    echo "before..."
     mkdir -p ${data_dir}
     chown ec2-user ${data_dir}
     ;;
