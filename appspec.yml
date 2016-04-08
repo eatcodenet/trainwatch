@@ -86,4 +86,3 @@ hooks:
   ValidateService:
     - location: aws/install-app-ec2.sh "validate-service"
       timeout: 30
-
