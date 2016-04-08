@@ -13,3 +13,9 @@ permissions:
       mode: 555
       type:
         - directory
+hooks:
+  BeforeInstall:
+    - location: aws/ec2-before-install.sh
+   ApplicationStop:
+    - location: aws/ec2-application-stop.sh
+      timeout: 60
