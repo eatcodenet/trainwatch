@@ -18,3 +18,4 @@ hooks:
     - location: aws/ec2-before-install.sh
   ApplicationStop:
     - location: aws/ec2-application-stop.sh
+    
