@@ -73,16 +73,3 @@ hooks:
   ApplicationStop:
     - location: aws/install-app-ec2.sh "application-stop"
       timeout: 30
-# During the BeforeInstall deployment lifecycle event, run the commands
-#   in the script specified in "location".
-  BeforeInstall:
-    - location: aws/install-app-ec2.sh "before-install"
-      timeout: 30
-  ApplicationStart:
-    - location: aws/install-app-ec2.sh "application-start"
-      timeout: 30
-# During the ValidateService deployment lifecycle event, run the commands
-#   in the script specified in "location".
-  ValidateService:
-    - location: aws/install-app-ec2.sh "validate-service"
-      timeout: 30
