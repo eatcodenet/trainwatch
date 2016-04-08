@@ -7,5 +7,5 @@ aws --profile eatcode deploy create-deployment \
   --s3-location bucket=eatcode-trainwatch-deploy,key=${bundle_name},bundleType=zip" \
   --deployment-group-name trainwatch-deploy \
   --deployment-config-name codeDeployDefault.OneAtATime \
-  --description "Deployment at ${date_now}
+  --description "Deployment at ${date_now}"
 
