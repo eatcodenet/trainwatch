@@ -16,6 +16,5 @@ permissions:
 hooks:
   BeforeInstall:
     - location: aws/ec2-before-install.sh
-   ApplicationStop:
+  ApplicationStop:
     - location: aws/ec2-application-stop.sh
-      timeout: 60
