@@ -11,13 +11,14 @@ if [ "${uname}" == "Darwin" ];then
   jar_file=${base_dir}/../build/libs/train-reference-data-1.0-SNAPSHOT.jar
 fi
 echo "jar_file is ${jar_file}"
+
 echo "Populating locations"
 java -cp ${jar_file} net.eatcode.trainwatch.nr.dataimport.PopulateLocationsApp \
   ${crs_file} ${tiploc_file}
 
 if [ $? -ne 0 ];then
   echo "Populating locations failed!"
-  #exit 1
+  exit 1
 fi
 
 echo "Populating schedules"
