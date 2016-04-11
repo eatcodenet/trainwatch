@@ -1,11 +1,11 @@
 #!/bin/bash
 base_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-full_url="https://datafeeds.networkrail.co.uk/ntrod/CifFileAuthenticate?type=CIF_ALL_FULL_DAILY&day=toc-full"
+file_name=stations.json
+full_url="https://github.com/fasteroute/national-rail-stations/blob/master/stations.json"
 username=${1}
 password=${2}
-download_dir=${3:-/var/trainwatch/data}
-output_file=toc-full.gz
+download_dir=${3:-/tmp}
 
 # you will need to supply credentials for datafeeds
 if [[ -z "${username}" || -z "${password}" ]]; then
@@ -14,7 +14,7 @@ if [[ -z "${username}" || -z "${password}" ]]; then
   exit 1
 fi
 
-full_path="${download_dir}/${output_file}"
+full_path="${download_dir}/${file_name}"
 echo "Downloading from: ${full_url}"
 echo "Downloading to: ${full_path}"
 
@@ -22,12 +22,11 @@ status=$(curl -# -w "%{http_code}" -L -o ${full_path} -u ${username}:${password}
 if [[ "${status}" == "200" ]]; then
   echo "Unzipping"
   cd ${download_dir}
-  gzip -fd ${full_path}
-  echo "Download complete"
+  gzip -fd ${file_name}.gz
+  echo "Done."
 else
   echo "Download failed. Status was ${status}."
-  exit 1
 fi
 
-echo "Removing non schedule data"
-${base_dir}/clean_full_schedule.sh ${full_path%%.gz}
+# sed hack to count CRS codes
+# sed -E 's/3ALPHA\":\"/\'$'\n\2/g' ${fullpath}  | cut -d',' -f1 | sed -E 's/"|^B "//g' | sed '/^$/d' | wc -l

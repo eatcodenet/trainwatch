@@ -1,9 +1,8 @@
 #!/bin/bash
-
 base_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 file_name=corpus_tiplocs
-sched_full_url="http://datafeeds.networkrail.co.uk/ntrod/SupportingFileAuthenticate?type=CORPUS"
+full_url="http://datafeeds.networkrail.co.uk/ntrod/SupportingFileAuthenticate?type=CORPUS"
 username=${1}
 password=${2}
 download_dir=${3:-/tmp}
@@ -16,10 +15,10 @@ if [[ -z "${username}" || -z "${password}" ]]; then
 fi
 
 full_path="${download_dir}/${file_name}.gz"
-echo "Downloading from: ${sched_full_url}"
+echo "Downloading from: ${full_url}"
 echo "Downloading to: ${full_path}"
 
-status=$(curl -# -w "%{http_code}" -L -o ${full_path} -u ${username}:${password} ${sched_full_url})
+status=$(curl -# -w "%{http_code}" -L -o ${full_path} -u ${username}:${password} ${full_url})
 if [[ "${status}" == "200" ]]; then
   echo "Unzipping"
   cd ${download_dir}
