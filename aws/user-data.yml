@@ -9,11 +9,22 @@ yum_repos:
 repo_update: true
 repo_upgrade: none
 packages:
+  - unzip
   - python
   - ruby
   - curl
+  - wget
   - docker-engine
   - java-1.8.0-openjdk-devel
 runcmd:
   - systemctl start docker
   - [ sh, -c, "usermod -a -G docker centos" ]
+  - '/usr/bin/curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "/tmp/awscli-bundle.zip"'
+  - '/usr/bin/unzip -d /tmp /tmp/awscli-bundle.zip'
+  - '/tmp/awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws'
+  - '/usr/local/bin/aws configure set default.region eu-west-1'
+  - '/usr/local/bin/aws configure set region eu-west-1'
+  - '/usr/local/bin/aws set output text'
+  - '/usr/bin/wget -O /tmp/install https://aws-codedeploy-eu-west-1.s3.amazonaws.com/latest/install'
+  - '/usr/bin/chmod +x /tmp/install'
+  - '/tmp/install auto'
