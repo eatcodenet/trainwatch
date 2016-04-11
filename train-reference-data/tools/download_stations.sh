@@ -5,7 +5,8 @@ full_url="https://github.com/fasteroute/national-rail-stations/blob/master/stati
 username=${1}
 password=${2}
 download_dir=${3:-/var/trainwatch/data}
-output_file=statios.gson
+output_file=stations.json
+is_zipped=false
 
 # you will need to supply credentials for datafeeds
 if [[ -z "${username}" || -z "${password}" ]]; then
@@ -19,15 +20,14 @@ echo "Downloading from: ${full_url}"
 echo "Downloading to: ${full_path}"
 
 status=$(curl -# -w "%{http_code}" -L -o ${full_path} -u ${username}:${password} ${full_url})
-if [[ "${status}" == "200" ]]; then
-  echo "Unzipping"
-  cd ${download_dir}
-  gzip -fd ${full_path}
-  echo "Download complete"
-else
+if [ "${status}" != "200" ]; then
   echo "Download failed. Status was ${status}."
   exit 1
 fi
 
-echo "Removing non schedule data"
-${base_dir}/clean_full_schedule.sh ${full_path%%.gz}
+if [ "${is_zipped}" == "true" ];then
+  echo "Unzipping"
+  cd ${download_dir}
+  gzip -fd ${full_path}
+fi
+echo "Download complete"

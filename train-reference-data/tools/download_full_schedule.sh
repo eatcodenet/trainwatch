@@ -6,7 +6,7 @@ username=${1}
 password=${2}
 download_dir=${3:-/var/trainwatch/data}
 output_file=toc-full.gz
-is_zipped=0
+is_zipped=true
 
 # you will need to supply credentials for datafeeds
 if [[ -z "${username}" || -z "${password}" ]]; then
@@ -25,12 +25,12 @@ if [ "${status}" != "200" ]; then
   exit 1
 fi
 
-if [ ${is_zipped} ];then
+if [ "${is_zipped}" == "true" ];then
   echo "Unzipping"
   cd ${download_dir}
   gzip -fd ${full_path}
-  echo "Download complete"
 fi
+echo "Download complete"
 
 echo "Removing non schedule data"
 ${base_dir}/clean_full_schedule.sh ${full_path%%.gz}

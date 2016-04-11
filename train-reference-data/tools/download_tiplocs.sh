@@ -1,11 +1,12 @@
 #!/bin/bash
 base_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-file_name=corpus_tiplocs
 full_url="http://datafeeds.networkrail.co.uk/ntrod/SupportingFileAuthenticate?type=CORPUS"
 username=${1}
 password=${2}
-download_dir=${3:-/tmp}
+download_dir=${3:-/var/trainwatch/data}
+output_file=tiplocs.gz
+is_zipped=true
 
 # you will need to supply credentials for datafeeds
 if [[ -z "${username}" || -z "${password}" ]]; then
@@ -14,19 +15,22 @@ if [[ -z "${username}" || -z "${password}" ]]; then
   exit 1
 fi
 
-full_path="${download_dir}/${file_name}.gz"
+full_path="${download_dir}/${output_file}"
 echo "Downloading from: ${full_url}"
 echo "Downloading to: ${full_path}"
 
 status=$(curl -# -w "%{http_code}" -L -o ${full_path} -u ${username}:${password} ${full_url})
-if [[ "${status}" == "200" ]]; then
+if [ "${status}" != "200" ]; then
+  echo "Download failed. Status was ${status}."
+  exit 1
+fi
+
+if [ "${is_zipped}" == "true" ];then
   echo "Unzipping"
   cd ${download_dir}
-  gzip -fd ${file_name}.gz
-  echo "Done."
-else
-  echo "Download failed. Status was ${status}."
+  gzip -fd ${full_path}
 fi
+echo "Download complete"
 
 # sed hack to count CRS codes
 # sed -E 's/3ALPHA\":\"/\'$'\n\2/g' ${fullpath}  | cut -d',' -f1 | sed -E 's/"|^B "//g' | sed '/^$/d' | wc -l
