@@ -1,7 +1,7 @@
 #!/bin/bash
 command=${1}
-if [[ -z "${command}" ]];then 
-  echo "usage: ${0} <start|stop>"
+if [[ -z "${command}" ]];then
+  echo "usage: ${0} <start | stop>"
   exit 1
 fi
 
