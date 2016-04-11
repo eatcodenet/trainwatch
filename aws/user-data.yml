@@ -1,0 +1,19 @@
+#cloud-config
+yum_repos:
+  dockerrepo:
+    name: Docker Repository
+    baseurl: https://yum.dockerproject.org/repo/main/centos/$releasever/
+    enabled: true
+    gpgcheck: true
+    gpgkey: https://yum.dockerproject.org/gpg
+repo_update: true
+repo_upgrade: none
+packages:
+  - python
+  - ruby
+  - curl
+  - docker-engine
+  - java-1.8.0-openjdk-devel
+runcmd:
+  - systemctl start docker
+  - [ sh, -c, "usermod -a -G docker centos" ]
