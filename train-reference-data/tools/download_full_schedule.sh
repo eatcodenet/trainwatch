@@ -6,6 +6,7 @@ username=${1}
 password=${2}
 download_dir=${3:-/var/trainwatch/data}
 output_file=toc-full.gz
+is_zipped=0
 
 # you will need to supply credentials for datafeeds
 if [[ -z "${username}" || -z "${password}" ]]; then
@@ -19,14 +20,16 @@ echo "Downloading from: ${full_url}"
 echo "Downloading to: ${full_path}"
 
 status=$(curl -# -w "%{http_code}" -L -o ${full_path} -u ${username}:${password} ${full_url})
-if [[ "${status}" == "200" ]]; then
+if [ "${status}" != "200" ]; then
+  echo "Download failed. Status was ${status}."
+  exit 1
+fi
+
+if [ ${is_zipped} ];then
   echo "Unzipping"
   cd ${download_dir}
   gzip -fd ${full_path}
   echo "Download complete"
-else
-  echo "Download failed. Status was ${status}."
-  exit 1
 fi
 
 echo "Removing non schedule data"
