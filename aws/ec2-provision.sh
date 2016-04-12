@@ -1,7 +1,7 @@
 #!/bin/bash
 yum -y update
 yum -y erase java-1.7.0*
-yum install -y java-1.8.0-openjdk-devel
+yum install -y java-1.8.0-openjdk-devel curl wget
 
 yum -y erase docker docker-engine
 tee /etc/yum.repos.d/docker.repo <<-EOF
@@ -15,4 +15,4 @@ EOF
 
 yum install -y docker-engine
 service docker start
-usermod -aG docker ec2-user
+usermod -aG docker centos
