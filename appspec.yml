@@ -24,6 +24,6 @@ permissions:
       mode: 555
 hooks:
   BeforeInstall:
-    - location: aws/ec2-before-install.sh
+    - location: aws/hook-before-install.sh
   ApplicationStop:
-    - location: aws/ec2-application-stop.sh
+    - location: aws/hook-application-stop.sh
