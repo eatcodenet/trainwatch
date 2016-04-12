@@ -7,19 +7,18 @@ yum_repos:
     gpgcheck: true
     gpgkey: https://yum.dockerproject.org/gpg
 repo_update: true
-repo_upgrade: security
+repo_upgrade: none
 packages:
-  - unzip
-  - curl
-  - wget
   - python
   - ruby
   - java-1.8.0-openjdk-devel
   - docker-engine
 runcmd:
-  - systemctl start docker
-  - [ sh, -c, "usermod -a -G docker centos" ]
   - '/usr/bin/ln -f -s /usr/share/zoneinfo/GB /etc/localtime'
-  - '/usr/bin/wget -O /tmp/install https://aws-codedeploy-eu-west-1.s3.amazonaws.com/latest/install'
+  - '/usr/bin/systemctl start docker'
+  - '/usr/sbin/usermod -aG docker centos'
+  - '/bin/curl -L -k https://github.com/docker/compose/releases/download/1.6.2/docker-compose-Linux-x86_64 > /usr/local/bin/docker-compose'
+  - '/usr/bin/chmod +x /usr/local/bin/docker-compose'
+  - '/usr/bin/curl -L -k https://aws-codedeploy-eu-west-1.s3.amazonaws.com/latest/install > /tmp/install'
   - '/usr/bin/chmod +x /tmp/install'
   - '/tmp/install auto'

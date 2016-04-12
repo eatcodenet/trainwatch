@@ -7,10 +7,13 @@ if [[ -z "${command}" ]];then
   exit 1
 fi
 
+shopt -s expand_aliases
+alias ec2='aws --profile eatcode ec2'
+
 if [ "${command}" == "run" ];then
   echo "${command} instances..."
   user_data_file="${base_dir}/user-data.yml"
-  aws_result=$(aws --profile eatcode ec2 run-instances \
+  aws_result=$(ec2 run-instances \
     --image-id ami-7abd0209 \
     --security-group-ids sg-978b63f0 \
     --subnet-id subnet-4c925e28 \
@@ -24,14 +27,12 @@ if [ "${command}" == "run" ];then
   if [ "$?" == "0" ]; then
     instance_ids=$(grep INSTANCES <<< "${aws_result}" | cut -f8 | tr '\n' ' ')
     echo "Tagging instances ${instance_ids}"
-    aws --profile eatcode ec2 create-tags --resources ${instance_ids} --tags Key=Name,Value="eatcode-trainwatch"
-  else
-    echo "Error $?"
-    exit 0
+    ec2 create-tags --resources ${instance_ids} --tags Key=Name,Value="eatcode-trainwatch"
+    ec2 describe-instances --instance-ids ${instance_ids} --query "Reservations[*].Instances[*].PublicIpAddress"
   fi
-  exit 0
+  exit $?
 fi
 
-instance_ids=$(aws --profile eatcode ec2 describe-instances --filters "Name=tag-value,Values=eatcode-trainwatch" | grep InstanceId | cut -d':' -f2 | sed -e 's/[", ]//g')
+instance_ids=$(ec2 describe-instances --filters "Name=tag-value,Values=eatcode-trainwatch" | grep InstanceId | cut -d':' -f2 | sed -e 's/[", ]//g')
 echo "${command} instances: ${instance_ids}"
-aws --profile eatcode ec2 ${command}-instances --instance-ids ${instance_ids}
+ec2 ${command}-instances --instance-ids ${instance_ids}
