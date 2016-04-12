@@ -19,6 +19,7 @@ packages:
 runcmd:
   - systemctl start docker
   - [ sh, -c, "usermod -a -G docker centos" ]
+  - '/usr/bin/ln -f -s /usr/share/zoneinfo/GB /etc/localtime'
   - '/usr/bin/wget -O /tmp/install https://aws-codedeploy-eu-west-1.s3.amazonaws.com/latest/install'
   - '/usr/bin/chmod +x /tmp/install'
   - '/tmp/install auto'
