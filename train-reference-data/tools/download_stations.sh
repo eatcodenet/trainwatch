@@ -1,7 +1,7 @@
 #!/bin/bash
 base_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-full_url="https://github.com/fasteroute/national-rail-stations/blob/master/stations.json"
+full_url="https://raw.githubusercontent.com/fasteroute/national-rail-stations/master/stations.json"
 username=${1}
 password=${2}
 download_dir=${3:-/var/trainwatch/data}
@@ -19,7 +19,7 @@ full_path="${download_dir}/${output_file}"
 echo "Downloading from: ${full_url}"
 echo "Downloading to: ${full_path}"
 
-status=$(curl -# -w "%{http_code}" -L -o ${full_path} -u ${username}:${password} ${full_url})
+status=$(curl -# -w "%{http_code}" -L -o ${full_path} ${full_url})
 if [ "${status}" != "200" ]; then
   echo "Download failed. Status was ${status}."
   exit 1

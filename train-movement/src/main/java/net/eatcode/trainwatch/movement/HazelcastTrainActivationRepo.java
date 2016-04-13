@@ -8,11 +8,11 @@ import org.slf4j.LoggerFactory;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 
-import net.eatcode.trainwatch.nr.hazelcast.ClientBuilder;
+import net.eatcode.trainwatch.nr.hazelcast.HazelcastClientBuilder;
 
 public class HazelcastTrainActivationRepo implements TrainActivationRepo {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final HazelcastInstance client = new ClientBuilder().build();
+    private final HazelcastInstance client = new HazelcastClientBuilder().buildInstance();
 
     private final IMap<String, String> map = client.getMap("trainActivation");
 

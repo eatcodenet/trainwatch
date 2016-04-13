@@ -8,7 +8,7 @@ import net.eatcode.trainwatch.nr.LocationRepo;
 
 public class HazelcastLocationRepo implements LocationRepo {
 
-    private final HazelcastInstance client = new ClientBuilder().build();
+    private final HazelcastInstance client = new HazelcastClientBuilder().buildInstance();
 
     private final IMap<String, Location> byStanoxMap = client.getMap("locationByStanox");
     private final IMap<String, Location> byTiplocMap = client.getMap("locationByTiploc");

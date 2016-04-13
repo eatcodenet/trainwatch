@@ -12,7 +12,7 @@ import java.util.List;
 public class HazelcastQuerySpike {
 
     public static void main(String[] args) throws InterruptedException {
-        HazelcastInstance client = new ClientBuilder().build();
+        HazelcastInstance client = new HazelcastClientBuilder().buildInstance();
         IMap<String, TrustSchedule> map1 = client.getMap("schedule");
         List<TrustSchedule> schedules = (List<TrustSchedule>) map1.values(new SqlPredicate("headcode = 0B00"));
         System.out.println("s map size: " + map1.size());

@@ -1,11 +1,12 @@
 package net.eatcode.trainwatch.nr.dataimport;
 
-import net.eatcode.trainwatch.nr.hazelcast.HazelcastLocationRepo;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import net.eatcode.trainwatch.nr.hazelcast.HazelcastLocationRepo;
 
 public class PopulateLocationsApp {
 
@@ -20,7 +21,7 @@ public class PopulateLocationsApp {
 
         HazelcastLocationRepo repo = new HazelcastLocationRepo();
 
-        new LocationPopulator(repo).populateFromFiles(tiplocFile, crsFile).whenCompleteAsync((value, err) -> {
+        new LocationPopulator(repo).populateFromFiles(crsFile, tiplocFile).whenCompleteAsync((value, err) -> {
             if (err == null) {
                 log.info("Done populating!");
             }

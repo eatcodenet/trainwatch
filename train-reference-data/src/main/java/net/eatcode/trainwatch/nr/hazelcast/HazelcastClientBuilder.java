@@ -13,11 +13,11 @@ import com.hazelcast.nio.serialization.Serializer;
 import net.eatcode.trainwatch.nr.DaySchedule;
 import net.eatcode.trainwatch.nr.Location;
 
-public class ClientBuilder {
+public class HazelcastClientBuilder {
 
     private final ClientConfig config = new ClientConfig();
 
-    public HazelcastInstance build() {
+    public HazelcastInstance buildInstance() {
         configureSerialization();
         configureNetwork();
         return HazelcastClient.newHazelcastClient(config);

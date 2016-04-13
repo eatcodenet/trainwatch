@@ -8,7 +8,7 @@ import net.eatcode.trainwatch.nr.DayScheduleRepo;
 
 public class HazelcastDayScheduleRepo implements DayScheduleRepo {
 
-    private final HazelcastInstance client = new ClientBuilder().build();
+    private final HazelcastInstance client = new HazelcastClientBuilder().buildInstance();
     private final IMap<String, DaySchedule> idMap = client.getMap("idDaySchedule");
     private final IMap<String, DaySchedule> keyMap = client.getMap("keyDaySchedule");
 

@@ -5,7 +5,7 @@ full_url="http://datafeeds.networkrail.co.uk/ntrod/SupportingFileAuthenticate?ty
 username=${1}
 password=${2}
 download_dir=${3:-/var/trainwatch/data}
-output_file=tiplocs.gz
+output_file=tiplocs.json.gz
 is_zipped=true
 
 # you will need to supply credentials for datafeeds
