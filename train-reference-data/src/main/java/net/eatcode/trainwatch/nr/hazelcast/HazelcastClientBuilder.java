@@ -37,7 +37,7 @@ public class HazelcastClientBuilder {
 
     private void configureNetwork() {
         config.setNetworkConfig(new ClientNetworkConfig()
-                .addAddress("localhost", "dev.docker-machine", "192.168.99.100", "tw-hazelcast")
+                .addAddress("localhost", "dev.docker-machine", "192.168.99.100", "hazelcast")
                 .setConnectionAttemptLimit(1));
     }
 }
