@@ -23,7 +23,9 @@ public class PopulateSchedulesApp {
         new ScheduleRepositoryPopulator(scheduleRepo, locationRepo).populateFromFile(fileName)
                 .whenCompleteAsync((v, error) -> {
                     if (error == null)
-                        log.info("Done populating!");
+                        log.info("Done populating schedules!");
+                    else
+                        log.error("{}", error);
                     scheduleRepo.shutdown();
                     locationRepo.shutdown();
                 }).get();

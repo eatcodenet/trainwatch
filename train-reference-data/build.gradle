@@ -3,19 +3,6 @@ dependencies {
     compile 'com.esotericsoftware:kryo:3.0.3'
 }
 
-
-task(copyrefdata, type: Copy) {
-    from(file('/var/trainwatch/data'))
-    into(buildDir)
-}
-
-task dockerbuild(dependsOn: ["build", "copyrefdata"]) << {  
-    exec {
-      executable "/usr/local/bin/docker"
-      args "build","--no-cache", "-t", "eatcode/tw-populate-data", "."
-    }
-}
-
 jar {
     from {
         (configurations.runtime).collect {
@@ -26,5 +13,20 @@ jar {
         attributes("Main-Class": "Main" )
     }
 }
+
+task(copyrefdata, type: Copy) {
+    from(file('/var/trainwatch/data'))
+    into(buildDir)
+}
+
+task dockerbuild(dependsOn: ["build", "copyrefdata"]) << { 
+    println "*** building docker tw-populate-ref-data ***" 
+    exec {
+      executable "/usr/local/bin/docker"
+      args "build","--no-cache", "-q", "-t", "eatcode/tw-populate-ref-data", "."
+    }
+}
+
+
 
 

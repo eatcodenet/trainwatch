@@ -15,11 +15,14 @@ public class VerifyHazelcastDataApp {
 
         System.out.println(locations.size());
         System.out.println(location);
-        client.shutdown();
 
         if (!location.description.equals("SANDY SOUTH")) {
             throw new RuntimeException("could not get location from hazelcast!");
         }
+
+        IMap<Object, Object> schedules = client.getMap("idDaySchedule");
+        System.out.println(schedules.size());
+        client.shutdown();
 
     }
 }
