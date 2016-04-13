@@ -9,13 +9,17 @@ public class VerifyHazelcastDataApp {
 
     public static void main(String[] args) {
         HazelcastInstance client = new HazelcastClientBuilder().buildInstance();
-        IMap<String, Location> locations = client.getMap("locationByStanox");
+        IMap<String, Location> locations = client.getMap("locationByTiploc");
+
+        Location location = locations.get("SNDYPL1");
 
         System.out.println(locations.size());
-//        Location loc1 = locations.get("SNDYPL1");
-//        if (!loc1.description.equals("meh")) {
-//            throw new RuntimeException("could not get location from hazelcast!");
-//        }
+        System.out.println(location);
+        client.shutdown();
+
+        if (!location.description.equals("SANDY SOUTH")) {
+            throw new RuntimeException("could not get location from hazelcast!");
+        }
 
     }
 }
