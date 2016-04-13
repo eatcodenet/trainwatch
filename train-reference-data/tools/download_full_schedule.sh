@@ -5,7 +5,7 @@ full_url="https://datafeeds.networkrail.co.uk/ntrod/CifFileAuthenticate?type=CIF
 username=${1}
 password=${2}
 download_dir=${3:-/var/trainwatch/data}
-output_file=toc-full.gz
+output_file=full-train-schedules.gz
 is_zipped=true
 
 # you will need to supply credentials for datafeeds

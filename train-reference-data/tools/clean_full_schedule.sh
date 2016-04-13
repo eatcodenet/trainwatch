@@ -12,4 +12,7 @@ cleaned_file="${full_schedule_file}.cleaned"
 echo "Current dir is ${PWD}"
 echo "Writing to file ${cleaned_file}"
 grep JsonScheduleV1 < ${full_schedule_file} | grep schedule_location > ${cleaned_file}
+rm -f  ${full_schedule_file}
+echo "Renamed ${cleaned_file} to ${full_schedule_file}"
+mv ${cleaned_file} ${full_schedule_file}
 echo "Done."
