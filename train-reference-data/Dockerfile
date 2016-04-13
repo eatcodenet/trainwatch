@@ -2,7 +2,7 @@ FROM eatcode/openjdk8
 
 MAINTAINER Ayub Malik <ayub.malik@gmail.com>
 
-ADD build/toc-full.cleaned /var/trainwatch/data/
+ADD build/full-train-schedules /var/trainwatch/data/
 
 ADD build/tiplocs.json /var/trainwatch/data/
 

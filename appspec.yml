@@ -3,25 +3,23 @@
 version: 0.0
 os: linux
 files:
-  - source: train-reference-data/build/libs/train-reference-data-1.0-SNAPSHOT.jar
-    destination: /var/trainwatch/libs
   - source: train-reference-data/tools/
     destination: /var/trainwatch/tools/
   - source: docker-compose.yml
     destination: /var/trainwatch/
 permissions:
-    - object: /var
-      pattern: "trainwatch"
-      owner: centos
-      group: centos
-      mode: 555
-      type:
-        - directory
-    - object: /var/trainwatch
-      pattern: "**"
-      owner: centos
-      group: centos
-      mode: 555
+  - object: /var
+    pattern: "trainwatch"
+    owner: centos
+    group: centos
+    mode: 555
+    type:
+      - directory
+  - object: /var/trainwatch
+    pattern: "**"
+    owner: centos
+    group: centos
+    mode: 555
 hooks:
   BeforeInstall:
     - location: aws/hook-before-install.sh
