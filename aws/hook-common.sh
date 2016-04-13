@@ -7,12 +7,11 @@ command=${1:-"oops"}
 case "${command}" in
   application-stop)
     echo "stop.."
+    cd ${app_dir}
     ;;
 
   before-install)
     echo "before..."
-    mkdir -p ${data_dir}
-    chown centos ${data_dir}
     ;;
 
   after-install)
@@ -26,7 +25,7 @@ case "${command}" in
   validate-service)
     echo "validate..."
     ;;
-
+    
   *)
     echo $"Usage: $0 {application-stop|before-install|after-install|application-start|validate-service}"
     exit 1
