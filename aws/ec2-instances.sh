@@ -8,7 +8,7 @@ if [[ -z "${command}" ]];then
 fi
 
 shopt -s expand_aliases
-alias ec2='aws --profile eatcode ec2'
+alias ec2='aws --profile eatcode ec2 --output text'
 
 if [ "${command}" == "run" ];then
   echo "${command} instances..."
@@ -33,6 +33,7 @@ if [ "${command}" == "run" ];then
   exit $?
 fi
 
-instance_ids=$(ec2 describe-instances --filters "Name=tag-value,Values=eatcode-trainwatch" | grep InstanceId | cut -d':' -f2 | sed -e 's/[", ]//g')
+aws_result=$(ec2 describe-instances --filters "Name=tag-value,Values=eatcode-trainwatch")
+instance_ids=$(echo "${aws_result}" | grep INSTANCES | cut -f8)
 echo "${command} instances: ${instance_ids}"
 ec2 ${command}-instances --instance-ids ${instance_ids}
