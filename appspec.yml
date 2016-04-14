@@ -17,7 +17,7 @@ permissions:
     pattern: "**"
     owner: centos
     group: centos
-    mode: 555
+    mode: 755
 hooks:
   AfterInstall:
     - location: aws/hook-after-install.sh
