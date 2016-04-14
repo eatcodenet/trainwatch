@@ -37,7 +37,7 @@ public class HazelcastClientBuilder {
 
     private void configureNetwork() {
         config.setNetworkConfig(new ClientNetworkConfig()
-                .addAddress("localhost", "192.168.99.100", "trainwatch.eatcode.net")
+                .addAddress("192.168.99.100", "hazelcast")
                 .setConnectionAttemptLimit(1));
     }
 }
