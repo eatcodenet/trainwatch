@@ -8,19 +8,19 @@ command=${1:-"oops"}
 case "${command}" in
   application-stop)
     echo "stop.."
-    /usr/local/bin/docker-compose -f ${compose_file} stop
     ;;
 
   before-install)
     echo "before..."
-    /usr/bin/docker pull eatcode/hazelcast
-    /usr/bin/docker pull eatcode/zookeeper
-    /usr/bin/docker pull eatcode/kafka
-    /usr/bin/docker pull eatcode/tw-train-movements
     ;;
 
   after-install)
     echo "after..."
+    /usr/local/bin/docker-compose -f ${compose_file} stop
+    /usr/bin/docker pull eatcode/hazelcast
+    /usr/bin/docker pull eatcode/zookeeper
+    /usr/bin/docker pull eatcode/kafka
+    /usr/bin/docker pull eatcode/tw-train-movement-producer
     ;;
 
   application-start)
