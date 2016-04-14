@@ -3,19 +3,23 @@ base_dir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 src_dir=${base_dir}/..
 
 #${base_dir}/../gradlew clean build
+echo "Removing unused files"
+build_dir=${base_dir}/../train-reference-data/build
+rm -rf ${build_dir}/full-train-schedules
+rm -rf ${build_dir}/tiplocs.json
+rm -rf ${build_dir}/stations.json
+rm -rf ${build_dir}/classes
+rm -rf ${build_dir}/dependency-cache
+rm -rf ${build_dir}/reports
+rm -rf ${build_dir}/resources
+rm -rf ${build_dir}/test-results
+rm -rf ${build_dir}/tmp
 
-rm -rf ${base_dir}/train-reference-data/build/full-train-schedules
-rm -rf ${base_dir}/train-reference-data/build/tiplocs.json
-rm -rf ${base_dir}/train-reference-data/build/stations.json
-rm -rf ${base_dir}/train-reference-data/build/classes
-rm -rf ${base_dir}/train-reference-data/build/dependency-cache
-rm -rf ${base_dir}/train-reference-data/build/tmp
-
+echo "Pushing to S3"
 bundle_name=${1:-"LatestBundle.zip"}
 aws_result=$(aws --profile eatcode deploy push --source ${src_dir} --application-name Trainwatch --ignore-hidden-files --s3-location s3://eatcode-trainwatch-deploy/${bundle_name})
-echo $aws_result
 
 etag=$(echo ${aws_result} | sed 's/.*eTag="\(.*\)".*/\1/g')
-echo "ETAG: ${etag}"
-echo "aws deploy create-deployment --application-name Trainwatch --s3-location bucket=eatcode-trainwatch-deploy,key=LatestBundle.zip,bundleType=zip,eTag=\"${etag}\" --deployment-group app-only"
+echo 
+echo "aws --profile eatcode deploy create-deployment --application-name Trainwatch --s3-location bucket=eatcode-trainwatch-deploy,key=LatestBundle.zip,bundleType=zip,eTag=\"${etag}\" --deployment-group app-only"
 echo

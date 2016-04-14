@@ -2,16 +2,21 @@
 base_dir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 app_dir=/var/trainwatch
 data_dir=${app_dir}/data
+compose_file=${app_dir}/docker-compose.yml
 
 command=${1:-"oops"}
 case "${command}" in
   application-stop)
     echo "stop.."
-    cd ${app_dir}
+    /usr/local/bin/docker-compose -f ${compose_file} stop
     ;;
 
   before-install)
     echo "before..."
+    /usr/bin/docker pull eatcode/hazelcast
+    /usr/bin/docker pull eatcode/zookeeper
+    /usr/bin/docker pull eatcode/kafka
+    /usr/bin/docker pull eatcode/tw-train-movements
     ;;
 
   after-install)
@@ -20,6 +25,7 @@ case "${command}" in
 
   application-start)
     echo "start..."
+	/usr/local/bin/docker-compose -f ${compose_file} up
     ;;
 
   validate-service)

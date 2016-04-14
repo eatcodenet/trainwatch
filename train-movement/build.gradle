@@ -20,10 +20,21 @@ jar {
 }
 
 task dockerbuild(dependsOn: ["build"]) << {
-    println "*** building docker tw-train-movement ***"
+    println "*** building docker tw-train-movement-producer ***"
     exec {
       executable "/usr/local/bin/docker"
-      args "build", "--build-arg", "nrUsername=${username}", "--build-arg", "nrPassword=${password}", "--no-cache", "-q", "-t", "eatcode/tw-train-movement", "."
+      args "build", "--build-arg", "nrUsername=${username}", "--build-arg", "nrPassword=${password}", "--no-cache", "-q", "-t", "eatcode/tw-train-movement-producer", "."
+    }
+    exec {
+      executable "/usr/local/bin/docker"
+      args "build", "--build-arg", "nrUsername=${username}", "--build-arg", "nrPassword=${password}", "--no-cache", "-q", "-t", "eatcode/tw-train-movement-producer", "."
     }
 }
 
+task dockerpush(dependsOn: []) << {
+    println "*** pushing docker tw-train-movement-producer ***"
+    exec {
+      executable "/usr/local/bin/docker"
+      args "push", "eatcode/tw-train-movement-producer"
+    }
+}
