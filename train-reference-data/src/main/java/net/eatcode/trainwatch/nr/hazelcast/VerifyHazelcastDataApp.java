@@ -8,7 +8,7 @@ import net.eatcode.trainwatch.nr.Location;
 public class VerifyHazelcastDataApp {
 
     public static void main(String[] args) {
-        HazelcastInstance client = new HazelcastClientBuilder().buildInstance();
+        HazelcastInstance client = new HazelcastClientBuilder().buildInstance("trainwatch.eatcode.net");
         IMap<String, Location> locations = client.getMap("locationByTiploc");
 
         Location location = locations.get("SNDYPL1");
