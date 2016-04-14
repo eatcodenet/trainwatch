@@ -25,7 +25,7 @@ case "${command}" in
 
   application-start)
     echo "start..."
-	/usr/local/bin/docker-compose -f ${compose_file} up
+/usr/local/bin/docker-compose -f ${compose_file} up -d
     ;;
 
   validate-service)

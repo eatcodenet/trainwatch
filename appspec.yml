@@ -5,8 +5,6 @@ os: linux
 files:
   - source: docker-compose.yml
     destination: /var/trainwatch
-  - source: README.md
-    destination: /var/trainwatch
 permissions:
   - object: /var
     pattern: "trainwatch"
@@ -23,4 +21,5 @@ permissions:
 hooks:
   AfterInstall:
     - location: aws/hook-after-install.sh
-
+  ApplicationStart:
+    - location: aws/hook-application-start.sh
