@@ -37,7 +37,7 @@ public class HazelcastClientBuilder {
 
     private void configureNetwork() {
         config.setNetworkConfig(new ClientNetworkConfig()
-                .addAddress("localhost", "dev.docker-machine", "192.168.99.100", "hazelcast")
+                .addAddress("localhost", "192.168.99.100", "trainwatch.eatcode.net")
                 .setConnectionAttemptLimit(1));
     }
 }

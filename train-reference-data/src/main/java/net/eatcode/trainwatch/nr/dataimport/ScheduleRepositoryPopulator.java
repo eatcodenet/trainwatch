@@ -2,6 +2,7 @@ package net.eatcode.trainwatch.nr.dataimport;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,9 +33,18 @@ public class ScheduleRepositoryPopulator {
 
     private void generateDailySchedulesFromTrustSchedule(TrustSchedule ts) {
         List<DaySchedule> daySchedules = new TransformTrustSchedule(locationRepo).toDaySchedules(ts);
+        final long total = daySchedules.size();
+        final AtomicInteger count = new AtomicInteger(0);
         daySchedules.forEach(schedule -> {
             scheduleRepo.put(schedule);
+            progress(total, count);
         });
+    }
+
+    private void progress(final long total, final AtomicInteger count) {
+        if (count.incrementAndGet() % 1000 == 0) {
+          log.debug("{}/{}", count.get(), total);
+        }
     }
 
 }

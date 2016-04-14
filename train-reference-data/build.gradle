@@ -27,6 +27,14 @@ task dockerbuild(dependsOn: ["build", "copyrefdata"]) << {
     }
 }
 
+task dockerpush(dependsOn: []) << {
+    println "*** pushing docker tw-populate-ref-data ***"
+    exec {
+      executable "/usr/local/bin/docker"
+      args "push", "eatcode/tw-populate-ref-data"
+    }
+}
+
 
 
 
