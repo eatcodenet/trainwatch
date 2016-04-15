@@ -18,10 +18,11 @@ if [ "${command}" == "run" ];then
     --security-group-ids sg-978b63f0 \
     --subnet-id subnet-4c925e28 \
     --iam-instance-profile Name="Eatcode-EC2-deploy" \
-    --instance-type t2.medium \
+    --instance-type t2.large \
     --associate-public-ip-address \
     --key-name aws-eatcode \
     --count 1 \
+    --block-device-mappings '[{"DeviceName":"/dev/sda1","Ebs":{"VolumeSize":24,"DeleteOnTermination":false,"VolumeType":"standard"}}]' \
     --user-data "$(<${user_data_file})")
 
   if [ "$?" == "0" ]; then

@@ -25,7 +25,8 @@ case "${command}" in
 
   application-start)
     echo "start..."
-/usr/local/bin/docker-compose -f ${compose_file} up -d
+	/usr/local/bin/docker-compose -f ${compose_file} up -d
+	/usr/bin/docker run --link=kafka --net trainwatch_default
     ;;
 
   validate-service)
