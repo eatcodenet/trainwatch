@@ -13,13 +13,15 @@ public class PopulateLocationsApp {
     private static final Logger log = LoggerFactory.getLogger(PopulateLocationsApp.class);
 
     public static void main(String[] args) throws Exception {
-        String crsFile = args[0];
+
+        String hazelcastServers = args[0];
+        String crsFile = args[1];
         assertFileExists(crsFile);
 
-        String tiplocFile = args[1];
+        String tiplocFile = args[2];
         assertFileExists(tiplocFile);
 
-        HazelcastLocationRepo repo = new HazelcastLocationRepo();
+        HazelcastLocationRepo repo = new HazelcastLocationRepo(hazelcastServers);
 
         new LocationPopulator(repo).populateFromFiles(crsFile, tiplocFile).whenCompleteAsync((value, err) -> {
             if (err == null) {

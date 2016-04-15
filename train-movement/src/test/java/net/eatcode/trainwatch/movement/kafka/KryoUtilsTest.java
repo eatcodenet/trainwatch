@@ -9,18 +9,18 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
-import net.eatcode.trainwatch.movement.TrainMovementCombinedMessage;
+import net.eatcode.trainwatch.movement.TrustTrainMovementMessage;
 
 public class KryoUtilsTest {
 
-    private final TrainMovementCombinedMessage msg = new TrainMovementCombinedMessage(
-            new TrainMovementCombinedMessage.Header(), new TrainMovementCombinedMessage.Body());
+    private final TrustTrainMovementMessage msg = new TrustTrainMovementMessage(
+            new TrustTrainMovementMessage.Header(), new TrustTrainMovementMessage.Body());
 
     @Test
     public void toByteArray() {
         msg.body.train_id = "BigTrain";
         byte[] buffer = KryoUtils.toByteArray(msg);
-        TrainMovementCombinedMessage msg2 = deserialize(buffer);
+        TrustTrainMovementMessage msg2 = deserialize(buffer);
         assertThat(msg2.body.train_id, is("BigTrain"));
     }
 
@@ -28,12 +28,12 @@ public class KryoUtilsTest {
     public void fromByteArray() {
         msg.body.train_id = "SmallTrain";
         Output output = serialize(msg);
-        TrainMovementCombinedMessage msg2 = KryoUtils.fromByteArray(output.getBuffer(),
-                TrainMovementCombinedMessage.class);
+        TrustTrainMovementMessage msg2 = KryoUtils.fromByteArray(output.getBuffer(),
+                TrustTrainMovementMessage.class);
         assertThat(msg2.body.train_id, is("SmallTrain"));
     }
 
-    private Output serialize(TrainMovementCombinedMessage msg) {
+    private Output serialize(TrustTrainMovementMessage msg) {
         Kryo kryo = KryoInstances.get(msg.getClass());
         Output output = new Output(1024, 16384);
         kryo.writeObject(output, msg);
@@ -42,9 +42,9 @@ public class KryoUtilsTest {
         return output;
     }
 
-    private TrainMovementCombinedMessage deserialize(byte[] buffer) {
-        Kryo kryo = KryoInstances.get(TrainMovementCombinedMessage.class);
-        TrainMovementCombinedMessage msg = kryo.readObject(new Input(buffer), TrainMovementCombinedMessage.class);
+    private TrustTrainMovementMessage deserialize(byte[] buffer) {
+        Kryo kryo = KryoInstances.get(TrustTrainMovementMessage.class);
+        TrustTrainMovementMessage msg = kryo.readObject(new Input(buffer), TrustTrainMovementMessage.class);
         KryoInstances.release(kryo);
         return msg;
     }

@@ -8,7 +8,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.eatcode.trainwatch.movement.TrainMovementCombinedMessage;
+import net.eatcode.trainwatch.movement.TrustTrainMovementMessage;
 
 public class TrainMovementConsumer {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -30,7 +30,7 @@ public class TrainMovementConsumer {
     }
 
     private void consume(ConsumerRecord<String, byte[]> r) {
-        TrainMovementCombinedMessage tm = KryoUtils.fromByteArray(r.value(), TrainMovementCombinedMessage.class);
+        TrustTrainMovementMessage tm = KryoUtils.fromByteArray(r.value(), TrustTrainMovementMessage.class);
         log.debug("{}", tm.body.train_service_code);
     }
 

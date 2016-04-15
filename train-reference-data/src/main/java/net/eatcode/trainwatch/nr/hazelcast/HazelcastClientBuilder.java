@@ -17,13 +17,9 @@ public class HazelcastClientBuilder {
 
     private final ClientConfig config = new ClientConfig();
 
-    public HazelcastInstance buildInstance() {
-        return buildInstance("192.168.99.100", "hazelcast");
-    }
-
-    public HazelcastInstance buildInstance(String... addresses) {
+    public HazelcastInstance buildInstance(String addresses) {
         configureSerialization();
-        configureNetwork(addresses);
+        configureNetwork(addresses.split(","));
         return HazelcastClient.newHazelcastClient(config);
     }
 
@@ -40,8 +36,6 @@ public class HazelcastClientBuilder {
     }
 
     private void configureNetwork(String[] addresses) {
-        config.setNetworkConfig(new ClientNetworkConfig()
-                .addAddress(addresses)
-                .setConnectionAttemptLimit(1));
+        config.setNetworkConfig(new ClientNetworkConfig().addAddress(addresses).setConnectionAttemptLimit(1));
     }
 }

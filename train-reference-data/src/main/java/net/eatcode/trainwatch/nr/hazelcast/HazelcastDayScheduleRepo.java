@@ -8,9 +8,15 @@ import net.eatcode.trainwatch.nr.DayScheduleRepo;
 
 public class HazelcastDayScheduleRepo implements DayScheduleRepo {
 
-    private final HazelcastInstance client = new HazelcastClientBuilder().buildInstance();
-    private final IMap<String, DaySchedule> idMap = client.getMap("idDaySchedule");
-    private final IMap<String, DaySchedule> keyMap = client.getMap("keyDaySchedule");
+    private final HazelcastInstance client;
+    private final IMap<String, DaySchedule> idMap;
+    private final IMap<String, DaySchedule> keyMap;
+
+    public HazelcastDayScheduleRepo(String servers) {
+        this.client = new HazelcastClientBuilder().buildInstance(servers);
+        this.idMap = client.getMap("idDaySchedule");
+        this.keyMap = client.getMap("keyDaySchedule");
+    }
 
     @Override
     public void put(DaySchedule schedule) {

@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface TrainMovementParser {
 
-    List<TrainMovementCombinedMessage> parseArray(String jsonArray);
+    List<TrustTrainMovementMessage> parseArray(String jsonArray);
 }

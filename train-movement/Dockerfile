@@ -8,12 +8,14 @@ ARG nrUsername
 
 ARG nrPassword
 
-ENV boostrapServer "kafka:9092"
+ENV kafkaServers "kafka:9092"
+
+ENV hazelcastServers "hazelcast"
 
 ENV username $nrUsername
 
 ENV password $nrPassword
 
-LABEL name=version value=2
+LABEL name=version value=3
 
-CMD java -Xms512m -Xmx1g -cp /var/trainwatch/libs/train-movement-1.0-SNAPSHOT.jar net.eatcode.trainwatch.movement.kafka.TrainMovementProducer $username $password $boostrapServer
+CMD java -Xms512m -Xmx1g -cp /var/trainwatch/libs/train-movement-1.0-SNAPSHOT.jar net.eatcode.trainwatch.movement.kafka.TrainMovementProducer $kafkaServers $hazelcastServers $username $password

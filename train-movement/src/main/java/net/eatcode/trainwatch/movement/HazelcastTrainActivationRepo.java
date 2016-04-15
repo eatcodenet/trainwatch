@@ -12,9 +12,13 @@ import net.eatcode.trainwatch.nr.hazelcast.HazelcastClientBuilder;
 
 public class HazelcastTrainActivationRepo implements TrainActivationRepo {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final HazelcastInstance client = new HazelcastClientBuilder().buildInstance();
+    private final HazelcastInstance client;
+    private final IMap<String, String> map;
 
-    private final IMap<String, String> map = client.getMap("trainActivation");
+    public HazelcastTrainActivationRepo(String bootStrapServers) {
+        this.client = new HazelcastClientBuilder().buildInstance(bootStrapServers);
+        this.map = client.getMap("trainActivation");
+    }
 
     @Override
     public Optional<String> getScheduleId(String trainId) {

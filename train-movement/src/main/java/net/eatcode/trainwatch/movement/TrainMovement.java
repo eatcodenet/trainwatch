@@ -3,7 +3,7 @@ package net.eatcode.trainwatch.movement;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class SimpleTrainMovement implements Serializable {
+public class TrainMovement implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -16,8 +16,8 @@ public class SimpleTrainMovement implements Serializable {
 
     private final String delay;
 
-    public SimpleTrainMovement(String id, String origin, String departure, String destination, String arrival,
-            String delay, boolean isEstimated) {
+    public TrainMovement(String id, String origin, String departure, String destination, String arrival, String delay,
+            boolean isEstimated) {
         this.trainId = id;
         this.origin = origin.replaceAll("\\(\\)", "");
         this.departure = isEstimated ? " " : departure;
@@ -38,13 +38,13 @@ public class SimpleTrainMovement implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        return Objects.equals(trainId, ((SimpleTrainMovement) obj).trainId);
+        return Objects.equals(trainId, ((TrainMovement) obj).trainId);
     }
 
     static class Formatted {
-        public String format(SimpleTrainMovement stm) {
-            return String.format("%1$-5s %2$-40s %3$-5s %4$-40s %5$s delay", stm.departure, stm.origin, stm.arrival,
-                    stm.destination, stm.delay);
+        public String format(TrainMovement tm) {
+            return String.format("%1$-5s %2$-40s %3$-5s %4$-40s %5$s delay", tm.departure, tm.origin, tm.arrival,
+                    tm.destination, tm.delay);
         }
     }
 

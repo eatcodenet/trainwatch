@@ -4,5 +4,5 @@ import net.eatcode.trainwatch.nr.DaySchedule;
 
 public interface ScheduleLookup {
 
-    public DaySchedule lookup(TrainMovementCombinedMessage message);
+    public DaySchedule lookup(TrustTrainMovementMessage message);
 }

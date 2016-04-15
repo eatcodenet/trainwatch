@@ -15,11 +15,12 @@ public class PopulateSchedulesApp {
 
     public static void main(String[] args) throws Exception {
         checkUsage(args);
-        String fileName = args[0];
+        String hazelcastServers = args[0];
+        String fileName = args[1];
         assertFileExists(fileName);
 
-        HazelcastDayScheduleRepo scheduleRepo = new HazelcastDayScheduleRepo();
-        HazelcastLocationRepo locationRepo = new HazelcastLocationRepo();
+        HazelcastDayScheduleRepo scheduleRepo = new HazelcastDayScheduleRepo(hazelcastServers);
+        HazelcastLocationRepo locationRepo = new HazelcastLocationRepo(hazelcastServers);
         new ScheduleRepositoryPopulator(scheduleRepo, locationRepo).populateFromFile(fileName)
                 .whenCompleteAsync((v, error) -> {
                     if (error == null)
@@ -32,8 +33,8 @@ public class PopulateSchedulesApp {
     }
 
     private static void checkUsage(String[] args) {
-        if (args.length != 1) {
-            System.out.println("USAGE: PopulateSchedulesApp <full-schedule-file>");
+        if (args.length != 2) {
+            System.out.println("USAGE: PopulateSchedulesApp hazelcastServers full-schedule-file");
             System.exit(1);
         }
     }

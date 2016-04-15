@@ -16,7 +16,7 @@ public class GsonTrainMovementParserTest {
     @Test
     public void parseArrayOfMessages() throws Exception {
         String json = readFile("src/test/resources/sampledata/32TrainMovementsArray.json");
-        List<TrainMovementCombinedMessage> movements = new GsonTrainMovementParser().parseArray(json);
+        List<TrustTrainMovementMessage> movements = new GsonTrainMovementParser().parseArray(json);
         assertThat(movements.size(), is(32));
         assertThat(movements.get(31).body.train_id, is("861H47MT01"));
     }

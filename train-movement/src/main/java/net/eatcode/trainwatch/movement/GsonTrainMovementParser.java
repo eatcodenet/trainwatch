@@ -11,8 +11,8 @@ public class GsonTrainMovementParser implements TrainMovementParser {
     private final Gson gson = new GsonBuilder().create();
 
     @Override
-    public List<TrainMovementCombinedMessage> parseArray(String json) {
-        return Arrays.asList(gson.fromJson(json, TrainMovementCombinedMessage[].class));
+    public List<TrustTrainMovementMessage> parseArray(String json) {
+        return Arrays.asList(gson.fromJson(json, TrustTrainMovementMessage[].class));
     }
 
 }

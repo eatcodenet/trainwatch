@@ -15,22 +15,25 @@ import org.slf4j.LoggerFactory;
 import net.eatcode.trainwatch.movement.FallbackScheduleLookup;
 import net.eatcode.trainwatch.movement.HazelcastTrainActivationRepo;
 import net.eatcode.trainwatch.movement.ScheduleLookup;
-import net.eatcode.trainwatch.movement.SimpleTrainMovement;
-import net.eatcode.trainwatch.movement.TrainMovementCombinedMessage;
+import net.eatcode.trainwatch.movement.TrainMovement;
+import net.eatcode.trainwatch.movement.TrustTrainMovementMessage;
 import net.eatcode.trainwatch.nr.DaySchedule;
 import net.eatcode.trainwatch.nr.Location;
 import net.eatcode.trainwatch.nr.hazelcast.HazelcastDayScheduleRepo;
 
-public class SimpleMovementStream {
+public class TrainMovementStream {
+
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final ScheduleLookup scheduleLookup;
+    private final String boostrapServers;
 
-    public SimpleMovementStream(ScheduleLookup scheduleLookup) {
+    public TrainMovementStream(String boostrapServers, ScheduleLookup scheduleLookup) {
+        this.boostrapServers = boostrapServers;
         this.scheduleLookup = scheduleLookup;
     }
 
     public void process() {
-        Properties props = new PropertiesBuilder().forStream("192.168.99.100:9092").build();
+        Properties props = new PropertiesBuilder().forStream(boostrapServers).build();
 
         Deserializer<String> kDeserializer = new StringDeserializer();
         Deserializer<byte[]> vDeserializer = new ByteArrayDeserializer();
@@ -38,21 +41,22 @@ public class SimpleMovementStream {
         KStreamBuilder builder = new KStreamBuilder();
         KStream<String, byte[]> movements = builder.stream(kDeserializer, vDeserializer, "trust-train-movements");
         movements.mapValues(value -> {
-            TrainMovementCombinedMessage msg = KryoUtils.fromByteArray(value, TrainMovementCombinedMessage.class);
-            return createSimpleTrainMovement(msg);
+            TrustTrainMovementMessage msg = KryoUtils.fromByteArray(value, TrustTrainMovementMessage.class);
+            return createTrainMovement(msg);
         }).filter((key, value) -> {
-            if (value != null) log.debug("{}", value);
+            if (value != null)
+                log.debug("{}", value);
             return (value == null);
         });
 
         new KafkaStreams(builder, props).start();
     }
 
-    private SimpleTrainMovement createSimpleTrainMovement(TrainMovementCombinedMessage message) {
+    private TrainMovement createTrainMovement(TrustTrainMovementMessage message) {
         DaySchedule ds = scheduleLookup.lookup(message);
         if (ds == null)
             return null;
-        return new SimpleTrainMovement(message.body.train_id, location(ds.origin), time(ds.departure),
+        return new TrainMovement(message.body.train_id, location(ds.origin), time(ds.departure),
                 location(ds.destination), time(ds.arrival), delay(message.body.timetable_variation), ds.estimated);
     }
 
@@ -69,9 +73,11 @@ public class SimpleMovementStream {
     }
 
     public static void main(String[] args) {
-        ScheduleLookup lookup = new FallbackScheduleLookup(new HazelcastTrainActivationRepo(),
-                new HazelcastDayScheduleRepo());
-        new SimpleMovementStream(lookup).process();
+        String kafkaServers = args[0];
+        String hazelcastServers = args[1];
+        ScheduleLookup lookup = new FallbackScheduleLookup(new HazelcastTrainActivationRepo(hazelcastServers),
+                new HazelcastDayScheduleRepo(hazelcastServers));
+        new TrainMovementStream(kafkaServers, lookup).process();
     }
 
 }

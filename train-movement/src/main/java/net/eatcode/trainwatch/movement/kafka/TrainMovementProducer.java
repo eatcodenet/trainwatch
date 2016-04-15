@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 import net.eatcode.trainwatch.movement.GsonTrainMovementParser;
 import net.eatcode.trainwatch.movement.HazelcastTrainActivationRepo;
 import net.eatcode.trainwatch.movement.TrainActivationRepo;
-import net.eatcode.trainwatch.movement.TrainMovementCombinedMessage;
 import net.eatcode.trainwatch.movement.TrainMovementStomp;
+import net.eatcode.trainwatch.movement.TrustTrainMovementMessage;
 
 public class TrainMovementProducer extends CreateTopic {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -34,7 +34,7 @@ public class TrainMovementProducer extends CreateTopic {
         });
     }
 
-    private void sendMessage(TrainMovementCombinedMessage m) {
+    private void sendMessage(TrustTrainMovementMessage m) {
         log.debug("{} {} {}", m.header.msg_type, m.body.train_id, m.body.train_service_code);
         if (m.isActivation()) {
             activationRepo.putScheduleId(m.body.train_id, m.body.train_uid);
@@ -44,10 +44,12 @@ public class TrainMovementProducer extends CreateTopic {
     }
 
     public static void main(String[] args) {
-        String networkRailUsername = args[0];
-        String networkRailPassword = args[1];
-        String bootstrapServers = args[2];
-        TrainActivationRepo repo = new HazelcastTrainActivationRepo();
-        new TrainMovementProducer(bootstrapServers, repo).produceMessages(networkRailUsername, networkRailPassword);
+        String kafkaServers = args[0];
+        String hazelcastServers = args[1];
+        String networkRailUsername = args[2];
+        String networkRailPassword = args[3];
+
+        TrainActivationRepo repo = new HazelcastTrainActivationRepo(hazelcastServers);
+        new TrainMovementProducer(kafkaServers, repo).produceMessages(networkRailUsername, networkRailPassword);
     }
 }
