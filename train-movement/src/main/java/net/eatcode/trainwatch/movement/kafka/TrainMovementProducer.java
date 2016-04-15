@@ -47,7 +47,6 @@ public class TrainMovementProducer extends CreateTopic {
         String networkRailUsername = args[0];
         String networkRailPassword = args[1];
         String bootstrapServers = args[2];
-        System.out.println("username = " + networkRailUsername);
         TrainActivationRepo repo = new HazelcastTrainActivationRepo();
         new TrainMovementProducer(bootstrapServers, repo).produceMessages(networkRailUsername, networkRailPassword);
     }

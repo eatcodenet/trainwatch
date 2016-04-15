@@ -1,14 +1,14 @@
 <configuration>
-    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%date{ISO8601} %-5level %-30logger{0} - %msg%n</pattern>
-        </encoder>
-    </appender>
+  <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%date{ISO8601} %-5level %-30logger{0} - %msg%n</pattern>
+    </encoder>
+  </appender>
 
-    <root level="info">
-        <appender-ref ref="console"/>
-    </root>
+  <root level="info">
+    <appender-ref ref="console" />
+  </root>
 
-    <logger name="net.eatcode" level="debug"/>
-    <logger name="com.hazelcast.client" level="error"/>
+  <logger name="net.eatcode" level="info" />
+  <logger name="com.hazelcast.client" level="error" />
 </configuration>
