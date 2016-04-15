@@ -5,7 +5,7 @@ import com.hazelcast.core.IMap;
 
 import net.eatcode.trainwatch.nr.Location;
 
-public class VerifyHazelcastDataApp {
+public class VerifyHazelcastConnectivity {
 
     public static void main(String[] args) {
         HazelcastInstance client = new HazelcastClientBuilder().buildInstance("trainwatch.eatcode.net");

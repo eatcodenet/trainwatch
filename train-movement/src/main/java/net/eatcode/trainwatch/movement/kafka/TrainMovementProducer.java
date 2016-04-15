@@ -13,10 +13,9 @@ import net.eatcode.trainwatch.movement.TrainActivationRepo;
 import net.eatcode.trainwatch.movement.TrainMovementStomp;
 import net.eatcode.trainwatch.movement.TrustTrainMovementMessage;
 
-public class TrainMovementProducer extends CreateTopic {
+public class TrainMovementProducer {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final String topicName = "trust-train-movements";
     private final KafkaProducer<String, byte[]> producer;
     private final GsonTrainMovementParser parser = new GsonTrainMovementParser();
     private final TrainActivationRepo activationRepo;
@@ -39,7 +38,8 @@ public class TrainMovementProducer extends CreateTopic {
         if (m.isActivation()) {
             activationRepo.putScheduleId(m.body.train_id, m.body.train_uid);
         } else {
-            producer.send(new ProducerRecord<>(topicName, m.body.train_service_code, KryoUtils.toByteArray(m)));
+            producer.send(new ProducerRecord<>(Topic.trustMovement.topicName(), m.body.train_service_code,
+                    KryoUtils.toByteArray(m)));
         }
     }
 
@@ -48,8 +48,14 @@ public class TrainMovementProducer extends CreateTopic {
         String hazelcastServers = args[1];
         String networkRailUsername = args[2];
         String networkRailPassword = args[3];
-
+        checkTopicExists(hazelcastServers);
         TrainActivationRepo repo = new HazelcastTrainActivationRepo(hazelcastServers);
         new TrainMovementProducer(kafkaServers, repo).produceMessages(networkRailUsername, networkRailPassword);
+    }
+
+    private static void checkTopicExists(String kafkaServers) {
+        if (!new Topics(kafkaServers).topicExists(Topic.trustMovement)) {
+            throw new RuntimeException("topic does not exist");
+        }
     }
 }

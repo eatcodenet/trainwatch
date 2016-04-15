@@ -1,5 +1,7 @@
 package net.eatcode.trainwatch.movement.kafka;
 
+import static net.eatcode.trainwatch.movement.kafka.Topic.trustMovement;
+
 import java.time.LocalTime;
 import java.util.Properties;
 
@@ -22,30 +24,32 @@ import net.eatcode.trainwatch.nr.Location;
 import net.eatcode.trainwatch.nr.hazelcast.HazelcastDayScheduleRepo;
 
 public class TrainMovementStream {
-
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final ScheduleLookup scheduleLookup;
-    private final String boostrapServers;
+    private final String kafkaServers;
 
-    public TrainMovementStream(String boostrapServers, ScheduleLookup scheduleLookup) {
-        this.boostrapServers = boostrapServers;
+    public TrainMovementStream(String kafkaServers, ScheduleLookup scheduleLookup) {
+        this.kafkaServers = kafkaServers;
         this.scheduleLookup = scheduleLookup;
     }
 
     public void process() {
-        Properties props = new PropertiesBuilder().forStream(boostrapServers).build();
+        log.info("Kafka servers: {}", kafkaServers);
+        Properties props = new PropertiesBuilder().forStream(kafkaServers).build();
 
         Deserializer<String> kDeserializer = new StringDeserializer();
         Deserializer<byte[]> vDeserializer = new ByteArrayDeserializer();
 
         KStreamBuilder builder = new KStreamBuilder();
-        KStream<String, byte[]> movements = builder.stream(kDeserializer, vDeserializer, "trust-train-movements");
+        KStream<String, byte[]> movements = builder.stream(kDeserializer, vDeserializer, trustMovement.topicName());
+        log.debug("meh");
         movements.mapValues(value -> {
+            log.debug("raw val: {}", value);
             TrustTrainMovementMessage msg = KryoUtils.fromByteArray(value, TrustTrainMovementMessage.class);
             return createTrainMovement(msg);
         }).filter((key, value) -> {
             if (value != null)
-                log.debug("{}", value);
+                log.info("{}", value);
             return (value == null);
         });
 
@@ -73,7 +77,7 @@ public class TrainMovementStream {
     }
 
     public static void main(String[] args) {
-        String kafkaServers = args[0];
+        String kafkaServers = "52.49.248.138:9092";
         String hazelcastServers = args[1];
         ScheduleLookup lookup = new FallbackScheduleLookup(new HazelcastTrainActivationRepo(hazelcastServers),
                 new HazelcastDayScheduleRepo(hazelcastServers));

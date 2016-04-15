@@ -1,5 +1,7 @@
 package net.eatcode.trainwatch.movement.kafka;
 
+import static net.eatcode.trainwatch.movement.kafka.Topic.trustMovement;
+
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -12,7 +14,6 @@ import net.eatcode.trainwatch.movement.TrustTrainMovementMessage;
 
 public class TrainMovementConsumer {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final String topicName = "trust-train-movements";
     private final Properties props;
     private final KafkaConsumer<String, byte[]> consumer;
 
@@ -22,7 +23,7 @@ public class TrainMovementConsumer {
     }
 
     public void subscribeToTrainMovementTopic() {
-        consumer.subscribe(Arrays.asList(topicName));
+        consumer.subscribe(Arrays.asList(trustMovement.topicName()));
         log.debug("Waiting...");
         while (true) {
             consumer.poll(100).forEach(record -> consume(record));
@@ -30,12 +31,12 @@ public class TrainMovementConsumer {
     }
 
     private void consume(ConsumerRecord<String, byte[]> r) {
-        TrustTrainMovementMessage tm = KryoUtils.fromByteArray(r.value(), TrustTrainMovementMessage.class);
-        log.debug("{}", tm.body.train_service_code);
+        TrustTrainMovementMessage tm = KryoUtils.fromByteArray(r.value(),
+        TrustTrainMovementMessage.class);
+        log.info("{}", tm);
     }
 
     public static void main(String[] args) {
-        new TrainMovementConsumer("192.168.99.100:9092").subscribeToTrainMovementTopic();
-
+        new TrainMovementConsumer("trainwatch.eatcode.net:9092").subscribeToTrainMovementTopic();
     }
 }
