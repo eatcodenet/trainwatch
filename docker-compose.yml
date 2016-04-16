@@ -26,7 +26,7 @@ services:
     links:
       - zookeeper
     environment:
-      ADVERTISED_HOST: "${DOCKER_MACHINE_IP}"
+      ADVERTISED_HOST: "${ADVERTISED_HOST}"
       KAFKA_OFFSETS_STORAGE: kafka
     volumes:
       - /tmp/docker/kafka1/logs:/logs
