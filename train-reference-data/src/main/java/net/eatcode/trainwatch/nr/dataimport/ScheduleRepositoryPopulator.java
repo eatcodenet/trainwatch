@@ -5,7 +5,7 @@ import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.eatcode.trainwatch.nr.DaySchedule;
+import net.eatcode.trainwatch.nr.Schedule;
 import net.eatcode.trainwatch.nr.DayScheduleRepo;
 import net.eatcode.trainwatch.nr.LocationRepo;
 import net.eatcode.trainwatch.nr.TransformTrustSchedule;
@@ -30,7 +30,7 @@ public class ScheduleRepositoryPopulator {
     }
 
     private void generateDailySchedulesFromTrustSchedule(TrustSchedule ts) {
-        DaySchedule schedule = new TransformTrustSchedule(locationRepo).toSchedule(ts);
+        Schedule schedule = new TransformTrustSchedule(locationRepo).toSchedule(ts);
         scheduleRepo.put(schedule);
     }
 

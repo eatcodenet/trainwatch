@@ -7,7 +7,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 
-public class DaySchedule implements Serializable {
+public class Schedule implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,7 +29,7 @@ public class DaySchedule implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        return Objects.equals(id, ((DaySchedule) obj).id);
+        return Objects.equals(id, ((Schedule) obj).id);
     }
 
 }

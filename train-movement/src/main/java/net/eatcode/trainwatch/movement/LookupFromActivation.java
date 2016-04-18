@@ -2,7 +2,7 @@ package net.eatcode.trainwatch.movement;
 
 import java.util.Optional;
 
-import net.eatcode.trainwatch.nr.DaySchedule;
+import net.eatcode.trainwatch.nr.Schedule;
 import net.eatcode.trainwatch.nr.DayScheduleRepo;
 
 public class LookupFromActivation implements ScheduleLookup {
@@ -16,7 +16,7 @@ public class LookupFromActivation implements ScheduleLookup {
     }
 
     @Override
-    public Optional<DaySchedule> lookup(TrustTrainMovementMessage message) {
+    public Optional<Schedule> lookup(TrustTrainMovementMessage message) {
         return activationRepo
                 .getScheduleId(message.body.train_id)
                 .map(value -> scheduleRepo.get(activationRepo.getScheduleId(message.body.train_id).get()));

@@ -2,9 +2,9 @@ package net.eatcode.trainwatch.movement;
 
 import java.util.Optional;
 
-import net.eatcode.trainwatch.nr.DaySchedule;
+import net.eatcode.trainwatch.nr.Schedule;
 
 public interface ScheduleLookup {
 
-    public Optional<DaySchedule> lookup(TrustTrainMovementMessage message);
+    public Optional<Schedule> lookup(TrustTrainMovementMessage message);
 }

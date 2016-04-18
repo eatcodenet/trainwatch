@@ -22,7 +22,7 @@ import net.eatcode.trainwatch.movement.ScheduleLookup;
 import net.eatcode.trainwatch.movement.TrainMovement;
 import net.eatcode.trainwatch.movement.TrainMovementRepo;
 import net.eatcode.trainwatch.movement.TrustTrainMovementMessage;
-import net.eatcode.trainwatch.nr.DaySchedule;
+import net.eatcode.trainwatch.nr.Schedule;
 import net.eatcode.trainwatch.nr.Location;
 import net.eatcode.trainwatch.nr.hazelcast.HazelcastDayScheduleRepo;
 
@@ -57,7 +57,7 @@ public class TrainMovementStream {
     }
 
     private TrainMovement createTrainMovement(TrustTrainMovementMessage message) {
-        Optional<DaySchedule> schedule = scheduleLookup.lookup(message);
+        Optional<Schedule> schedule = scheduleLookup.lookup(message);
         return schedule.map(s -> {
             return new TrainMovement(message.body.train_id, location(s.origin), time(s.departure),
                     location(s.destination), time(s.arrival), delay(message.body.timetable_variation), false);

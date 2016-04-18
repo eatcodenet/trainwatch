@@ -18,7 +18,7 @@ public class TransformTrustScheduleTest {
     @Test
     public void toDaySchedule() throws IOException {
 
-        DaySchedule schedule = new TransformTrustSchedule(new StubGeoLocatiobRepo())
+        Schedule schedule = new TransformTrustSchedule(new StubGeoLocatiobRepo())
                 .toSchedule(trustScheduleFromFile());
         assertThat(schedule.destination.stanox, is("a stanox"));
         assertThat(schedule.origin.stanox, is("a stanox"));

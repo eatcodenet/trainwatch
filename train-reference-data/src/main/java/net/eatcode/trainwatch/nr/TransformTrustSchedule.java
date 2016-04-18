@@ -21,7 +21,7 @@ public class TransformTrustSchedule {
         this.repo = repo;
     }
 
-    public DaySchedule toSchedule(TrustSchedule ts) {
+    public Schedule toSchedule(TrustSchedule ts) {
 
         JsonScheduleV1 s = ts.JsonScheduleV1;
 
@@ -36,13 +36,13 @@ public class TransformTrustSchedule {
         List<DayOfWeek> runDays = RunDays.from(s.schedule_days_runs);
         System.out.println("From:  " + start + " To: " + end);
 
-        DaySchedule schedule = makeDaySchedule(id, start, end, origin, dest, trainServiceCode, atoc, runDays);
+        Schedule schedule = makeDaySchedule(id, start, end, origin, dest, trainServiceCode, atoc, runDays);
         return schedule;
     }
 
-    private DaySchedule makeDaySchedule(String id, LocalDate start, LocalDate end, Schedule_location origin,
+    private Schedule makeDaySchedule(String id, LocalDate start, LocalDate end, Schedule_location origin,
             Schedule_location dest, String trainServiceCode, String atoc, List<DayOfWeek> runDays) {
-        DaySchedule s = new DaySchedule();
+        Schedule s = new Schedule();
         s.id = id;
         s.startDate = start;
         s.endDate = end;

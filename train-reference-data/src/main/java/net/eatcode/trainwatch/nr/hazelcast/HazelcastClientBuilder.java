@@ -10,7 +10,7 @@ import com.hazelcast.config.SerializerConfig;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.nio.serialization.Serializer;
 
-import net.eatcode.trainwatch.nr.DaySchedule;
+import net.eatcode.trainwatch.nr.Schedule;
 import net.eatcode.trainwatch.nr.Location;
 
 public class HazelcastClientBuilder {
@@ -26,7 +26,7 @@ public class HazelcastClientBuilder {
     private void configureSerialization() {
         SerializationConfig sc = config.getSerializationConfig();
         sc.addSerializerConfig(add(new LocationSerializer(), Location.class));
-        sc.addSerializerConfig(add(new DayScheduleSerializer(), DaySchedule.class));
+        sc.addSerializerConfig(add(new DayScheduleSerializer(), Schedule.class));
     }
 
     private SerializerConfig add(Serializer serializer, Class<? extends Serializable> clazz) {

@@ -2,7 +2,7 @@ package net.eatcode.trainwatch.nr.dataimport;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import net.eatcode.trainwatch.nr.DaySchedule;
+import net.eatcode.trainwatch.nr.Schedule;
 import net.eatcode.trainwatch.nr.DayScheduleRepo;
 import net.eatcode.trainwatch.nr.Location;
 import net.eatcode.trainwatch.nr.LocationRepo;
@@ -31,13 +31,13 @@ public class ScheduleCounter {
             private final AtomicInteger count = new AtomicInteger(0);
 
             @Override
-            public void put(DaySchedule schedule) {
+            public void put(Schedule schedule) {
                 count.incrementAndGet();
                 // System.out.println(count);
             }
 
             @Override
-            public DaySchedule get(String id) {
+            public Schedule get(String id) {
                 return null;
             }
         };
