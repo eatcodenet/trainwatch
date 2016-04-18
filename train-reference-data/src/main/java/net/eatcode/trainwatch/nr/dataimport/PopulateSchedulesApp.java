@@ -21,6 +21,7 @@ public class PopulateSchedulesApp {
 
         HazelcastDayScheduleRepo scheduleRepo = new HazelcastDayScheduleRepo(hazelcastServers);
         HazelcastLocationRepo locationRepo = new HazelcastLocationRepo(hazelcastServers);
+
         new ScheduleRepositoryPopulator(scheduleRepo, locationRepo).populateFromFile(fileName)
                 .whenCompleteAsync((v, error) -> {
                     if (error == null)

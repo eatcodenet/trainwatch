@@ -8,12 +8,19 @@ tiploc_file=${app_dir}/data/tiplocs.json
 schedule_file=${app_dir}/data/full-train-schedules
 uname=$(uname)
 
+function cleanup() {
+	echo "cleanup..."
+	killall java
+}
+
+trap cleanup SIGINT
+
 if [ "${uname}" == "Darwin" ];then
   jar_file=${base_dir}/../build/libs/train-reference-data-1.0-SNAPSHOT.jar
 fi
 echo "jar_file is ${jar_file}"
 
-echo "Populating locations"
+echo "Populating locations..."
 java -cp ${jar_file} net.eatcode.trainwatch.nr.dataimport.PopulateLocationsApp ${hazelcast_servers} ${crs_file} ${tiploc_file}
 
 if [ $? -ne 0 ];then
@@ -21,8 +28,8 @@ if [ $? -ne 0 ];then
   exit 1
 fi
 
-echo "Populating schedules"
-java -cp ${jar_file} net.eatcode.trainwatch.nr.dataimport.PopulateSchedulesApp ${hazelcast_servers} ${schedule_file}
+echo "Populating schedules..."
+java -Xms1g -Xmx1g -cp ${jar_file} net.eatcode.trainwatch.nr.dataimport.PopulateSchedulesApp ${hazelcast_servers} ${schedule_file}
 
 if [ $? -ne 0 ];then
   echo "Populating schedules failed!"

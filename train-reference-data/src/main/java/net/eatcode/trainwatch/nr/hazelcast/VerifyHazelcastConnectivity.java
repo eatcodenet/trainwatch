@@ -8,7 +8,7 @@ import net.eatcode.trainwatch.nr.Location;
 public class VerifyHazelcastConnectivity {
 
     public static void main(String[] args) {
-        HazelcastInstance client = new HazelcastClientBuilder().buildInstance("trainwatch.eatcode.net");
+        HazelcastInstance client = new HazelcastClientBuilder().buildInstance("docker.local:5701");
         IMap<String, Location> locations = client.getMap("locationByTiploc");
 
         Location location = locations.get("SNDYPL1");
@@ -22,6 +22,7 @@ public class VerifyHazelcastConnectivity {
 
         IMap<Object, Object> schedules = client.getMap("keyDaySchedule");
         System.out.println(schedules.size());
+
         client.shutdown();
 
     }

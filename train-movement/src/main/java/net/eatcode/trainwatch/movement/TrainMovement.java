@@ -14,9 +14,9 @@ public class TrainMovement implements Serializable {
     private final String arrival;
     private final String trainId;
 
-    private final String delay;
+    private final Integer delay;
 
-    public TrainMovement(String id, String origin, String departure, String destination, String arrival, String delay,
+    public TrainMovement(String id, String origin, String departure, String destination, String arrival, Integer delay,
             boolean isEstimated) {
         this.trainId = id;
         this.origin = origin.replaceAll("\\(\\)", "");
@@ -46,6 +46,10 @@ public class TrainMovement implements Serializable {
             return String.format("%1$-5s %2$-40s %3$-5s %4$-40s %5$s delay", tm.departure, tm.origin, tm.arrival,
                     tm.destination, tm.delay);
         }
+    }
+
+    public int delayInMins() {
+        return this.delay;
     }
 
 }

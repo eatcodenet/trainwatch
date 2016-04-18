@@ -38,7 +38,7 @@ public class TrainMovementProducer {
         if (m.isActivation()) {
             activationRepo.putScheduleId(m.body.train_id, m.body.train_uid);
         } else {
-            producer.send(new ProducerRecord<>(Topic.trustMovement.topicName(), m.body.train_service_code,
+            producer.send(new ProducerRecord<>(Topic.trustMessages.topicName(), m.body.train_service_code,
                     KryoUtils.toByteArray(m)));
         }
     }
@@ -54,7 +54,7 @@ public class TrainMovementProducer {
     }
 
     private static void checkTopicExists(String kafkaServers) {
-        if (!new Topics(kafkaServers).topicExists(Topic.trustMovement)) {
+        if (!new Topics(kafkaServers).topicExists(Topic.trustMessages)) {
             throw new RuntimeException("topic does not exist");
         }
     }

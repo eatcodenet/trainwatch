@@ -2,11 +2,11 @@ package net.eatcode.trainwatch.movement.kafka;
 
 public enum Topic {
 
-    trustMovement("trust-messages");
+    trustMessages("trust-messages"), trainMovement("train-movement");
 
     private String topicName;
 
-    Topic(String name) {
+    private Topic(String name) {
         this.topicName = name;
     }
 

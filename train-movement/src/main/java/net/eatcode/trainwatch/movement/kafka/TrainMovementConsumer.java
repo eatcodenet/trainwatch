@@ -1,6 +1,6 @@
 package net.eatcode.trainwatch.movement.kafka;
 
-import static net.eatcode.trainwatch.movement.kafka.Topic.trustMovement;
+import static net.eatcode.trainwatch.movement.kafka.Topic.trustMessages;
 
 import java.util.Arrays;
 import java.util.Properties;
@@ -23,7 +23,7 @@ public class TrainMovementConsumer {
     }
 
     public void subscribeToTrainMovementTopic() {
-        consumer.subscribe(Arrays.asList(trustMovement.topicName()));
+        consumer.subscribe(Arrays.asList(trustMessages.topicName()));
         log.debug("Waiting...");
         while (true) {
             consumer.poll(100).forEach(record -> consume(record));
