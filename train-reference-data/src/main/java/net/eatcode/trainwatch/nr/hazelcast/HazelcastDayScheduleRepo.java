@@ -9,29 +9,21 @@ import net.eatcode.trainwatch.nr.DayScheduleRepo;
 public class HazelcastDayScheduleRepo implements DayScheduleRepo {
 
     private final HazelcastInstance client;
-    private final IMap<String, DaySchedule> idMap;
-    private final IMap<String, DaySchedule> keyMap;
+    private final IMap<String, DaySchedule> map;
 
     public HazelcastDayScheduleRepo(String servers) {
         this.client = new HazelcastClientBuilder().buildInstance(servers);
-        this.idMap = client.getMap("idDaySchedule");
-        this.keyMap = client.getMap("keyDaySchedule");
+        this.map = client.getMap("schedule");
     }
 
     @Override
     public void put(DaySchedule schedule) {
-        idMap.put(schedule.id, schedule);
-        keyMap.put(schedule.key(), schedule);
+        map.put(schedule.id, schedule);
     }
 
     @Override
     public DaySchedule get(String id) {
-        return idMap.get(id);
-    }
-
-    @Override
-    public DaySchedule getByDaykey(String key) {
-        return keyMap.get(key);
+        return map.get(id);
     }
 
     public void shutdown() {

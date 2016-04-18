@@ -9,7 +9,7 @@ import net.eatcode.trainwatch.nr.LocationRepo;
 
 public class ScheduleCounter {
 
-    public static void main() throws Exception {
+    public static void main(String[] args) throws Exception {
         LocationRepo locationRepo = new LocationRepo() {
 
             @Override
@@ -33,12 +33,7 @@ public class ScheduleCounter {
             @Override
             public void put(DaySchedule schedule) {
                 count.incrementAndGet();
-                System.out.println(count);
-            }
-
-            @Override
-            public DaySchedule getByDaykey(String key) {
-                return null;
+                // System.out.println(count);
             }
 
             @Override

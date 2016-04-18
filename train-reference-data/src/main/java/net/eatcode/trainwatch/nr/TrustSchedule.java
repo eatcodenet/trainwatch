@@ -18,6 +18,7 @@ public class TrustSchedule implements Serializable {
         public String schedule_end_date;
         public Schedule_segment schedule_segment;
         public String schedule_start_date;
+        public String CIF_bank_holiday_running;
         public String train_status;
         public String transaction_type;
 

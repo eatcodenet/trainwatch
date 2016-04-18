@@ -1,6 +1,5 @@
 package net.eatcode.trainwatch.nr.dataimport;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
@@ -31,10 +30,8 @@ public class ScheduleRepositoryPopulator {
     }
 
     private void generateDailySchedulesFromTrustSchedule(TrustSchedule ts) {
-        List<DaySchedule> daySchedules = new TransformTrustSchedule(locationRepo).toDaySchedules(ts);
-        daySchedules.forEach(schedule -> {
-            scheduleRepo.put(schedule);
-        });
+        DaySchedule schedule = new TransformTrustSchedule(locationRepo).toSchedule(ts);
+        scheduleRepo.put(schedule);
     }
 
 }

@@ -2,7 +2,9 @@ package net.eatcode.trainwatch.nr;
 
 import java.io.Serializable;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Objects;
 
 public class DaySchedule implements Serializable {
@@ -10,46 +12,24 @@ public class DaySchedule implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public String id;
+    public LocalDate startDate;
+    public LocalDate endDate;
     public Location origin;
-    public Location destination;
     public LocalTime departure;
+    public Location destination;
     public LocalTime arrival;
     public String trainServiceCode;
-    String headCode;
-    DayOfWeek runDay;
-    String atocCode;
-    public boolean estimated = false;
-
-    public String key() {
-        return trainServiceCode + headCode + runDay.getValue();
-    }
+    public String atocCode;
+    public List<DayOfWeek> runDays;
 
     @Override
     public int hashCode() {
-        return Objects.hash(key());
+        return Objects.hash(id);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        return Objects.equals(key(), ((DaySchedule) obj).key());
+        return Objects.equals(id, ((DaySchedule) obj).id);
     }
-
-    @Override
-    public String toString() {
-        return "DaySchedule [id=" + id + ", origin=" + origin + ", destination=" + destination + ", departure="
-                + departure + ", arrival=" + arrival + ", trainServiceCode=" + trainServiceCode + ", headCode="
-                + headCode + ", runDay=" + runDay + ", atocCode=" + atocCode + ", estimated=" + estimated + "]";
-    }
-
-
 
 }

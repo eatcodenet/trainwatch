@@ -3,6 +3,7 @@ package net.eatcode.trainwatch.movement.kafka;
 import static net.eatcode.trainwatch.movement.kafka.Topic.trustMessages;
 
 import java.time.LocalTime;
+import java.util.Optional;
 import java.util.Properties;
 
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
@@ -14,7 +15,7 @@ import org.apache.kafka.streams.kstream.KStreamBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.eatcode.trainwatch.movement.FallbackScheduleLookup;
+import net.eatcode.trainwatch.movement.LookupFromActivation;
 import net.eatcode.trainwatch.movement.HazelcastTrainActivationRepo;
 import net.eatcode.trainwatch.movement.HazelcastTrainMovementRepo;
 import net.eatcode.trainwatch.movement.ScheduleLookup;
@@ -50,19 +51,18 @@ public class TrainMovementStream {
         KStream<String, byte[]> movements = builder.stream(kDeserializer, vDeserializer, trustMessages.topicName());
         movements.mapValues(value -> {
             return createTrainMovement(KryoUtils.fromByteArray(value, TrustTrainMovementMessage.class));
-        }).filter((key, value) -> {
-            return (value != null);
         }).process(() -> new PutInRepoProcessor(this.trainMovementRepo));
 
         new KafkaStreams(builder, props).start();
     }
 
     private TrainMovement createTrainMovement(TrustTrainMovementMessage message) {
-        DaySchedule ds = scheduleLookup.lookup(message);
-        if (ds == null)
-            return null;
-        return new TrainMovement(message.body.train_id, location(ds.origin), time(ds.departure),
-                location(ds.destination), time(ds.arrival), delay(message.body.timetable_variation), ds.estimated);
+        Optional<DaySchedule> schedule = scheduleLookup.lookup(message);
+        return schedule.map(s -> {
+            return new TrainMovement(message.body.train_id, location(s.origin), time(s.departure),
+                    location(s.destination), time(s.arrival), delay(message.body.timetable_variation), false);
+        }).get();
+
     }
 
     private String location(Location location) {
@@ -80,7 +80,7 @@ public class TrainMovementStream {
     public static void main(String[] args) {
         String kafkaServers = "docker.local:9092";
         String hazelcastServers = args[1];
-        ScheduleLookup lookup = new FallbackScheduleLookup(new HazelcastTrainActivationRepo(hazelcastServers),
+        ScheduleLookup lookup = new LookupFromActivation(new HazelcastTrainActivationRepo(hazelcastServers),
                 new HazelcastDayScheduleRepo(hazelcastServers));
         TrainMovementRepo trainMovementRepo = new HazelcastTrainMovementRepo(hazelcastServers);
         new TrainMovementStream(kafkaServers, lookup, trainMovementRepo).process();

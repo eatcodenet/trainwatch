@@ -1,5 +1,6 @@
 package net.eatcode.trainwatch.nr;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -7,7 +8,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.util.List;
 
 import org.junit.Test;
 
@@ -18,19 +18,15 @@ public class TransformTrustScheduleTest {
     @Test
     public void toDaySchedule() throws IOException {
 
-        List<DaySchedule> schedules = new TransformTrustSchedule(new StubGeoLocatiobRepo())
-                .toDaySchedules(trustScheduleFromFile());
-        assertThat(schedules.size(), is(5));
-        DaySchedule ds = schedules.get(0);
-        assertThat(ds.destination.stanox, is("a stanox"));
-        assertThat(ds.origin.stanox, is("a stanox"));
-        assertThat(ds.departure, is(LocalTime.parse("12:54")));
-        assertThat(ds.arrival, is(LocalTime.parse("15:20")));
-        assertThat(ds.trainServiceCode, is("57610314"));
-        assertThat(ds.headCode, is("SI01"));
-        assertThat(ds.atocCode, is("ZZ"));
-        assertThat(ds.runDay, is(DayOfWeek.MONDAY));
-        assertThat(ds.key(), is("57610314SI011"));
+        DaySchedule schedule = new TransformTrustSchedule(new StubGeoLocatiobRepo())
+                .toSchedule(trustScheduleFromFile());
+        assertThat(schedule.destination.stanox, is("a stanox"));
+        assertThat(schedule.origin.stanox, is("a stanox"));
+        assertThat(schedule.departure, is(LocalTime.parse("12:54")));
+        assertThat(schedule.arrival, is(LocalTime.parse("15:20")));
+        assertThat(schedule.trainServiceCode, is("57610314"));
+        assertThat(schedule.atocCode, is("ZZ"));
+        assertThat(schedule.runDays, is(asList(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)));
     }
 
     private TrustSchedule trustScheduleFromFile() throws IOException {

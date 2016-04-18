@@ -6,6 +6,4 @@ public interface DayScheduleRepo {
 
     DaySchedule get(String id);
 
-    DaySchedule getByDaykey(String key);
-
 }
