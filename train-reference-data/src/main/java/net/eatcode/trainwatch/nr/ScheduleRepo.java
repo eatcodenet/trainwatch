@@ -6,4 +6,5 @@ public interface ScheduleRepo {
 
     Schedule get(String id);
 
+    Integer count();
 }

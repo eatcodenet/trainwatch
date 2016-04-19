@@ -2,10 +2,10 @@ package net.eatcode.trainwatch.nr.dataimport;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import net.eatcode.trainwatch.nr.ScheduleRepo;
 import net.eatcode.trainwatch.nr.Location;
 import net.eatcode.trainwatch.nr.LocationRepo;
 import net.eatcode.trainwatch.nr.Schedule;
+import net.eatcode.trainwatch.nr.ScheduleRepo;
 
 public class ScheduleCounter {
 
@@ -39,6 +39,11 @@ public class ScheduleCounter {
             @Override
             public Schedule get(String id) {
                 return null;
+            }
+
+            @Override
+            public Integer count() {
+                return 0;
             }
         };
         new ScheduleRepositoryPopulator(scheduleRepo, locationRepo)

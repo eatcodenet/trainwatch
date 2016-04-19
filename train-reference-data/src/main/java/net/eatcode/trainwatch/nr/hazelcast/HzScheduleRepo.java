@@ -26,6 +26,11 @@ public class HzScheduleRepo implements ScheduleRepo {
         return map.get(id);
     }
 
+    @Override
+    public Integer count() {
+        return map.size();
+    }
+
     public void shutdown() {
         client.shutdown();
     }
