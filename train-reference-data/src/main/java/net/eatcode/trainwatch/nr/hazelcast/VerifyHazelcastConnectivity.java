@@ -18,7 +18,8 @@ public class VerifyHazelcastConnectivity {
 //            throw new RuntimeException("could not get location from hazelcast!");
 //        }
 
-        IMap<Object, Object> schedules = client.getMap("schedule2");
+        IMap<Object, Object> schedules = client.getMap("schedule");
+        System.out.println("Schedule count:");
         System.out.println(schedules.size());
 
         client.shutdown();

@@ -1,5 +1,5 @@
 dependencies {
-    compile 'com.hazelcast:hazelcast-client:3.6.1'
+    compile 'com.hazelcast:hazelcast-client:3.6.2'
     compile 'com.esotericsoftware:kryo:3.0.3'
 }
 
