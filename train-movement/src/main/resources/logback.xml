@@ -10,5 +10,6 @@
   </root>
 
   <logger name="net.eatcode" level="debug" />
+  
   <logger name="com.hazelcast.client" level="warn" />
 </configuration>

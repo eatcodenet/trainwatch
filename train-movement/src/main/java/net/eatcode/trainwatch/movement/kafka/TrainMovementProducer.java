@@ -34,7 +34,7 @@ public class TrainMovementProducer {
         if (m.isActivation()) {
             activationRepo.putScheduleId(m.body.train_id, m.body.train_uid);
         } else {
-            producer.send(new ProducerRecord<>(Topic.trustMessages.topicName(), m.body.train_service_code,
+            producer.send(new ProducerRecord<>(Topic.trustMessages.topicName(), m.body.train_id,
                     KryoUtils.toByteArray(m)));
         }
     }
@@ -53,7 +53,7 @@ public class TrainMovementProducer {
     private static void checkTopicExists(String zookeeperServers) {
         Topics topics = new Topics(zookeeperServers);
         if (!topics.topicExists(Topic.trustMessages)) {
-            topics.createTopic(Topic.trustMessages);
+            throw new RuntimeException("Topic does not exist: " + Topic.trustMessages);
         }
 
     }

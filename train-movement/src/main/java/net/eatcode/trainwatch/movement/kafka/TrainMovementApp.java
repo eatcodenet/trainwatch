@@ -24,11 +24,11 @@ public class TrainMovementApp {
         };
 
         Runnable consumer = () -> {
+            System.out.println("running consumer");
             ScheduleLookup lookup = new HzScheduleLookup(new HzTrainActivationRepo(hazelcastServers),
                     new HzScheduleRepo(hazelcastServers));
             TrainMovementRepo trainMovementRepo = new HzTrainMovementRepo(hazelcastServers);
             new TrainMovementStream(kafkaServers, lookup, trainMovementRepo).process();
-            System.out.println("running consumer");
         };
 
         new Thread(producer).start();
