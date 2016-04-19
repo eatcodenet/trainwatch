@@ -11,10 +11,11 @@ public class TrainMovementApp {
 
     public static void main(String[] args) throws InterruptedException {
         String kafkaServers = args[0];
-        String hazelcastServers = args[1];
-        String networkRailUsername = args[2];
-        String networkRailPassword = args[3];
-        checkTopicExists(hazelcastServers);
+        String zookeeperServers = args[1];
+        String hazelcastServers = args[2];
+        String networkRailUsername = args[3];
+        String networkRailPassword = args[4];
+        checkTopicExists(zookeeperServers);
 
         Runnable producer = () -> {
             System.out.println("running producer");
@@ -35,8 +36,8 @@ public class TrainMovementApp {
         new Thread(consumer).start();
     }
 
-    private static void checkTopicExists(String kafkaServers) {
-        Topics topics = new Topics(kafkaServers);
+    private static void checkTopicExists(String zookeeperServers) {
+        Topics topics = new Topics(zookeeperServers);
         if (!topics.topicExists(Topic.trustMessages)) {
             topics.createTopic(Topic.trustMessages);
         }
