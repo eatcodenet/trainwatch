@@ -38,7 +38,7 @@ class PropertiesBuilder {
 
     PropertiesBuilder forStream(String bootstrapServers) {
         props.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(StreamsConfig.JOB_ID_CONFIG, "simplifyMovements");
+        props.put(StreamsConfig.JOB_ID_CONFIG, "trainMovements");
         props.put(StreamsConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(StreamsConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class);
         props.put(StreamsConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);

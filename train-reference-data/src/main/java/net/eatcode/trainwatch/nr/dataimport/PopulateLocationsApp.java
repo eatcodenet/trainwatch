@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.eatcode.trainwatch.nr.hazelcast.HazelcastLocationRepo;
+import net.eatcode.trainwatch.nr.hazelcast.HzLocationRepo;
 
 public class PopulateLocationsApp {
 
@@ -21,7 +21,7 @@ public class PopulateLocationsApp {
         String tiplocFile = args[2];
         assertFileExists(tiplocFile);
 
-        HazelcastLocationRepo repo = new HazelcastLocationRepo(hazelcastServers);
+        HzLocationRepo repo = new HzLocationRepo(hazelcastServers);
 
         new LocationPopulator(repo).populateFromFiles(crsFile, tiplocFile).whenCompleteAsync((value, err) -> {
             if (err == null) {

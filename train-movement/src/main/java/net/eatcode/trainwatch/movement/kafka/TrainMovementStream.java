@@ -15,16 +15,16 @@ import org.apache.kafka.streams.kstream.KStreamBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.eatcode.trainwatch.movement.LookupFromActivation;
-import net.eatcode.trainwatch.movement.HazelcastTrainActivationRepo;
-import net.eatcode.trainwatch.movement.HazelcastTrainMovementRepo;
+import net.eatcode.trainwatch.movement.HzScheduleLookup;
+import net.eatcode.trainwatch.movement.HzTrainActivationRepo;
+import net.eatcode.trainwatch.movement.HzTrainMovementRepo;
 import net.eatcode.trainwatch.movement.ScheduleLookup;
 import net.eatcode.trainwatch.movement.TrainMovement;
 import net.eatcode.trainwatch.movement.TrainMovementRepo;
 import net.eatcode.trainwatch.movement.TrustTrainMovementMessage;
-import net.eatcode.trainwatch.nr.Schedule;
 import net.eatcode.trainwatch.nr.Location;
-import net.eatcode.trainwatch.nr.hazelcast.HazelcastScheduleRepo;
+import net.eatcode.trainwatch.nr.Schedule;
+import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
 
 public class TrainMovementStream {
 
@@ -52,7 +52,7 @@ public class TrainMovementStream {
         movements.mapValues(value -> {
             return createTrainMovement(KryoUtils.fromByteArray(value, TrustTrainMovementMessage.class));
         }).process(() -> new PutInRepoProcessor(this.trainMovementRepo));
-
+        log.info("Starting stream...");
         new KafkaStreams(builder, props).start();
     }
 
@@ -61,7 +61,7 @@ public class TrainMovementStream {
         return schedule.map(s -> {
             return new TrainMovement(message.body.train_id, location(s.origin), time(s.departure),
                     location(s.destination), time(s.arrival), delay(message.body.timetable_variation), false);
-        }).get();
+        }).orElse(null);
 
     }
 
@@ -80,9 +80,9 @@ public class TrainMovementStream {
     public static void main(String[] args) {
         String kafkaServers = "docker.local:9092";
         String hazelcastServers = args[1];
-        ScheduleLookup lookup = new LookupFromActivation(new HazelcastTrainActivationRepo(hazelcastServers),
-                new HazelcastScheduleRepo(hazelcastServers));
-        TrainMovementRepo trainMovementRepo = new HazelcastTrainMovementRepo(hazelcastServers);
+        ScheduleLookup lookup = new HzScheduleLookup(new HzTrainActivationRepo(hazelcastServers),
+                new HzScheduleRepo(hazelcastServers));
+        TrainMovementRepo trainMovementRepo = new HzTrainMovementRepo(hazelcastServers);
         new TrainMovementStream(kafkaServers, lookup, trainMovementRepo).process();
     }
 

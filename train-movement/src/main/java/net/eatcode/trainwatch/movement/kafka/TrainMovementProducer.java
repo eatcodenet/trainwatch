@@ -4,17 +4,14 @@ import java.util.Properties;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.eatcode.trainwatch.movement.GsonTrainMovementParser;
-import net.eatcode.trainwatch.movement.HazelcastTrainActivationRepo;
+import net.eatcode.trainwatch.movement.HzTrainActivationRepo;
 import net.eatcode.trainwatch.movement.TrainActivationRepo;
 import net.eatcode.trainwatch.movement.TrainMovementStomp;
 import net.eatcode.trainwatch.movement.TrustTrainMovementMessage;
 
 public class TrainMovementProducer {
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final KafkaProducer<String, byte[]> producer;
     private final GsonTrainMovementParser parser = new GsonTrainMovementParser();
@@ -34,7 +31,6 @@ public class TrainMovementProducer {
     }
 
     private void sendMessage(TrustTrainMovementMessage m) {
-        log.debug("{} {} {}", m.header.msg_type, m.body.train_id, m.body.train_service_code);
         if (m.isActivation()) {
             activationRepo.putScheduleId(m.body.train_id, m.body.train_uid);
         } else {
@@ -49,13 +45,15 @@ public class TrainMovementProducer {
         String networkRailUsername = args[2];
         String networkRailPassword = args[3];
         checkTopicExists(hazelcastServers);
-        TrainActivationRepo repo = new HazelcastTrainActivationRepo(hazelcastServers);
+        TrainActivationRepo repo = new HzTrainActivationRepo(hazelcastServers);
         new TrainMovementProducer(kafkaServers, repo).produceMessages(networkRailUsername, networkRailPassword);
     }
 
     private static void checkTopicExists(String kafkaServers) {
-        if (!new Topics(kafkaServers).topicExists(Topic.trustMessages)) {
-            throw new RuntimeException("topic does not exist");
+        Topics topics = new Topics(kafkaServers);
+        if (!topics.topicExists(Topic.trustMessages)) {
+            topics.createTopic(Topic.trustMessages);
         }
+
     }
 }

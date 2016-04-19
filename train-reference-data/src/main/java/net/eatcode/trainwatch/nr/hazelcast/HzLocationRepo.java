@@ -6,14 +6,14 @@ import com.hazelcast.core.IMap;
 import net.eatcode.trainwatch.nr.Location;
 import net.eatcode.trainwatch.nr.LocationRepo;
 
-public class HazelcastLocationRepo implements LocationRepo {
+public class HzLocationRepo implements LocationRepo {
 
     private final HazelcastInstance client;
     private final IMap<String, Location> byStanoxMap;
     private final IMap<String, Location> byTiplocMap;
 
-    public HazelcastLocationRepo(String hazelcastServers) {
-        this.client = new HazelcastClientBuilder().buildInstance(hazelcastServers);
+    public HzLocationRepo(String hazelcastServers) {
+        this.client = new HzClientBuilder().buildInstance(hazelcastServers);
         this.byStanoxMap = client.getMap("locationByStanox");
         this.byTiplocMap = client.getMap("locationByTiploc");
     }

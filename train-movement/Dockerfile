@@ -18,4 +18,4 @@ ENV password $nrPassword
 
 LABEL name=version value=3
 
-CMD java -Xms512m -Xmx1g -cp /var/trainwatch/libs/train-movement-1.0-SNAPSHOT.jar net.eatcode.trainwatch.movement.kafka.TrainMovementProducer $kafkaServers $hazelcastServers $username $password
+CMD java -Xms512m -Xmx1g -cp /var/trainwatch/libs/train-movement-1.0-SNAPSHOT.jar net.eatcode.trainwatch.movement.kafka.TrainMovementApp $kafkaServers $hazelcastServers $username $password

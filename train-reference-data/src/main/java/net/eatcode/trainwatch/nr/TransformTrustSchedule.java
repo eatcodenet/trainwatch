@@ -56,6 +56,11 @@ public class TransformTrustSchedule {
     }
 
     private Schedule_location getLocationByType(List<Schedule_location> locs, String type) {
-        return locs.stream().filter(sl -> sl.location_type.equals(type)).findFirst().get();
+        try {
+            return locs.stream().filter(sl -> sl.location_type.equals(type)).findFirst().get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

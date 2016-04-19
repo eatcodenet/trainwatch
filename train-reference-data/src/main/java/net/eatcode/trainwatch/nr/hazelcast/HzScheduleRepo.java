@@ -6,13 +6,13 @@ import com.hazelcast.core.IMap;
 import net.eatcode.trainwatch.nr.Schedule;
 import net.eatcode.trainwatch.nr.ScheduleRepo;
 
-public class HazelcastScheduleRepo implements ScheduleRepo {
+public class HzScheduleRepo implements ScheduleRepo {
 
     private final HazelcastInstance client;
     private final IMap<String, Schedule> map;
 
-    public HazelcastScheduleRepo(String servers) {
-        this.client = new HazelcastClientBuilder().buildInstance(servers);
+    public HzScheduleRepo(String servers) {
+        this.client = new HzClientBuilder().buildInstance(servers);
         this.map = client.getMap("schedule");
     }
 

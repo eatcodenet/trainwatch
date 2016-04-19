@@ -20,12 +20,15 @@ public class PutInRepoProcessor implements Processor<String, TrainMovement> {
 
     @Override
     public void init(ProcessorContext context) {
-        log.info("{}", context);
+        log.info("context {}", context);
     }
 
     @Override
-    public void process(String key, TrainMovement movement) {
-        repo.put(movement);
+    public void process(String key, TrainMovement tm) {
+        if (tm != null) {
+            log.debug("put: {}", tm);
+            repo.put(tm);
+        }
 
     }
 
@@ -36,6 +39,7 @@ public class PutInRepoProcessor implements Processor<String, TrainMovement> {
 
     @Override
     public void close() {
+        log.info("close");
     }
 
 }

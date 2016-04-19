@@ -31,9 +31,9 @@ public class ScheduleRepositoryPopulator {
 
     private void generateScheduleAndFilter(TrustSchedule ts) {
         Schedule schedule = new TransformTrustSchedule(locationRepo).toSchedule(ts);
-        if (schedule.isRunning()) {
+        //if (schedule.isRunning()) {
             scheduleRepo.put(schedule);
-        }
+        //}
     }
 
 }

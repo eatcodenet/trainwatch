@@ -8,15 +8,15 @@ import org.slf4j.LoggerFactory;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 
-import net.eatcode.trainwatch.nr.hazelcast.HazelcastClientBuilder;
+import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 
-public class HazelcastTrainActivationRepo implements TrainActivationRepo {
+public class HzTrainActivationRepo implements TrainActivationRepo {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final HazelcastInstance client;
     private final IMap<String, String> map;
 
-    public HazelcastTrainActivationRepo(String bootStrapServers) {
-        this.client = new HazelcastClientBuilder().buildInstance(bootStrapServers);
+    public HzTrainActivationRepo(String bootStrapServers) {
+        this.client = new HzClientBuilder().buildInstance(bootStrapServers);
         this.map = client.getMap("trainActivation");
     }
 
