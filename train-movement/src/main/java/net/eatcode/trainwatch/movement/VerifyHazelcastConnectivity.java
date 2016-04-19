@@ -1,9 +1,11 @@
-package net.eatcode.trainwatch.nr.hazelcast;
+package net.eatcode.trainwatch.movement;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
+import com.hazelcast.core.MultiMap;
 
 import net.eatcode.trainwatch.nr.Location;
+import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 
 public class VerifyHazelcastConnectivity {
 
@@ -26,7 +28,12 @@ public class VerifyHazelcastConnectivity {
 
         IMap<Object, Object> activations = client.getMap("trainActivation");
         System.out.println("Activations: " + activations.size());
-        client.shutdown();
 
+        MultiMap<Delay, TrainMovement> movements = client.getMultiMap("trainMovement");
+        System.out.println("Movements: " + movements.size());
+        for (TrainMovement tm : movements.values()) {
+            System.out.println("tm: " + tm);
+        }
+        client.shutdown();
     }
 }

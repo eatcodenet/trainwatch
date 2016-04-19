@@ -58,6 +58,7 @@ public class TrainMovementStream {
 
     private TrainMovement createTrainMovement(TrustTrainMovementMessage message) {
         Optional<Schedule> schedule = scheduleLookup.lookup(message);
+        System.out.println("schedule:" + schedule);
         return schedule.map(s -> {
             return new TrainMovement(message.body.train_id, location(s.origin), time(s.departure),
                     location(s.destination), time(s.arrival), delay(message.body.timetable_variation), false);
