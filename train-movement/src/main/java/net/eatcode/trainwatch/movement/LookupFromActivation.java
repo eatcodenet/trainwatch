@@ -3,14 +3,14 @@ package net.eatcode.trainwatch.movement;
 import java.util.Optional;
 
 import net.eatcode.trainwatch.nr.Schedule;
-import net.eatcode.trainwatch.nr.DayScheduleRepo;
+import net.eatcode.trainwatch.nr.ScheduleRepo;
 
 public class LookupFromActivation implements ScheduleLookup {
 
     private final TrainActivationRepo activationRepo;
-    private final DayScheduleRepo scheduleRepo;
+    private final ScheduleRepo scheduleRepo;
 
-    public LookupFromActivation(TrainActivationRepo activationRepo, DayScheduleRepo scheduleRepo) {
+    public LookupFromActivation(TrainActivationRepo activationRepo, ScheduleRepo scheduleRepo) {
         this.activationRepo = activationRepo;
         this.scheduleRepo = scheduleRepo;
     }

@@ -29,7 +29,7 @@ if [ $? -ne 0 ];then
 fi
 
 echo "Populating schedules..."
-java -Xms1g -Xmx1g -cp ${jar_file} net.eatcode.trainwatch.nr.dataimport.PopulateSchedulesApp ${hazelcast_servers} ${schedule_file}
+java -Xms1g -Xmx2g -cp ${jar_file} net.eatcode.trainwatch.nr.dataimport.PopulateSchedulesApp ${hazelcast_servers} ${schedule_file}
 
 if [ $? -ne 0 ];then
   echo "Populating schedules failed!"

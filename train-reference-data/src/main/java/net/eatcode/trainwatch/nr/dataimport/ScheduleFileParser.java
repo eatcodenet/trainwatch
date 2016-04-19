@@ -29,9 +29,8 @@ public class ScheduleFileParser {
         log.debug("sourceFile: {}", this.sourceFile);
         CompletableFuture<Void> result = new CompletableFuture<>();
         CompletableFuture.runAsync(() -> {
-            try (Stream<String> lines = Files.lines(Paths.get(sourceFile)).parallel()) {
-                lines.map(this::toScheduleGson)
-                    .forEach(s -> scheduleProcessor.process(s));
+            try (Stream<String> lines = Files.lines(Paths.get(sourceFile))) {
+                lines.map(this::toScheduleGson).forEach(s -> scheduleProcessor.process(s));
                 result.complete(null);
             } catch (Exception e) {
                 log.error("schedule file parse error", e);

@@ -4,14 +4,14 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 
 import net.eatcode.trainwatch.nr.Schedule;
-import net.eatcode.trainwatch.nr.DayScheduleRepo;
+import net.eatcode.trainwatch.nr.ScheduleRepo;
 
-public class HazelcastDayScheduleRepo implements DayScheduleRepo {
+public class HazelcastScheduleRepo implements ScheduleRepo {
 
     private final HazelcastInstance client;
     private final IMap<String, Schedule> map;
 
-    public HazelcastDayScheduleRepo(String servers) {
+    public HazelcastScheduleRepo(String servers) {
         this.client = new HazelcastClientBuilder().buildInstance(servers);
         this.map = client.getMap("schedule");
     }

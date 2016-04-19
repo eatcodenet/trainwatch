@@ -2,12 +2,14 @@ package net.eatcode.trainwatch.nr.dataimport;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import net.eatcode.trainwatch.nr.Schedule;
-import net.eatcode.trainwatch.nr.DayScheduleRepo;
+import net.eatcode.trainwatch.nr.ScheduleRepo;
 import net.eatcode.trainwatch.nr.Location;
 import net.eatcode.trainwatch.nr.LocationRepo;
+import net.eatcode.trainwatch.nr.Schedule;
 
 public class ScheduleCounter {
+
+    private static final AtomicInteger count = new AtomicInteger(0);
 
     public static void main(String[] args) throws Exception {
         LocationRepo locationRepo = new LocationRepo() {
@@ -27,13 +29,11 @@ public class ScheduleCounter {
             }
         };
 
-        DayScheduleRepo scheduleRepo = new DayScheduleRepo() {
-            private final AtomicInteger count = new AtomicInteger(0);
+        ScheduleRepo scheduleRepo = new ScheduleRepo() {
 
             @Override
             public void put(Schedule schedule) {
                 count.incrementAndGet();
-                // System.out.println(count);
             }
 
             @Override
@@ -43,9 +43,10 @@ public class ScheduleCounter {
         };
         new ScheduleRepositoryPopulator(scheduleRepo, locationRepo)
                 .populateFromFile("/var/trainwatch/data/full-train-schedules").whenCompleteAsync((v, error) -> {
-                    if (error == null)
+                    if (error == null) {
                         System.out.println("Done populating schedules!");
-                    else
+                        System.out.println("Count: " + count.get());
+                    } else
                         error.printStackTrace();
                 }).get();
     }

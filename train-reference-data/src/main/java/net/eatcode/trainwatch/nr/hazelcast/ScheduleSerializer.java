@@ -2,7 +2,7 @@ package net.eatcode.trainwatch.nr.hazelcast;
 
 import net.eatcode.trainwatch.nr.Schedule;
 
-public class DayScheduleSerializer extends CommonSerializer<Schedule> {
+public class ScheduleSerializer extends CommonSerializer<Schedule> {
 
     @Override
     public int getTypeId() {

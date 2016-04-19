@@ -24,7 +24,7 @@ import net.eatcode.trainwatch.movement.TrainMovementRepo;
 import net.eatcode.trainwatch.movement.TrustTrainMovementMessage;
 import net.eatcode.trainwatch.nr.Schedule;
 import net.eatcode.trainwatch.nr.Location;
-import net.eatcode.trainwatch.nr.hazelcast.HazelcastDayScheduleRepo;
+import net.eatcode.trainwatch.nr.hazelcast.HazelcastScheduleRepo;
 
 public class TrainMovementStream {
 
@@ -81,7 +81,7 @@ public class TrainMovementStream {
         String kafkaServers = "docker.local:9092";
         String hazelcastServers = args[1];
         ScheduleLookup lookup = new LookupFromActivation(new HazelcastTrainActivationRepo(hazelcastServers),
-                new HazelcastDayScheduleRepo(hazelcastServers));
+                new HazelcastScheduleRepo(hazelcastServers));
         TrainMovementRepo trainMovementRepo = new HazelcastTrainMovementRepo(hazelcastServers);
         new TrainMovementStream(kafkaServers, lookup, trainMovementRepo).process();
     }

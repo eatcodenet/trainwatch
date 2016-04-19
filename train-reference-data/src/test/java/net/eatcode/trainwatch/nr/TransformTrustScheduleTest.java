@@ -1,12 +1,10 @@
 package net.eatcode.trainwatch.nr;
 
-import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 import org.junit.Test;
@@ -17,16 +15,14 @@ public class TransformTrustScheduleTest {
 
     @Test
     public void toDaySchedule() throws IOException {
-
-        Schedule schedule = new TransformTrustSchedule(new StubGeoLocatiobRepo())
-                .toSchedule(trustScheduleFromFile());
+        Schedule schedule = new TransformTrustSchedule(new StubGeoLocatiobRepo()).toSchedule(trustScheduleFromFile());
         assertThat(schedule.destination.stanox, is("a stanox"));
         assertThat(schedule.origin.stanox, is("a stanox"));
         assertThat(schedule.departure, is(LocalTime.parse("12:54")));
         assertThat(schedule.arrival, is(LocalTime.parse("15:20")));
         assertThat(schedule.trainServiceCode, is("57610314"));
         assertThat(schedule.atocCode, is("ZZ"));
-        assertThat(schedule.runDays, is(asList(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)));
+        assertThat(schedule.runDays, is("0000011"));
     }
 
     private TrustSchedule trustScheduleFromFile() throws IOException {

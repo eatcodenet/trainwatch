@@ -1,10 +1,8 @@
 package net.eatcode.trainwatch.nr;
 
 import java.io.Serializable;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Objects;
 
 public class Schedule implements Serializable {
@@ -20,7 +18,11 @@ public class Schedule implements Serializable {
     public LocalTime arrival;
     public String trainServiceCode;
     public String atocCode;
-    public List<DayOfWeek> runDays;
+    public String runDays;
+
+    public boolean isRunning() {
+        return endDate.isAfter(LocalDate.now());
+    }
 
     @Override
     public int hashCode() {
@@ -30,6 +32,13 @@ public class Schedule implements Serializable {
     @Override
     public boolean equals(Object obj) {
         return Objects.equals(id, ((Schedule) obj).id);
+    }
+
+    @Override
+    public String toString() {
+        return "Schedule [id=" + id + ", startDate=" + startDate + ", endDate=" + endDate + ", origin=" + origin
+                + ", departure=" + departure + ", destination=" + destination + ", arrival=" + arrival
+                + ", trainServiceCode=" + trainServiceCode + ", atocCode=" + atocCode + "]";
     }
 
 }
