@@ -11,7 +11,7 @@ import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 public class HzTrainMovementRepo implements TrainMovementRepo {
 
     private final HazelcastInstance client;
-    private final MultiMap<Delay, TrainMovement> map;
+    private final MultiMap<DelayWindow, TrainMovement> map;
 
     public HzTrainMovementRepo(String servers) {
         this.client = new HzClientBuilder().buildInstance(servers);
@@ -24,13 +24,13 @@ public class HzTrainMovementRepo implements TrainMovementRepo {
     }
 
     @Override
-    public List<TrainMovement> getByMaxDelay(Delay delay) {
-        return map.get(delay).stream().collect(Collectors.toList());
+    public List<TrainMovement> getByMaxDelay(DelayWindow delayWindow) {
+        return map.get(delayWindow).stream().collect(Collectors.toList());
     }
 
     @Override
     public void put(TrainMovement tm) {
-        map.put(Delay.from(tm.delayInMins()), tm);
+        map.put(DelayWindow.from(tm.delayInMins()), tm);
     }
 
     public void shutdown() {

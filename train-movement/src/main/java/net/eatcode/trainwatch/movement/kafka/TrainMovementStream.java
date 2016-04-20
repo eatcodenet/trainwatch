@@ -2,7 +2,6 @@ package net.eatcode.trainwatch.movement.kafka;
 
 import static net.eatcode.trainwatch.movement.kafka.Topic.trustMessages;
 
-import java.time.LocalTime;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -23,7 +22,9 @@ import net.eatcode.trainwatch.movement.TrainMovement;
 import net.eatcode.trainwatch.movement.TrainMovementRepo;
 import net.eatcode.trainwatch.movement.TrustTrainMovementMessage;
 import net.eatcode.trainwatch.nr.Location;
+import net.eatcode.trainwatch.nr.LocationRepo;
 import net.eatcode.trainwatch.nr.Schedule;
+import net.eatcode.trainwatch.nr.hazelcast.HzLocationRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
 
 public class TrainMovementStream {
@@ -32,12 +33,14 @@ public class TrainMovementStream {
     private final ScheduleLookup scheduleLookup;
     private final String kafkaServers;
     private final TrainMovementRepo trainMovementRepo;
+    private final LocationRepo locationRepo;
 
-    public TrainMovementStream(String kafkaServers, ScheduleLookup scheduleLookup,
-            TrainMovementRepo trainMovementRepo) {
+    public TrainMovementStream(String kafkaServers, ScheduleLookup scheduleLookup, TrainMovementRepo trainMovementRepo,
+            LocationRepo locationRepo) {
         this.kafkaServers = kafkaServers;
         this.scheduleLookup = scheduleLookup;
         this.trainMovementRepo = trainMovementRepo;
+        this.locationRepo = locationRepo;
     }
 
     public void process() {
@@ -56,35 +59,28 @@ public class TrainMovementStream {
         new KafkaStreams(builder, props).start();
     }
 
-    private TrainMovement createTrainMovement(TrustTrainMovementMessage message) {
-        Optional<Schedule> schedule = scheduleLookup.lookup(message);
-        System.out.println("schedule:" + schedule);
+    private TrainMovement createTrainMovement(TrustTrainMovementMessage msg) {
+        if (!msg.header.msg_type.equals("0003"))
+            return null;
+        Optional<Schedule> schedule = scheduleLookup.lookup(msg);
+        if (schedule.isPresent())
+            log.info("schedule:" + schedule);
         return schedule.map(s -> {
-            return new TrainMovement(message.body.train_id, location(s.origin), time(s.departure),
-                    location(s.destination), time(s.arrival), delay(message.body.timetable_variation), false);
+            Location current = locationRepo.getByStanox(msg.body.loc_stanox);
+            return new TrainMovement(msg.body.train_id, msg.body.actual_timestamp, current,
+                    msg.body.timetable_variation, s);
         }).orElse(null);
 
     }
 
-    private String location(Location location) {
-        return location.description + " (" + location.crs + ")";
-    }
-
-    private String time(LocalTime departure) {
-        return departure.toString();
-    }
-
-    private Integer delay(String timetable_variation) {
-        return Integer.parseInt(timetable_variation);
-    }
-
     public static void main(String[] args) {
-        String kafkaServers = "docker.local:9092";
+        String kafkaServers = args[0];
         String hazelcastServers = args[1];
-        ScheduleLookup lookup = new HzScheduleLookup(new HzTrainActivationRepo(hazelcastServers),
+        ScheduleLookup scheduleLookup = new HzScheduleLookup(new HzTrainActivationRepo(hazelcastServers),
                 new HzScheduleRepo(hazelcastServers));
         TrainMovementRepo trainMovementRepo = new HzTrainMovementRepo(hazelcastServers);
-        new TrainMovementStream(kafkaServers, lookup, trainMovementRepo).process();
+        LocationRepo locationRepo = new HzLocationRepo(hazelcastServers);
+        new TrainMovementStream(kafkaServers, scheduleLookup, trainMovementRepo, locationRepo).process();
     }
 
 }

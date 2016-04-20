@@ -5,6 +5,8 @@ import net.eatcode.trainwatch.movement.HzTrainActivationRepo;
 import net.eatcode.trainwatch.movement.HzTrainMovementRepo;
 import net.eatcode.trainwatch.movement.ScheduleLookup;
 import net.eatcode.trainwatch.movement.TrainMovementRepo;
+import net.eatcode.trainwatch.nr.LocationRepo;
+import net.eatcode.trainwatch.nr.hazelcast.HzLocationRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
 
 public class TrainMovementApp {
@@ -25,10 +27,11 @@ public class TrainMovementApp {
 
         Runnable consumer = () -> {
             System.out.println("running consumer");
-            ScheduleLookup lookup = new HzScheduleLookup(new HzTrainActivationRepo(hazelcastServers),
+            ScheduleLookup scheduleLookup = new HzScheduleLookup(new HzTrainActivationRepo(hazelcastServers),
                     new HzScheduleRepo(hazelcastServers));
             TrainMovementRepo trainMovementRepo = new HzTrainMovementRepo(hazelcastServers);
-            new TrainMovementStream(kafkaServers, lookup, trainMovementRepo).process();
+            LocationRepo locationRepo = new HzLocationRepo(hazelcastServers);
+            new TrainMovementStream(kafkaServers, scheduleLookup, trainMovementRepo, locationRepo).process();
         };
 
         new Thread(producer).start();

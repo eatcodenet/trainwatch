@@ -1,29 +1,41 @@
 package net.eatcode.trainwatch.movement;
 
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.Objects;
 
+import net.eatcode.trainwatch.nr.Location;
+import net.eatcode.trainwatch.nr.Schedule;
+
+// TODO ADD CURRENT LOCATION AND TIMESTAMP
 public class TrainMovement implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final String origin;
-    private final String departure;
-
-    private final String destination;
-    private final String arrival;
     private final String trainId;
+    private final Location origin;
+    private final LocalTime departure;
+
+    private final Location destination;
+    private final LocalTime arrival;
 
     private final Integer delay;
+    private final Location currentLocation;
+    private final String timestamp;
 
-    public TrainMovement(String id, String origin, String departure, String destination, String arrival, Integer delay,
-            boolean isEstimated) {
-        this.trainId = id;
-        this.origin = origin.replaceAll("\\(\\)", "");
-        this.departure = isEstimated ? " " : departure;
-        this.destination = destination.replaceAll("\\(\\)", "");
-        this.arrival = isEstimated ? " " : arrival;
-        this.delay = delay;
+    public TrainMovement(String trainId, String timestamp, Location currentLocation, String delay, Schedule schedule) {
+        this.trainId = trainId;
+        this.timestamp = timestamp;
+        this.currentLocation = currentLocation;
+        this.origin = schedule.origin;
+        this.departure = schedule.departure;
+        this.destination = schedule.destination;
+        this.arrival = schedule.arrival;
+        this.delay = parse(delay);
+    }
+
+    public int delayInMins() {
+        return this.delay;
     }
 
     @Override
@@ -41,15 +53,26 @@ public class TrainMovement implements Serializable {
         return Objects.equals(trainId, ((TrainMovement) obj).trainId);
     }
 
-    static class Formatted {
-        public String format(TrainMovement tm) {
-            return String.format("%1$-5s %2$-40s %3$-5s %4$-40s %5$s delay", tm.departure, tm.origin, tm.arrival,
-                    tm.destination, tm.delay);
+    private Integer parse(String delay) {
+        try {
+            return Integer.parseInt(delay);
+        } catch (Exception e) {
         }
+        return 0;
     }
 
-    public int delayInMins() {
-        return this.delay;
+    static class Formatted {
+        public String format(TrainMovement tm) {
+            return String.format("%1$-5s %2$-40s %3$-40s", tm.departure, format(tm.origin), format(tm.destination));
+        }
+
+        private String format(Location l) {
+            try {
+                return l.description + " (" + l.crs + ")";
+            } catch (Exception e) {
+            }
+            return "N/A";
+        }
     }
 
 }

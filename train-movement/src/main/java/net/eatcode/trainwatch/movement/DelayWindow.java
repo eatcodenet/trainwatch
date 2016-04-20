@@ -1,9 +1,9 @@
 package net.eatcode.trainwatch.movement;
 
-public enum Delay {
+public enum DelayWindow {
     upTo1Min, upTo5Mins, upTo10Mins, upTo15mins, over15mins;
 
-    public static Delay from(int delayInMins) {
+    public static DelayWindow from(int delayInMins) {
 
         if (delayInMins <= 1)
             return upTo1Min;

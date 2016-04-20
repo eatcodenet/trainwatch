@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface TrainMovementRepo {
 
-    List<TrainMovement> getByMaxDelay(Delay d);
+    List<TrainMovement> getByMaxDelay(DelayWindow d);
 
     List<TrainMovement> getAll();
 
