@@ -23,13 +23,18 @@ public class TrainMovement implements Serializable {
     private final Location currentLocation;
     private final String timestamp;
 
+    private final String originCrs;
+    private final String destinationCrs;
+
     public TrainMovement(String trainId, String timestamp, Location currentLocation, String delay, Schedule schedule) {
         this.trainId = trainId;
         this.timestamp = timestamp;
         this.currentLocation = currentLocation;
         this.origin = schedule.origin;
+        this.originCrs = schedule.origin.crs;
         this.departure = schedule.departure;
         this.destination = schedule.destination;
+        this.destinationCrs = schedule.destination.crs;
         this.arrival = schedule.arrival;
         this.delay = parse(delay);
     }
@@ -63,16 +68,13 @@ public class TrainMovement implements Serializable {
 
     static class Formatted {
         public String format(TrainMovement tm) {
-            return String.format("%1$-5s %2$-40s %3$-40s", tm.departure, format(tm.origin), format(tm.destination));
+            String oCrs = tm.originCrs.equals("") ? "---" : tm.originCrs;
+            String dCrs = tm.destinationCrs.equals("") ? "---" : tm.destinationCrs;
+            return String.format("%1$s %2$-3s %3$-40s %4$-3s %5$-40s %6$s %7$2dm delay location: %8$s", tm.departure,
+                    oCrs, tm.origin.description, dCrs, tm.destination.description, tm.arrival, tm.delay,
+                    tm.currentLocation.description);
         }
 
-        private String format(Location l) {
-            try {
-                return l.description + " (" + l.crs + ")";
-            } catch (Exception e) {
-            }
-            return "N/A";
-        }
     }
 
 }

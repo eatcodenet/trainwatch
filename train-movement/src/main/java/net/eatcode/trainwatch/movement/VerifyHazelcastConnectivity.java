@@ -35,10 +35,11 @@ public class VerifyHazelcastConnectivity {
         System.out.println("Activations: " + activations.size());
 
         MultiMap<DelayWindow, TrainMovement> movements = client.getMultiMap("trainMovement");
+        //movements.clear();
         System.out.println("Movements: " + movements.size());
-//        for (TrainMovement tm : movements.values()) {
-//            System.out.println("tm: " + tm);
-//        }
+        for(TrainMovement m: movements.values()) {
+            System.out.println(m);
+        }
         client.shutdown();
     }
 }
