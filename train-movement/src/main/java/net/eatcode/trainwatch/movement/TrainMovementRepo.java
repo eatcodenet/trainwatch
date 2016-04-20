@@ -7,4 +7,6 @@ public interface TrainMovementRepo {
     List<TrainMovement> getByMaxDelay(DelayWindow d);
 
     void put(TrainMovement tm);
+
+    void evictAll(int olderThanDays);
 }

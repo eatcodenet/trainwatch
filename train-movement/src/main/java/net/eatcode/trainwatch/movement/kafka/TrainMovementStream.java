@@ -66,7 +66,7 @@ public class TrainMovementStream {
         Optional<Schedule> schedule = scheduleLookup.lookup(msg);
         return schedule.map(s -> {
             Location current = locationRepo.getByStanox(msg.body.loc_stanox);
-            return new TrainMovement(msg.body.train_id, dateTime(msg), current, msg.body.timetable_variation, s);
+            return new TrainMovement(msg.body.train_id, dateTime(msg), current, msg.body.timetable_variation, msg.body.train_terminated, s);
         }).orElse(null);
     }
 

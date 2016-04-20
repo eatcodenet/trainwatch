@@ -26,7 +26,10 @@ public class TrainMovement implements Serializable {
     private final String originCrs;
     private final String destinationCrs;
 
-    public TrainMovement(String trainId, LocalDateTime timestamp, Location current, String delay, Schedule schedule) {
+    private final boolean hasArrived;
+
+    public TrainMovement(String trainId, LocalDateTime timestamp, Location current, String delay, String terminated,
+            Schedule schedule) {
         this.trainId = trainId;
         this.timestamp = timestamp;
         this.currentLocation = current;
@@ -36,11 +39,20 @@ public class TrainMovement implements Serializable {
         this.destination = schedule.destination;
         this.destinationCrs = destination == null ? "" : destination.crs;
         this.arrival = schedule.arrival;
+        this.hasArrived = Boolean.valueOf(terminated);
         this.delay = parse(delay);
     }
 
     public int delayInMins() {
         return this.delay;
+    }
+
+    public LocalDateTime timestamp() {
+        return this.timestamp;
+    }
+
+    public boolean hasArrivedAtDest() {
+        return hasArrived;
     }
 
     @Override
