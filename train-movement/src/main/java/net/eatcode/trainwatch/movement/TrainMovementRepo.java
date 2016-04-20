@@ -6,7 +6,5 @@ public interface TrainMovementRepo {
 
     List<TrainMovement> getByMaxDelay(DelayWindow d);
 
-    List<TrainMovement> getAll();
-
     void put(TrainMovement tm);
 }

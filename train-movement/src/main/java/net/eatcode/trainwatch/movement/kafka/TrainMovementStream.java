@@ -2,6 +2,8 @@ package net.eatcode.trainwatch.movement.kafka;
 
 import static net.eatcode.trainwatch.movement.kafka.Topic.trustMessages;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -60,17 +62,16 @@ public class TrainMovementStream {
     }
 
     private TrainMovement createTrainMovement(TrustTrainMovementMessage msg) {
-        if (!msg.header.msg_type.equals("0003"))
-            return null;
+        if (!msg.header.msg_type.equals("0003")) return null;
         Optional<Schedule> schedule = scheduleLookup.lookup(msg);
-        if (schedule.isPresent())
-            log.info("schedule:" + schedule);
         return schedule.map(s -> {
             Location current = locationRepo.getByStanox(msg.body.loc_stanox);
-            return new TrainMovement(msg.body.train_id, msg.body.actual_timestamp, current,
-                    msg.body.timetable_variation, s);
+            return new TrainMovement(msg.body.train_id, dateTime(msg), current, msg.body.timetable_variation, s);
         }).orElse(null);
+    }
 
+    private LocalDateTime dateTime(TrustTrainMovementMessage msg) {
+        return LocalDateTime.ofEpochSecond(Long.parseLong(msg.body.actual_timestamp) / 1000, 0, ZoneOffset.UTC);
     }
 
     public static void main(String[] args) {

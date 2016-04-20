@@ -25,8 +25,8 @@ public class TrainMovementApp {
                     .produceMessages(networkRailUsername, networkRailPassword);
         };
 
-        Runnable consumer = () -> {
-            System.out.println("running consumer");
+        Runnable stream = () -> {
+            System.out.println("running stream");
             ScheduleLookup scheduleLookup = new HzScheduleLookup(new HzTrainActivationRepo(hazelcastServers),
                     new HzScheduleRepo(hazelcastServers));
             TrainMovementRepo trainMovementRepo = new HzTrainMovementRepo(hazelcastServers);
@@ -35,8 +35,7 @@ public class TrainMovementApp {
         };
 
         new Thread(producer).start();
-        Thread.sleep(3000);
-        new Thread(consumer).start();
+        new Thread(stream).start();
     }
 
     private static void checkTopicExists(String zookeeperServers) {

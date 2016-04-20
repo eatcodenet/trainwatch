@@ -19,17 +19,13 @@ public class HzTrainMovementRepo implements TrainMovementRepo {
     }
 
     @Override
-    public List<TrainMovement> getAll() {
-        return map.values().stream().collect(Collectors.toList());
-    }
-
-    @Override
     public List<TrainMovement> getByMaxDelay(DelayWindow delayWindow) {
         return map.get(delayWindow).stream().collect(Collectors.toList());
     }
 
     @Override
     public void put(TrainMovement tm) {
+        map.remove(tm);
         map.put(DelayWindow.from(tm.delayInMins()), tm);
     }
 
