@@ -8,8 +8,10 @@ import java.util.Optional;
 import java.util.Properties;
 
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KStreamBuilder;
@@ -54,19 +56,21 @@ public class TrainMovementStream {
 
         KStreamBuilder builder = new KStreamBuilder();
         KStream<String, byte[]> movements = builder.stream(kDeserializer, vDeserializer, trustMessages.topicName());
-        movements.mapValues(value -> {
-            return createTrainMovement(KryoUtils.fromByteArray(value, TrustTrainMovementMessage.class));
-        }).process(() -> new PutInRepoProcessor(this.trainMovementRepo));
+        movements.mapValues(value -> createMovement(KryoUtils.fromByteArray(value, TrustTrainMovementMessage.class)));
+        movements.to(Topic.trainMovement.topicName(), new StringSerializer(), new ByteArraySerializer());
+
         log.info("Starting stream...");
         new KafkaStreams(builder, props).start();
     }
 
-    private TrainMovement createTrainMovement(TrustTrainMovementMessage msg) {
-        if (!msg.header.msg_type.equals("0003")) return null;
+    private TrainMovement createMovement(TrustTrainMovementMessage msg) {
+        if (!msg.header.msg_type.equals("0003"))
+            return null;
         Optional<Schedule> schedule = scheduleLookup.lookup(msg);
         return schedule.map(s -> {
             Location current = locationRepo.getByStanox(msg.body.loc_stanox);
-            return new TrainMovement(msg.body.train_id, dateTime(msg), current, msg.body.timetable_variation, msg.body.train_terminated, s);
+            return new TrainMovement(msg.body.train_id, dateTime(msg), current, msg.body.timetable_variation,
+                    msg.body.train_terminated, s);
         }).orElse(null);
     }
 

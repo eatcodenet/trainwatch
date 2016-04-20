@@ -8,13 +8,13 @@ import org.slf4j.LoggerFactory;
 import net.eatcode.trainwatch.movement.TrainMovement;
 import net.eatcode.trainwatch.movement.TrainMovementRepo;
 
-public class PutInRepoProcessor implements Processor<String, TrainMovement> {
+public class TrainMovementProcessor implements Processor<String, TrainMovement> {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final TrainMovementRepo repo;
 
-    public PutInRepoProcessor(TrainMovementRepo trainMovementRepo) {
+    public TrainMovementProcessor(TrainMovementRepo trainMovementRepo) {
         repo = trainMovementRepo;
     }
 

@@ -21,8 +21,9 @@ public class TrainMovementApp {
 
         Runnable producer = () -> {
             System.out.println("running producer");
-            new TrainMovementProducer(kafkaServers, new HzTrainActivationRepo(hazelcastServers))
-                    .produceMessages(networkRailUsername, networkRailPassword);
+            new TrainMovementProducer(kafkaServers, new HzTrainActivationRepo(hazelcastServers),
+                    new HzScheduleRepo(hazelcastServers), new HzLocationRepo(hazelcastServers))
+                            .produceMessages(networkRailUsername, networkRailPassword);
         };
 
         Runnable stream = () -> {
@@ -35,7 +36,7 @@ public class TrainMovementApp {
         };
 
         new Thread(producer).start();
-        new Thread(stream).start();
+        // new Thread(stream).start();
     }
 
     private static void checkTopicExists(String zookeeperServers) {

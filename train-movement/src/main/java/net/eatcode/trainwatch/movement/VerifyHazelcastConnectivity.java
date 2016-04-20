@@ -15,7 +15,8 @@ public class VerifyHazelcastConnectivity {
     private static final Logger log = LoggerFactory.getLogger(VerifyHazelcastConnectivity.class);
 
     public static void main(String[] args) {
-        HazelcastInstance client = new HzClientBuilder().buildInstance("trainwatch.eatcode.net:5701");
+        //HazelcastInstance client = new HzClientBuilder().buildInstance("trainwatch.eatcode.net:5701");
+        HazelcastInstance client = new HzClientBuilder().buildInstance("192.168.64.3:5701");
         IMap<String, Location> locations = client.getMap("locationByTiploc");
 
         Location location = locations.get("SNDYPL1");
