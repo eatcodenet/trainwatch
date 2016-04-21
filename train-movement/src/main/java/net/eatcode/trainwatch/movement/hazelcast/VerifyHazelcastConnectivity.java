@@ -15,9 +15,10 @@ import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 public class VerifyHazelcastConnectivity {
 
     private static final Logger log = LoggerFactory.getLogger(VerifyHazelcastConnectivity.class);
+    private static final String hzServer = "52.49.248.138";
 
     public static void main(String[] args) {
-        HazelcastInstance client = new HzClientBuilder().buildInstance("192.168.64.4:5701");
+        HazelcastInstance client = new HzClientBuilder().buildInstance(hzServer);
         try {
             runSomeQueries(client);
         } finally {
@@ -26,10 +27,11 @@ public class VerifyHazelcastConnectivity {
     }
 
     private static void runSomeQueries(HazelcastInstance client) {
+
+        log.info("Server: {}", hzServer);
+
         IMap<String, Location> locations = client.getMap("locationByTiploc");
-
         Location location = locations.get("SNDYPL1");
-
         log.info("{}", locations.size());
         System.out.println(location);
 

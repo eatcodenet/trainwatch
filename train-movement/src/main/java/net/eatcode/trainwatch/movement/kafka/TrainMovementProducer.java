@@ -54,7 +54,7 @@ public class TrainMovementProducer {
 
     private void sendMessage(TrustMovementMessage msg) {
         if (msg.isActivation()) {
-            activationRepo.putScheduleId(msg.body.train_id, msg.body.train_uid);
+            activationRepo.put(new TrainActivation(msg.body.train_id, msg.body.train_uid));
         } else {
             producer.send(new ProducerRecord<>(trainMovement.topicName(), msg.body.train_id,
                     KryoUtils.toByteArray(toTrainMovement(msg))));
