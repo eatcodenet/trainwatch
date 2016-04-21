@@ -1,4 +1,4 @@
-<configuration debug="true">
+<configuration debug="false">
   <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
       <pattern>%date{ISO8601} %-5level %-20logger{0} - %msg%n</pattern>
