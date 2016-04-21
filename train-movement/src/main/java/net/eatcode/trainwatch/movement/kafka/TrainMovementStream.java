@@ -13,9 +13,9 @@ import org.apache.kafka.streams.kstream.KStreamBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.eatcode.trainwatch.movement.HzTrainMovementRepo;
 import net.eatcode.trainwatch.movement.TrainMovement;
 import net.eatcode.trainwatch.movement.TrainMovementRepo;
+import net.eatcode.trainwatch.movement.hazelcast.HzTrainMovementRepo;
 
 public class TrainMovementStream {
 

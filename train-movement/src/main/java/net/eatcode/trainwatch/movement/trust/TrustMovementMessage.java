@@ -1,19 +1,19 @@
-package net.eatcode.trainwatch.movement;
+package net.eatcode.trainwatch.movement.trust;
 
 /*
  *  auto generated from sample JSON message
  */
-public class TrustTrainMovementMessage {
+public class TrustMovementMessage {
 
     public Header header;
     public Body body;
 
-    public TrustTrainMovementMessage(Header header, Body body) {
+    public TrustMovementMessage(Header header, Body body) {
         this.header = header;
         this.body = body;
     }
 
-    public TrustTrainMovementMessage() {
+    public TrustMovementMessage() {
         this.header = new Header();
         this.body = new Body();
     }

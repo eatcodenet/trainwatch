@@ -1,4 +1,4 @@
-package net.eatcode.trainwatch.movement;
+package net.eatcode.trainwatch.movement.hazelcast;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -7,6 +7,9 @@ import java.util.stream.Collectors;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.MultiMap;
 
+import net.eatcode.trainwatch.movement.DelayWindow;
+import net.eatcode.trainwatch.movement.TrainMovement;
+import net.eatcode.trainwatch.movement.TrainMovementRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 
 public class HzTrainMovementRepo implements TrainMovementRepo {

@@ -25,10 +25,8 @@ public class TrainMovementProcessor implements Processor<String, TrainMovement> 
 
     @Override
     public void process(String key, TrainMovement tm) {
-        if (tm != null) {
-            log.debug("put: {}", tm);
-            repo.put(tm);
-        }
+        log.debug("put: {}", tm);
+        repo.put(tm);
 
     }
 

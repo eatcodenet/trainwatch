@@ -1,4 +1,4 @@
-package net.eatcode.trainwatch.movement;
+package net.eatcode.trainwatch.movement.trust;
 
 import java.io.IOException;
 
@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import net.ser1.stomp.Client;
 
-public class TrainMovementStomp {
+public class TrustMessagesStomp {
 
-    private final Logger log = LoggerFactory.getLogger(TrainMovementStomp.class);
+    private final Logger log = LoggerFactory.getLogger(TrustMessagesStomp.class);
 
     private final String host = "datafeeds.networkrail.co.uk";
     private final Integer port = 61618;
@@ -21,12 +21,12 @@ public class TrainMovementStomp {
     private final String password;
     private Client client;
 
-    public TrainMovementStomp(String username, String password) {
+    public TrustMessagesStomp(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    public void subscribe(TrainMovementListener listener) {
+    public void subscribe(TrustMessageListener listener) {
         try {
             connectToHost();
             subscribeToTopic(listener);
@@ -35,7 +35,7 @@ public class TrainMovementStomp {
         }
     }
 
-    private void subscribeToTopic(TrainMovementListener listener) {
+    private void subscribeToTopic(TrustMessageListener listener) {
         client.subscribe(trainMovementTopic, (headers, body) -> {
             listener.onTrainMovement(body);
         });

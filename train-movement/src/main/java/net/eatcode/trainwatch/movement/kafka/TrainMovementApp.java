@@ -1,8 +1,9 @@
 package net.eatcode.trainwatch.movement.kafka;
 
-import net.eatcode.trainwatch.movement.HzTrainActivationRepo;
-import net.eatcode.trainwatch.movement.HzTrainMovementRepo;
-import net.eatcode.trainwatch.movement.TrainMovementRepo;
+import static net.eatcode.trainwatch.movement.kafka.Topic.trainMovement;
+
+import net.eatcode.trainwatch.movement.hazelcast.HzTrainActivationRepo;
+import net.eatcode.trainwatch.movement.hazelcast.HzTrainMovementRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzLocationRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
 
@@ -25,19 +26,17 @@ public class TrainMovementApp {
 
         Runnable stream = () -> {
             System.out.println("running stream");
-            TrainMovementRepo trainMovementRepo = new HzTrainMovementRepo(hazelcastServers);
-            new TrainMovementStream(kafkaServers, trainMovementRepo).process();
+            new TrainMovementStream(kafkaServers, new HzTrainMovementRepo(hazelcastServers)).process();
         };
 
         new Thread(producer).start();
-        // new Thread(stream).start();
+        new Thread(stream).start();
     }
 
     private static void checkTopicExists(String zookeeperServers) {
         Topics topics = new Topics(zookeeperServers);
-        if (!topics.topicExists(Topic.trainMovement)) {
-            topics.createTopic(Topic.trainMovement);
+        if (!topics.topicExists(trainMovement)) {
+            throw new RuntimeException("Topic does not exist: " + trainMovement);
         }
-
     }
 }

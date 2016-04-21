@@ -1,4 +1,4 @@
-package net.eatcode.trainwatch.movement;
+package net.eatcode.trainwatch.movement.hazelcast;
 
 import java.util.Optional;
 
@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 
+import net.eatcode.trainwatch.movement.TrainActivationRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 
 public class HzTrainActivationRepo implements TrainActivationRepo {
@@ -17,6 +18,7 @@ public class HzTrainActivationRepo implements TrainActivationRepo {
 
     public HzTrainActivationRepo(String bootStrapServers) {
         this.client = new HzClientBuilder().buildInstance(bootStrapServers);
+        this.client.getConfig().getMapConfig("trainActivation").setTimeToLiveSeconds(5);
         this.map = client.getMap("trainActivation");
     }
 

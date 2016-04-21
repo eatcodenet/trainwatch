@@ -12,13 +12,13 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.eatcode.trainwatch.movement.GsonTrainMovementParser;
-import net.eatcode.trainwatch.movement.HzTrainActivationRepo;
 import net.eatcode.trainwatch.movement.TrainActivationRepo;
 import net.eatcode.trainwatch.movement.TrainMovement;
-import net.eatcode.trainwatch.movement.TrainMovementParser;
-import net.eatcode.trainwatch.movement.TrainMovementStomp;
-import net.eatcode.trainwatch.movement.TrustTrainMovementMessage;
+import net.eatcode.trainwatch.movement.hazelcast.HzTrainActivationRepo;
+import net.eatcode.trainwatch.movement.trust.GsonTrustMessageParser;
+import net.eatcode.trainwatch.movement.trust.TrustMessageParser;
+import net.eatcode.trainwatch.movement.trust.TrustMessagesStomp;
+import net.eatcode.trainwatch.movement.trust.TrustMovementMessage;
 import net.eatcode.trainwatch.nr.Location;
 import net.eatcode.trainwatch.nr.LocationRepo;
 import net.eatcode.trainwatch.nr.Schedule;
@@ -31,7 +31,7 @@ public class TrainMovementProducer {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final KafkaProducer<String, byte[]> producer;
-    private final TrainMovementParser parser = new GsonTrainMovementParser();
+    private final TrustMessageParser parser = new GsonTrustMessageParser();
     private final TrainActivationRepo activationRepo;
     private final LocationRepo locationRepo;
     private final ScheduleRepo scheduleRepo;
@@ -46,13 +46,13 @@ public class TrainMovementProducer {
     }
 
     public void produceMessages(String nrUsername, String nrPassword) {
-        TrainMovementStomp stomp = new TrainMovementStomp(nrUsername, nrPassword);
+        TrustMessagesStomp stomp = new TrustMessagesStomp(nrUsername, nrPassword);
         stomp.subscribe(movements -> {
             parser.parseArray(movements).forEach((tm) -> sendMessage(tm));
         });
     }
 
-    private void sendMessage(TrustTrainMovementMessage msg) {
+    private void sendMessage(TrustMovementMessage msg) {
         if (msg.isActivation()) {
             activationRepo.putScheduleId(msg.body.train_id, msg.body.train_uid);
         } else {
@@ -61,7 +61,7 @@ public class TrainMovementProducer {
         }
     }
 
-    private TrainMovement toTrainMovement(TrustTrainMovementMessage msg) {
+    private TrainMovement toTrainMovement(TrustMovementMessage msg) {
         Optional<Schedule> schedule = lookupSchedule(msg);
         return schedule.map(s -> {
             Location current = locationRepo.getByStanox(msg.body.loc_stanox);
@@ -72,12 +72,12 @@ public class TrainMovementProducer {
         }).orElse(null);
     }
 
-    public Optional<Schedule> lookupSchedule(TrustTrainMovementMessage msg) {
+    public Optional<Schedule> lookupSchedule(TrustMovementMessage msg) {
         return activationRepo.getScheduleId(msg.body.train_id)
                 .map(value -> scheduleRepo.get(activationRepo.getScheduleId(msg.body.train_id).get()));
     }
 
-    private LocalDateTime dateTime(TrustTrainMovementMessage msg) {
+    private LocalDateTime dateTime(TrustMovementMessage msg) {
         return LocalDateTime.ofEpochSecond(Long.parseLong(msg.body.actual_timestamp) / 1000, 0, ZoneOffset.UTC);
     }
 
