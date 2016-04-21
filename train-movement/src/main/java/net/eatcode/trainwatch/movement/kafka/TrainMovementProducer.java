@@ -9,8 +9,6 @@ import java.util.Properties;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.eatcode.trainwatch.movement.TrainActivationRepo;
 import net.eatcode.trainwatch.movement.TrainMovement;
@@ -27,8 +25,6 @@ import net.eatcode.trainwatch.nr.hazelcast.HzLocationRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
 
 public class TrainMovementProducer {
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final KafkaProducer<String, byte[]> producer;
     private final TrustMessageParser parser = new GsonTrustMessageParser();
@@ -67,7 +63,6 @@ public class TrainMovementProducer {
             Location current = locationRepo.getByStanox(msg.body.loc_stanox);
             TrainMovement trainMovement = new TrainMovement(msg.body.train_id, dateTime(msg), current,
                     msg.body.timetable_variation, msg.body.train_terminated, s);
-            log.debug("{}", trainMovement);
             return trainMovement;
         }).orElse(null);
     }

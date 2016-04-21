@@ -25,7 +25,7 @@ public class TrainMovementProcessor implements Processor<String, TrainMovement> 
 
     @Override
     public void process(String key, TrainMovement tm) {
-        log.debug("put: {}", tm);
+        log.debug("{}", tm);
         repo.put(tm);
 
     }

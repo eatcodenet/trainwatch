@@ -5,7 +5,7 @@ dependencies {
 
 jar {
     from {
-        (configurations.runtime).collect {
+        configurations.compile.filter( {! (it.name =~ /.*junit.*\.jar/ )}).collect {
             it.isDirectory() ? it : zipTree(it)
         }
     }
@@ -22,7 +22,7 @@ task(copyrefdata, type: Copy) {
 task dockerbuild(dependsOn: ["build", "copyrefdata"]) << { 
     println "*** building docker tw-populate-ref-data ***" 
     exec {
-      executable "/usr/local/bin/docker"
+      executable "docker"
       args "build","--no-cache", "-q", "-t", "eatcode/tw-populate-ref-data", "."
     }
 }
@@ -30,7 +30,7 @@ task dockerbuild(dependsOn: ["build", "copyrefdata"]) << {
 task dockerpush(dependsOn: []) << {
     println "*** pushing docker tw-populate-ref-data ***"
     exec {
-      executable "/usr/local/bin/docker"
+      executable "docker"
       args "push", "eatcode/tw-populate-ref-data"
     }
 }

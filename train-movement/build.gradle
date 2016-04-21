@@ -10,7 +10,7 @@ dependencies {
 
 jar {
     from {
-        (configurations.runtime).collect {
+        configurations.compile.filter( {! (it.name =~ /.*junit.*\.jar/ )}).collect {
             it.isDirectory() ? it : zipTree(it)
         }
     }
@@ -22,7 +22,7 @@ jar {
 task dockerbuild(dependsOn: ["build"]) << {
     println "*** building docker tw-train-movement-app ***"
     exec {
-      executable "/usr/local/bin/docker"
+      executable "docker"
       args "build", "--build-arg", "nrUsername=${username}", "--build-arg", "nrPassword=${password}", "--no-cache", "-q", "-t", "eatcode/tw-train-movement-app", "."
     }
 }
@@ -30,7 +30,7 @@ task dockerbuild(dependsOn: ["build"]) << {
 task dockerpush(dependsOn: []) << {
     println "*** pushing docker tw-train-movement-producer ***"
     exec {
-      executable "/usr/local/bin/docker"
+      executable "docker"
       args "push", "eatcode/tw-train-movement-app"
     }
 }

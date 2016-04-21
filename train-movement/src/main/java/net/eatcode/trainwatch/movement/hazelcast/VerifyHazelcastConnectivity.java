@@ -15,7 +15,7 @@ import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 public class VerifyHazelcastConnectivity {
 
     private static final Logger log = LoggerFactory.getLogger(VerifyHazelcastConnectivity.class);
-    private static final String hzServer = "52.49.248.138";
+    private static final String hzServer = "localhost";
 
     public static void main(String[] args) {
         HazelcastInstance client = new HzClientBuilder().buildInstance(hzServer);
@@ -49,7 +49,7 @@ public class VerifyHazelcastConnectivity {
         MultiMap<DelayWindow, TrainMovement> movements = client.getMultiMap("trainMovement");
         // movements.clear();
         System.out.println("Movements: " + movements.size());
-        for (TrainMovement m : movements.get(DelayWindow.over15mins)) {
+        for (TrainMovement m : movements.values()) {
             System.out.println(m);
         }
     }

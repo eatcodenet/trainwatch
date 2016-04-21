@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.MultiMap;
 
@@ -13,6 +16,9 @@ import net.eatcode.trainwatch.movement.TrainMovementRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 
 public class HzTrainMovementRepo implements TrainMovementRepo {
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    
     private final HazelcastInstance client;
     private final MultiMap<DelayWindow, TrainMovement> map;
 
@@ -31,6 +37,8 @@ public class HzTrainMovementRepo implements TrainMovementRepo {
         removeExistingEntries(tm);
         if (stillTravellingToDest(tm)) {
             map.put(DelayWindow.from(tm.delayInMins()), tm);
+        } else {
+            log.debug("train has arrived: {}", tm.trainId());
         }
     }
 
