@@ -1,5 +1,11 @@
 package net.eatcode.trainwatch.movement.hazelcast;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +21,7 @@ import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 public class VerifyHazelcastConnectivity {
 
     private static final Logger log = LoggerFactory.getLogger(VerifyHazelcastConnectivity.class);
-    private static final String hzServer = "localhost";
+    private static final String hzServer = "trainwatch.eatcode.net:5701";
 
     public static void main(String[] args) {
         HazelcastInstance client = new HzClientBuilder().buildInstance(hzServer);
@@ -49,8 +55,20 @@ public class VerifyHazelcastConnectivity {
         MultiMap<DelayWindow, TrainMovement> movements = client.getMultiMap("trainMovement");
         // movements.clear();
         System.out.println("Movements: " + movements.size());
-        for (TrainMovement m : movements.values()) {
+        for (TrainMovement m : sort(movements.values())) {
             System.out.println(m);
         }
+    }
+
+    private static Collection<TrainMovement> sort(Collection<TrainMovement> values) {
+        List<TrainMovement> sorted = new ArrayList<>(values);
+        Collections.sort(sorted, new Comparator<TrainMovement>() {
+
+            @Override
+            public int compare(TrainMovement o1, TrainMovement o2) {
+                return o1.timestamp().compareTo(o2.timestamp());
+            }
+        });
+        return sorted;
     }
 }

@@ -43,6 +43,10 @@ public class TrainMovement implements Serializable {
         this.delay = parse(delay);
     }
 
+    public LocalTime departure() {
+        return departure;
+    }
+    
     public String trainId() {
         return trainId;
     }
@@ -91,8 +95,9 @@ public class TrainMovement implements Serializable {
             String dCrs = tm.destinationCrs.equals("") ? "---" : tm.destinationCrs;
             String dest = tm.destination == null ? "N/A" : tm.destination.description;
             String curr = tm.currentLocation == null ? "N/A" : tm.currentLocation.description;
-            return String.format("%1$s %2$-3s %3$-32s %4$-3s %5$-32s %6$s %7$2dm %8$-32s %9$s",
-                    tm.departure, oCrs, orig, dCrs, dest, tm.arrival, tm.delay, curr, tm.timestamp);
+            String term = tm.hasArrived ? "terminated" : "running";
+            return String.format("%1$s %2$-3s %3$-32s %4$-3s %5$-32s %6$s %7$2dm %8$-32s %9$s %10$s",
+                    tm.departure, oCrs, orig, dCrs, dest, tm.arrival, tm.delay, curr, term, tm.timestamp);
         }
 
     }
