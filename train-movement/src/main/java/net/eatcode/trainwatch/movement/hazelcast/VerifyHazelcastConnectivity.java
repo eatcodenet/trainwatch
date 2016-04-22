@@ -21,7 +21,7 @@ import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 public class VerifyHazelcastConnectivity {
 
     private static final Logger log = LoggerFactory.getLogger(VerifyHazelcastConnectivity.class);
-    private static final String hzServer = "trainwatch.eatcode.net:5701";
+    private static final String hzServer = "localhost:5701";
 
     public static void main(String[] args) {
         HazelcastInstance client = new HzClientBuilder().buildInstance(hzServer);
@@ -50,10 +50,11 @@ public class VerifyHazelcastConnectivity {
         System.out.println(schedules.size());
 
         IMap<Object, Object> activations = client.getMap("trainActivation");
+        //activations.clear();
         System.out.println("Activations: " + activations.size());
 
         MultiMap<DelayWindow, TrainMovement> movements = client.getMultiMap("trainMovement");
-        // movements.clear();
+        //movements.clear();
         System.out.println("Movements: " + movements.size());
         for (TrainMovement m : sort(movements.values())) {
             System.out.println(m);

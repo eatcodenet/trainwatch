@@ -10,15 +10,21 @@ public class TrainActivation implements Serializable {
 
     private final String trainId;
     private final String scheduleId;
+    private final String serviceCode;
     private final LocalDateTime timestamp = LocalDateTime.now();
 
-    public TrainActivation(String trainId, String scheduleId) {
+    public TrainActivation(String trainId, String serviceCode, String scheduleId) {
         this.trainId = trainId;
+        this.serviceCode = serviceCode;
         this.scheduleId = scheduleId;
     }
 
     public String trainId() {
         return trainId;
+    }
+
+    public String serviceCode() {
+        return serviceCode;
     }
 
     public String scheduleId() {
@@ -31,18 +37,18 @@ public class TrainActivation implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(trainId, scheduleId);
+        return Objects.hash(trainId);
     }
 
     @Override
     public boolean equals(Object obj) {
         TrainActivation other = (TrainActivation) obj;
-        return Objects.equals(trainId, other.trainId) && Objects.equals(scheduleId, other.scheduleId);
+        return Objects.equals(trainId, other.trainId);
     }
 
     @Override
     public String toString() {
-        return "TrainActivation [trainId=" + trainId + ", scheduleId=" + scheduleId + "]";
+        return "TrainActivation [trainId=" + trainId + ", scheduleId=" + scheduleId + ", serviceCode=" + serviceCode + "]";
     }
 
 }

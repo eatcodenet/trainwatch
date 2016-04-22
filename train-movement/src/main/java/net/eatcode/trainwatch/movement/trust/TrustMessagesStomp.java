@@ -32,6 +32,7 @@ public class TrustMessagesStomp {
             subscribeToTopic(listener);
         } catch (IOException | LoginException e) {
             log.error("Stomp error", e);
+            if (client.isConnected()) client.disconnect();
         }
     }
 
