@@ -6,7 +6,7 @@ import net.eatcode.trainwatch.movement.kafka.TrainActivation;
 
 public interface TrainActivationRepo {
 
-    Optional<String> getScheduleId(String trainServiceCode);
+    Optional<String> getByIdAndServiceCode(String trainId, String trainServiceCode);
 
     void put(TrainActivation activation);
 }

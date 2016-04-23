@@ -37,18 +37,20 @@ public class TrainActivation implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(trainId);
+        return Objects.hash(trainId, serviceCode, scheduleId);
     }
 
     @Override
     public boolean equals(Object obj) {
         TrainActivation other = (TrainActivation) obj;
-        return Objects.equals(trainId, other.trainId);
+        return Objects.equals(trainId, other.trainId) && Objects.equals(serviceCode, other.serviceCode)
+                && Objects.equals(scheduleId, other.scheduleId);
     }
 
     @Override
     public String toString() {
-        return "TrainActivation [trainId=" + trainId + ", scheduleId=" + scheduleId + ", serviceCode=" + serviceCode + "]";
+        return "TrainActivation [trainId=" + trainId + ", scheduleId=" + scheduleId + ", serviceCode=" + serviceCode
+                + "]";
     }
 
 }

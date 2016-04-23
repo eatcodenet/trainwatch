@@ -18,7 +18,7 @@ import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 public class HzTrainMovementRepo implements TrainMovementRepo {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
-    
+
     private final HazelcastInstance client;
     private final MultiMap<DelayWindow, TrainMovement> map;
 
@@ -38,7 +38,7 @@ public class HzTrainMovementRepo implements TrainMovementRepo {
         if (stillTravellingToDest(tm)) {
             map.put(DelayWindow.from(tm.delayInMins()), tm);
         } else {
-            log.debug("train has arrived: {}", tm.trainId());
+            log.debug("train has arrived: {}, {} - {}", tm.trainId(), tm.originCrs(), tm.destCrs());
         }
     }
 
@@ -47,9 +47,9 @@ public class HzTrainMovementRepo implements TrainMovementRepo {
     }
 
     private void removeExistingEntries(TrainMovement tm) {
-        DelayWindow[] values = DelayWindow.values();
-        for (int i = 0; i < values.length; i++) {
-            map.remove(values[i], tm);
+        DelayWindow[] keys = DelayWindow.values();
+        for (int i = 0; i < keys.length; i++) {
+            map.remove(keys[i], tm);
         }
     }
 

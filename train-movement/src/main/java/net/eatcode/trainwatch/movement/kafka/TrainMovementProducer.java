@@ -28,7 +28,7 @@ import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
 
 public class TrainMovementProducer {
 
-    private Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final KafkaProducer<String, byte[]> producer;
     private final TrustMessageParser parser = new GsonTrustMessageParser();
@@ -66,14 +66,14 @@ public class TrainMovementProducer {
         Optional<Schedule> schedule = lookupSchedule(msg);
         return schedule.map(s -> {
             Location current = locationRepo.getByStanox(msg.body.loc_stanox);
-            log.debug("service code {} , current location {}", msg.body.train_service_code, current);
             return new TrainMovement(msg.body.train_id, dateTime(msg),
                     current, msg.body.timetable_variation, msg.body.train_terminated, s);
         });
     }
 
     public Optional<Schedule> lookupSchedule(TrustMovementMessage msg) {
-        return activationRepo.getScheduleId(msg.body.train_service_code).map(id -> scheduleRepo.get(id));
+        return activationRepo.getByIdAndServiceCode(msg.body.train_id, msg.body.train_service_code)
+                .map(id -> scheduleRepo.get(id));
     }
 
     private LocalDateTime dateTime(TrustMovementMessage msg) {

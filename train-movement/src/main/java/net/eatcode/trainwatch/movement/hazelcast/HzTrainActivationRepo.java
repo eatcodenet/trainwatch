@@ -23,8 +23,8 @@ public class HzTrainActivationRepo implements TrainActivationRepo {
     }
 
     @Override
-    public Optional<String> getScheduleId(String trainServiceCode) {
-        TrainActivation activation = map.get(trainServiceCode);
+    public Optional<String> getByIdAndServiceCode(String trainId, String trainServiceCode) {
+        TrainActivation activation = map.get(trainId + trainServiceCode);
         if (activation == null) {
             return Optional.empty();
         }
@@ -34,7 +34,7 @@ public class HzTrainActivationRepo implements TrainActivationRepo {
     @Override
     public void put(TrainActivation activation) {
         log.debug("PUT: {}", activation);
-        map.put(activation.serviceCode(), activation);
+        map.put(activation.trainId() + activation.serviceCode(), activation);
     }
 
 }
