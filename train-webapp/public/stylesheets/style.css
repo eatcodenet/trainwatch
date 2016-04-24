@@ -41,15 +41,16 @@ a.logo {
 
 footer {
   font-size: 12px;
-  color: #fff;
-  background-color: #033958;
+  color: #666;
+  background-color: #fff;
   position: fixed;
-  width: 100%
+  width: 100%;
   bottom: 0;
   text-align: center;
 }
+
 footer a {
-  color: #fff;
+  color: #666;
 }
 .results {
   background-color: #F5F5F5;

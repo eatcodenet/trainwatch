@@ -1,23 +1,39 @@
-@*
- * This template is called from the `index` template. This template
- * handles the rendering of the page header and body tags. It takes
- * two arguments, a `String` for the title of the page and an `Html`
- * object to insert into the body of the page.
- *@
 @(title: String)(content: Html)
-
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        @* Here's where we render the page title `String`. *@
-        <title>@title</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
-        <script src="@routes.Assets.versioned("javascripts/hello.js")" type="text/javascript"></script>
-    </head>
-    <body>
-        @* And here's where we render the `Html` object containing
-         * the page content. *@
-        @content
-    </body>
-</html>
+<html>
+<head>
+  <title>TrainWatch - Real-time UK rail network monitor | @title</title>
+
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+
+  <meta name="description" content="Trainwatch - Real-time UK rail network monitor">
+  <meta name="author" content="Ayub Malik/Eatcode.net">
+  <meta name="keywords" content="Trains, Network Rail, Open Data, Streaming">
+
+  <link rel="stylesheet" type="text/css" href="/assets/stylesheets/siimple.min.css">
+  <link rel="stylesheet" type="text/css" href="/assets/stylesheets/style.css">
+  <link rel="stylesheet" type="text/css" href='https://fonts.googleapis.com/css?family=Jura:400,600'>
+  
+  <link rel="shortcut icon" href="/assets/images/favicon.ico">
+
+</head>
+
+<body>
+
+  <nav class="header">
+    <a href="./" class="logo">TrainWatch <img class="train" src="/assets/images/t32.png"></img></a>
+    <div class="links">
+      <a href="./delays">Real-time Delays</a> |
+      <a href="./livedepartures">Live Departures</a>
+    </div>
+  </nav>
+
+  <div class="main">
+    @content
+  </div>
+
+  <footer>&copy; <a href="https://eatcode.net">2016 Eatcode</a>
+    <span>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></span></footer>
+
+</body>
+</head>
