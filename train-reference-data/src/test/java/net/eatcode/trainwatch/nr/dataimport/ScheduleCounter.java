@@ -37,7 +37,7 @@ public class ScheduleCounter {
             }
 
             @Override
-            public Schedule get(String id) {
+            public Schedule getByIdAndServiceCode(String id, String serviceCode) {
                 return null;
             }
 

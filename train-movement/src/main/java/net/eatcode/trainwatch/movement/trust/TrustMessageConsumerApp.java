@@ -2,8 +2,6 @@ package net.eatcode.trainwatch.movement.trust;
 
 import java.util.List;
 
-import net.eatcode.trainwatch.movement.trust.TrustMovementMessage.Body;
-
 public class TrustMessageConsumerApp {
 
     public static void main(String[] args) {
@@ -17,8 +15,7 @@ public class TrustMessageConsumerApp {
 
     private static void print(List<TrustMovementMessage> msgs) {
         msgs.forEach(msg -> {
-            Body b = msg.body;
-            System.out.println(msg.header.msg_type + " t: " + b.train_id + " sc:" + b.train_service_code + " " + b.train_terminated);
+            System.out.println(msg.header.msg_type + " t: " + msg);
         });
     }
 

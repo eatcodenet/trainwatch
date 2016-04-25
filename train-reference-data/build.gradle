@@ -14,12 +14,14 @@ jar {
     }
 }
 
-task(copyrefdata, type: Copy) {
+
+
+task(copyrefData, type: Copy) {
     from(file('/var/trainwatch/data'))
     into(buildDir)
 }
 
-task dockerbuild(dependsOn: ["build", "copyrefdata"]) << { 
+task dockerBuild(dependsOn: ["build", "copyrefData"]) << { 
     println "*** building docker tw-populate-ref-data ***" 
     exec {
       executable "docker"
@@ -27,7 +29,7 @@ task dockerbuild(dependsOn: ["build", "copyrefdata"]) << {
     }
 }
 
-task dockerpush(dependsOn: []) << {
+task dockerPush(dependsOn: []) << {
     println "*** pushing docker tw-populate-ref-data ***"
     exec {
       executable "docker"

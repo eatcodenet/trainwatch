@@ -26,12 +26,15 @@ public class Schedule implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, trainServiceCode, runDays);
     }
 
     @Override
     public boolean equals(Object obj) {
-        return Objects.equals(id, ((Schedule) obj).id);
+        Schedule other = (Schedule) obj;
+        return Objects.equals(id, other.id) &&
+                Objects.equals(trainServiceCode, other.trainServiceCode) &&
+                Objects.equals(runDays, other.runDays);
     }
 
     @Override

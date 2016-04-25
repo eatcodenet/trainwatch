@@ -19,7 +19,7 @@ jar {
     }
 }
 
-task dockerbuild(dependsOn: ["build"]) << {
+task dockerBuild(dependsOn: ["build"]) << {
     println "*** building docker tw-train-movement-app ***"
     exec {
       executable "docker"
@@ -27,7 +27,7 @@ task dockerbuild(dependsOn: ["build"]) << {
     }
 }
 
-task dockerpush(dependsOn: []) << {
+task dockerPush(dependsOn: []) << {
     println "*** pushing docker tw-train-movement-producer ***"
     exec {
       executable "docker"

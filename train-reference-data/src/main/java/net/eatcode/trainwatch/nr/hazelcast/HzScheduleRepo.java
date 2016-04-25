@@ -18,12 +18,12 @@ public class HzScheduleRepo implements ScheduleRepo {
 
     @Override
     public void put(Schedule schedule) {
-        map.put(schedule.id, schedule);
+        map.put(schedule.id + schedule.trainServiceCode, schedule);
     }
 
     @Override
-    public Schedule get(String id) {
-        return map.get(id);
+    public Schedule getByIdAndServiceCode(String id, String serviceCode) {
+        return map.get(id + serviceCode);
     }
 
     @Override

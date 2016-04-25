@@ -30,7 +30,7 @@ public class TrainMovementStream {
 
     public void process() {
         log.info("Kafka servers: {}", kafkaServers);
-        Properties props = new PropertiesBuilder().forStream(kafkaServers).build();
+        Properties props = new PropertiesBuilder().forStream(kafkaServers, "trainMovements").build();
 
         Deserializer<String> kDeserializer = new StringDeserializer();
         Deserializer<byte[]> vDeserializer = new ByteArrayDeserializer();

@@ -4,7 +4,7 @@ import java.util.Optional;
 
 public interface TrainActivationRepo {
 
-    Optional<String> getByIdAndServiceCode(String trainId, String trainServiceCode);
+    Optional<TrainActivation> get(String trainId);
 
     void put(TrainActivation activation);
 }

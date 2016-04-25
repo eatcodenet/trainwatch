@@ -48,6 +48,7 @@ public class TrainMovementProducer {
 
     public void produceMessages(String nrUsername, String nrPassword) {
         TrustMessagesStomp stomp = new TrustMessagesStomp(nrUsername, nrPassword);
+        log.debug("created stomp service");
         stomp.subscribe(movements -> {
             parser.parseArray(movements).forEach((tm) -> sendMessage(tm));
         });
@@ -73,8 +74,8 @@ public class TrainMovementProducer {
     }
 
     public Optional<Schedule> lookupSchedule(TrustMovementMessage msg) {
-        return activationRepo.getByIdAndServiceCode(msg.body.train_id, msg.body.train_service_code)
-                .map(id -> scheduleRepo.get(id));
+        return activationRepo.get(msg.body.train_id)
+                .map(ta -> scheduleRepo.getByIdAndServiceCode(ta.scheduleId(), ta.serviceCode()));
     }
 
     private LocalDateTime dateTime(TrustMovementMessage msg) {

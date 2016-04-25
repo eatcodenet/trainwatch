@@ -25,9 +25,6 @@ public class TrainMovement implements Serializable {
     private final Location currentLocation;
     private final LocalDateTime timestamp;
 
-    private final String originCrs;
-    private final String destinationCrs;
-
     private final boolean hasArrived;
 
     public TrainMovement(String trainId, LocalDateTime timestamp, Location current, String delay, String terminated,
@@ -36,10 +33,8 @@ public class TrainMovement implements Serializable {
         this.timestamp = timestamp;
         this.currentLocation = current;
         this.origin = schedule.origin;
-        this.originCrs = origin == null ? "" : origin.crs;
         this.departure = schedule.departure;
         this.destination = schedule.destination;
-        this.destinationCrs = destination == null ? "" : destination.crs;
         this.arrival = schedule.arrival;
         this.hasArrived = Boolean.valueOf(terminated);
         this.delay = parse(delay);
@@ -54,11 +49,11 @@ public class TrainMovement implements Serializable {
     }
 
     public String originCrs() {
-        return originCrs;
+        return origin == null ? "" : origin.crs;
     }
 
     public String destCrs() {
-        return destinationCrs;
+        return destination == null ? "" : destination.crs;
     }
 
     public LocalTime arrival() {
@@ -101,21 +96,17 @@ public class TrainMovement implements Serializable {
     }
 
     private Integer parse(String delay) {
-        try {
-            if (delay == null)
-                return 0;
-            return Integer.parseInt(delay);
-        } catch (Exception e) {
-        }
-        return 0;
+        if (delay == null)
+            return 0;
+        return Integer.parseInt(delay);
     }
 
     static class Formatted {
 
         public String format(TrainMovement tm) {
             String orig = tm.origin == null ? "N/A" : titleCase(tm.origin.description);
-            String oCrs = tm.originCrs.equals("") ? "---" : tm.originCrs;
-            String dCrs = tm.destinationCrs.equals("") ? "---" : tm.destinationCrs;
+            String oCrs = tm.originCrs().equals("") ? "---" : tm.originCrs();
+            String dCrs = tm.destCrs().equals("") ? "---" : tm.destCrs();
             String dest = tm.destination == null ? "N/A" : tm.destination.description;
             String curr = tm.currentLocation == null ? "N/A" : tm.currentLocation.description;
             return String.format("%1$s %2$-3s %3$-32s %4$-3s %5$-32s %6$s %7$2dm %8$-32s %9$s",

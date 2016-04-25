@@ -29,8 +29,7 @@ public class TrainMovementConsumer {
     }
 
     private void consume(ConsumerRecord<String, byte[]> r) {
-        TrustMovementMessage tm = KryoUtils.fromByteArray(r.value(),
-        TrustMovementMessage.class);
+        TrustMovementMessage tm = KryoUtils.fromByteArray(r.value(), TrustMovementMessage.class);
         log.info("{}", tm);
     }
 

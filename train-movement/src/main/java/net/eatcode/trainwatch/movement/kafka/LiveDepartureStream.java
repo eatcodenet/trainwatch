@@ -31,7 +31,7 @@ public class LiveDepartureStream {
 
     public void process() {
         log.info("Kafka servers: {}", kafkaServers);
-        Properties props = new PropertiesBuilder().forStream(kafkaServers).build();
+        Properties props = new PropertiesBuilder().forStream(kafkaServers, "liveDepartures").build();
 
         Deserializer<String> kDeserializer = new StringDeserializer();
         Deserializer<byte[]> vDeserializer = new ByteArrayDeserializer();
@@ -40,7 +40,6 @@ public class LiveDepartureStream {
         KStream<String, byte[]> movements = builder.stream(kDeserializer, vDeserializer, trainMovement.topicName());
         movements
                 .mapValues(value -> KryoUtils.fromByteArray(value, TrainMovement.class))
-
                 .mapValues(tm -> new TrainDeparture(tm.trainId(), tm.origin(), tm.departure(), tm.destination(),
                         tm.arrival()))
                 .process(() -> new LiveDepartureProcessor(liveDeparturesRepo));

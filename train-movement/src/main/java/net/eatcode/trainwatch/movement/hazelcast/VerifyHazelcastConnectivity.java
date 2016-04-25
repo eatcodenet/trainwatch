@@ -1,11 +1,5 @@
 package net.eatcode.trainwatch.movement.hazelcast;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,15 +57,4 @@ public class VerifyHazelcastConnectivity {
 
     }
 
-    private static Collection<TrainMovement> sort(Collection<TrainMovement> values) {
-        List<TrainMovement> sorted = new ArrayList<>(values);
-        Collections.sort(sorted, new Comparator<TrainMovement>() {
-
-            @Override
-            public int compare(TrainMovement o1, TrainMovement o2) {
-                return o1.timestamp().compareTo(o2.timestamp());
-            }
-        });
-        return sorted;
-    }
 }
