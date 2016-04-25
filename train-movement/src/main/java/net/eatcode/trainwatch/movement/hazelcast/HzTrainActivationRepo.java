@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 
+import net.eatcode.trainwatch.movement.TrainActivation;
 import net.eatcode.trainwatch.movement.TrainActivationRepo;
-import net.eatcode.trainwatch.movement.kafka.TrainActivation;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 
 public class HzTrainActivationRepo implements TrainActivationRepo {

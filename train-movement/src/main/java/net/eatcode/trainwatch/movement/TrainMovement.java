@@ -53,6 +53,26 @@ public class TrainMovement implements Serializable {
         return trainId;
     }
 
+    public String originCrs() {
+        return originCrs;
+    }
+
+    public String destCrs() {
+        return destinationCrs;
+    }
+
+    public LocalTime arrival() {
+        return this.arrival;
+    }
+
+    public Location destination() {
+        return this.destination;
+    }
+
+    public Location origin() {
+        return this.origin;
+    }
+
     public int delayInMins() {
         return this.delay;
     }
@@ -101,13 +121,5 @@ public class TrainMovement implements Serializable {
             return String.format("%1$s %2$-3s %3$-32s %4$-3s %5$-32s %6$s %7$2dm %8$-32s %9$s",
                     tm.departure, oCrs, orig, dCrs, dest, tm.arrival, tm.delay, curr, tm.timestamp);
         }
-    }
-
-    public String originCrs() {
-        return originCrs;
-    }
-
-    public String destCrs() {
-        return destinationCrs;
     }
 }

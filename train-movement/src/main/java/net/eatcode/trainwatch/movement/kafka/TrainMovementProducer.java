@@ -12,6 +12,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.eatcode.trainwatch.movement.TrainActivation;
 import net.eatcode.trainwatch.movement.TrainActivationRepo;
 import net.eatcode.trainwatch.movement.TrainMovement;
 import net.eatcode.trainwatch.movement.hazelcast.HzTrainActivationRepo;

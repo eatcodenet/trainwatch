@@ -14,6 +14,8 @@ import com.hazelcast.core.IMap;
 import com.hazelcast.core.MultiMap;
 
 import net.eatcode.trainwatch.movement.DelayWindow;
+import net.eatcode.trainwatch.movement.TrainActivation;
+import net.eatcode.trainwatch.movement.TrainDeparture;
 import net.eatcode.trainwatch.movement.TrainMovement;
 import net.eatcode.trainwatch.nr.Location;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
@@ -49,14 +51,15 @@ public class VerifyHazelcastConnectivity {
         System.out.println("Schedule count:");
         System.out.println(schedules.size());
 
-        IMap<Object, Object> activations = client.getMap("trainActivation");
-        //activations.clear();
+        IMap<String, TrainActivation> activations = client.getMap("trainActivation");
         System.out.println("Activations: " + activations.size());
 
+        MultiMap<String, TrainDeparture> liveDepartures = client.getMultiMap("trainDeparture");
+        System.out.println("Live departures: " + liveDepartures.keySet());
+
         MultiMap<DelayWindow, TrainMovement> movements = client.getMultiMap("trainMovement");
-        //movements.clear();
         System.out.println("Movements: " + movements.size());
-        movements.get(DelayWindow.over15mins).stream().limit(1000).forEach(System.out::println);
+        movements.get(DelayWindow.over15mins).stream().limit(100).forEach(System.out::println);
 
     }
 
