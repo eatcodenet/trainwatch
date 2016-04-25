@@ -8,6 +8,7 @@ import javax.inject._
  * into a controller. The trait represents a counter that returns a
  * incremented number each time it is called.
  */
+
 trait Counter {
   def nextCount(): Int
 }
