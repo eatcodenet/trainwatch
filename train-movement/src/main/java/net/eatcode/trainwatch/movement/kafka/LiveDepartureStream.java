@@ -2,6 +2,7 @@ package net.eatcode.trainwatch.movement.kafka;
 
 import static net.eatcode.trainwatch.movement.kafka.Topic.trainMovement;
 
+import java.time.LocalTime;
 import java.util.Properties;
 
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
@@ -40,8 +41,10 @@ public class LiveDepartureStream {
         KStream<String, byte[]> movements = builder.stream(kDeserializer, vDeserializer, trainMovement.topicName());
         movements
                 .mapValues(value -> KryoUtils.fromByteArray(value, TrainMovement.class))
+                .filter((k, v) -> v.hasArrivedAtDest() && v.departure().isAfter(LocalTime.now()))
                 .mapValues(tm -> new TrainDeparture(tm.trainId(), tm.origin(), tm.departure(), tm.destination(),
                         tm.arrival()))
+                .filter((key, value) -> value.departure().isAfter(LocalTime.now()))
                 .process(() -> new LiveDepartureProcessor(liveDeparturesRepo));
 
         log.info("Starting live departures stream...");
