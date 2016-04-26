@@ -1,24 +1,24 @@
 #cloud-config
-yum_repos:
-  dockerrepo:
-    name: Docker Repository
-    baseurl: https://yum.dockerproject.org/repo/main/centos/$releasever/
-    enabled: true
-    gpgcheck: true
-    gpgkey: https://yum.dockerproject.org/gpg
+#yum_repos:
+#  dockerrepo:
+#    name: Docker Repository
+#    baseurl: https://yum.dockerproject.org/repo/main/centos/$releasever/
+#    enabled: true
+#    gpgcheck: true
+#    gpgkey: https://yum.dockerproject.org/gpg
 repo_update: true
 repo_upgrade: none
 packages:
   - python
   - ruby
   - java-1.8.0-openjdk-devel
-  - docker-engine
+#  - docker-engine
 runcmd:
   - '/usr/bin/ln -f -s /usr/share/zoneinfo/GB /etc/localtime'
-  - '/usr/bin/systemctl start docker'
-  - '/usr/sbin/usermod -aG docker centos'
-  - '/bin/curl -L -k https://github.com/docker/compose/releases/download/1.6.2/docker-compose-Linux-x86_64 > /usr/local/bin/docker-compose'
-  - '/usr/bin/chmod +x /usr/local/bin/docker-compose'
+#  - '/usr/bin/systemctl start docker'
+#  - '/usr/sbin/usermod -aG docker centos'
+#  - '/bin/curl -L -k https://github.com/docker/compose/releases/download/1.6.2/docker-compose-Linux-x86_64 > /usr/local/bin/docker-compose'
+#  - '/usr/bin/chmod +x /usr/local/bin/docker-compose'
   - '/usr/bin/curl -L -k https://aws-codedeploy-eu-west-1.s3.amazonaws.com/latest/install > /tmp/install'
   - '/usr/bin/chmod +x /tmp/install'
   - '/tmp/install auto'
