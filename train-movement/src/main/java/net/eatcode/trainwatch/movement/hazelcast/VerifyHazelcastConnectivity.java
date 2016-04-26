@@ -42,10 +42,12 @@ public class VerifyHazelcastConnectivity {
         }
 
         IMap<Object, Object> schedules = client.getMap("schedule");
+        //schedules.clear();
         System.out.println("Schedule count:");
         System.out.println(schedules.size());
 
         IMap<String, TrainActivation> activations = client.getMap("trainActivation");
+        //activations.clear();
         System.out.println("Activations: " + activations.size());
 
         MultiMap<String, TrainDeparture> liveDepartures = client.getMultiMap("trainDeparture");
