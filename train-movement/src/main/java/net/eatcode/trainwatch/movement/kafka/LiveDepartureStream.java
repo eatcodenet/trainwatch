@@ -2,6 +2,7 @@ package net.eatcode.trainwatch.movement.kafka;
 
 import static net.eatcode.trainwatch.movement.kafka.Topic.trainMovement;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Properties;
 
@@ -41,16 +42,19 @@ public class LiveDepartureStream {
         KStream<String, byte[]> movements = builder.stream(kDeserializer, vDeserializer, trainMovement.topicName());
         movements
                 .mapValues(value -> KryoUtils.fromByteArray(value, TrainMovement.class))
-                .filter((k, v) -> v.hasArrivedAtDest() && v.departure().isAfter(LocalTime.now()))
+                .filter((k, v) -> makeFullDate(v.departure()).isAfter(v.timestamp()))
                 .mapValues(tm -> new TrainDeparture(tm.trainId(), tm.origin(), tm.departure(), tm.destination(),
                         tm.arrival()))
-                .filter((key, value) -> value.departure().isAfter(LocalTime.now()))
                 .process(() -> new LiveDepartureProcessor(liveDeparturesRepo));
 
         log.info("Starting live departures stream...");
         KafkaStreams streams = new KafkaStreams(builder, props);
         streams.setUncaughtExceptionHandler((t, e) -> log.error(e.getMessage(), e));
         streams.start();
+    }
+
+    private LocalDateTime makeFullDate(LocalTime t) {
+        return LocalDateTime.now().withHour(t.getHour()).withMinute(t.getMinute());
     }
 
     public static void main(String[] args) {

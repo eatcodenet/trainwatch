@@ -66,7 +66,6 @@ public class TrainMovementProducer {
 
     private Optional<TrainMovement> trainMovementFrom(TrustMovementMessage msg) {
         Optional<Schedule> schedule = lookupSchedule(msg);
-        log.debug("s: {}", schedule);
         return schedule.map(s -> {
             Location current = locationRepo.getByStanox(msg.body.loc_stanox);
             return new TrainMovement(msg.body.train_id, dateTime(msg),

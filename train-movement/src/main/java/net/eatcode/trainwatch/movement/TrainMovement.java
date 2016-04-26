@@ -1,7 +1,5 @@
 package net.eatcode.trainwatch.movement;
 
-import static net.eatcode.trainwatch.movement.Strings.titleCase;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -103,14 +101,18 @@ public class TrainMovement implements Serializable {
 
     static class Formatted {
 
-        public String format(TrainMovement tm) {
-            String orig = tm.origin == null ? "N/A" : titleCase(tm.origin.description);
-            String oCrs = tm.originCrs().equals("") ? "---" : tm.originCrs();
-            String dCrs = tm.destCrs().equals("") ? "---" : tm.destCrs();
-            String dest = tm.destination == null ? "N/A" : tm.destination.description;
-            String curr = tm.currentLocation == null ? "N/A" : tm.currentLocation.description;
-            return String.format("%1$s %2$-3s %3$-32s %4$-3s %5$-32s %6$s %7$2dm %8$-32s %9$s",
-                    tm.departure, oCrs, orig, dCrs, dest, tm.arrival, tm.delay, curr, tm.timestamp);
+        public String format(TrainMovement t) {
+            String orig = t.origin == null ? "N/A" : t.origin.description;
+            String oCrs = t.originCrs().equals("") ? "---" : t.originCrs();
+            String dCrs = t.destCrs().equals("") ? "---" : t.destCrs();
+            String dest = t.destination == null ? "N/A" : t.destination.description;
+            String curr = t.currentLocation == null ? "N/A" : t.currentLocation.description;
+            return String.format("%1$s %2$-3s %3$-32s %4$s %5$-3s %6$-32s %7$2dm %8$-32s %9$s",
+                    t.departure, oCrs, orig, t.arrival, dCrs, dest, t.delay, curr, t.timestamp);
         }
+    }
+
+    public Location currentLocation() {
+        return currentLocation;
     }
 }

@@ -42,7 +42,7 @@ public class VerifyHazelcastConnectivity {
         }
 
         IMap<Object, Object> schedules = client.getMap("schedule");
-        //schedules.clear();
+        // schedules.clear();
         System.out.println("Schedule count:");
         System.out.println(schedules.size());
 
@@ -51,10 +51,13 @@ public class VerifyHazelcastConnectivity {
         System.out.println("Activations: " + activations.size());
 
         MultiMap<String, TrainDeparture> liveDepartures = client.getMultiMap("trainDeparture");
-        System.out.println("Live departures: " + liveDepartures.keySet());
+        //liveDepartures.clear();
+        System.out.println("Live departures: " + liveDepartures.size());
+        liveDepartures.values().stream().limit(100).forEach(System.out::println);
 
         MultiMap<DelayWindow, TrainMovement> movements = client.getMultiMap("trainMovement");
-        System.out.println("Movements: " + movements.size());
+        //movements.clear();
+        System.out.println("\nMovements: " + movements.size());
         movements.get(DelayWindow.over15mins).stream().limit(100).forEach(System.out::println);
 
     }

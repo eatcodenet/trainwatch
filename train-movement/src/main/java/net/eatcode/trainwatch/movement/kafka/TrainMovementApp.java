@@ -2,6 +2,7 @@ package net.eatcode.trainwatch.movement.kafka;
 
 import static net.eatcode.trainwatch.movement.kafka.Topic.trainMovement;
 
+import net.eatcode.trainwatch.movement.TrainActivationRepo;
 import net.eatcode.trainwatch.movement.hazelcast.HzLiveDeparturesRepo;
 import net.eatcode.trainwatch.movement.hazelcast.HzTrainActivationRepo;
 import net.eatcode.trainwatch.movement.hazelcast.HzTrainMovementRepo;
@@ -18,16 +19,20 @@ public class TrainMovementApp {
         String networkRailPassword = args[4];
         checkTopicExists(zookeeperServers);
 
+        TrainActivationRepo activationRepo = new HzTrainActivationRepo(hazelcastServers);
+
         Runnable movementProducer = () -> {
             System.out.println("running producer");
-            new TrainMovementProducer(kafkaServers, new HzTrainActivationRepo(hazelcastServers),
+            new TrainMovementProducer(kafkaServers, activationRepo,
                     new HzScheduleRepo(hazelcastServers), new HzLocationRepo(hazelcastServers))
                             .produceMessages(networkRailUsername, networkRailPassword);
         };
 
         Runnable movements = () -> {
             System.out.println("running movements");
-            new TrainMovementStream(kafkaServers, new HzTrainMovementRepo(hazelcastServers)).process();
+            TrainMovementProcessor processor = new TrainMovementProcessor(new HzTrainMovementRepo(hazelcastServers),
+                    activationRepo);
+            new TrainMovementStream(kafkaServers, processor).process();
         };
 
         Runnable liveDepartures = () -> {

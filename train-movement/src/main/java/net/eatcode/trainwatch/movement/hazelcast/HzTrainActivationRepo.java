@@ -2,9 +2,6 @@ package net.eatcode.trainwatch.movement.hazelcast;
 
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 
@@ -14,7 +11,6 @@ import net.eatcode.trainwatch.movement.TrainMovement;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 
 public class HzTrainActivationRepo implements TrainActivationRepo {
-    private final Logger log = LoggerFactory.getLogger(getClass());
     private final HazelcastInstance client;
     private final IMap<String, TrainActivation> map;
 
@@ -39,7 +35,6 @@ public class HzTrainActivationRepo implements TrainActivationRepo {
 
     @Override
     public void put(TrainActivation activation) {
-        log.debug("PUT: {}", activation);
         map.put(activation.trainId(), activation);
     }
 

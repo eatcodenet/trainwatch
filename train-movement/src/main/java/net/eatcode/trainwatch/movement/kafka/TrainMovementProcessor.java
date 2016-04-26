@@ -15,10 +15,11 @@ public class TrainMovementProcessor implements Processor<String, TrainMovement> 
 
     private final TrainMovementRepo movementRepo;
 
-    private TrainActivationRepo activationRepo;
+    private final TrainActivationRepo activationRepo;
 
-    public TrainMovementProcessor(TrainMovementRepo trainMovementRepo) {
-        movementRepo = trainMovementRepo;
+    public TrainMovementProcessor(TrainMovementRepo trainMovementRepo, TrainActivationRepo activationRepo) {
+        this.movementRepo = trainMovementRepo;
+        this.activationRepo = activationRepo;
     }
 
     @Override

@@ -13,19 +13,21 @@ import org.apache.kafka.streams.kstream.KStreamBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.eatcode.trainwatch.movement.TrainActivationRepo;
 import net.eatcode.trainwatch.movement.TrainMovement;
 import net.eatcode.trainwatch.movement.TrainMovementRepo;
+import net.eatcode.trainwatch.movement.hazelcast.HzTrainActivationRepo;
 import net.eatcode.trainwatch.movement.hazelcast.HzTrainMovementRepo;
 
 public class TrainMovementStream {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final String kafkaServers;
-    private final TrainMovementRepo trainMovementRepo;
+    private final TrainMovementProcessor movementProcessor;
 
-    public TrainMovementStream(String kafkaServers, TrainMovementRepo trainMovementRepo) {
+    public TrainMovementStream(String kafkaServers, TrainMovementProcessor processor) {
         this.kafkaServers = kafkaServers;
-        this.trainMovementRepo = trainMovementRepo;
+        this.movementProcessor = processor;
     }
 
     public void process() {
@@ -39,7 +41,7 @@ public class TrainMovementStream {
         KStream<String, byte[]> movements = builder.stream(kDeserializer, vDeserializer, trainMovement.topicName());
         movements
                 .mapValues(value -> KryoUtils.fromByteArray(value, TrainMovement.class))
-                .process(() -> new TrainMovementProcessor(trainMovementRepo));
+                .process(() -> movementProcessor);
 
         log.info("Starting train movement stream...");
         new KafkaStreams(builder, props).start();
@@ -49,7 +51,9 @@ public class TrainMovementStream {
         String kafkaServers = args[0];
         String hazelcastServers = args[1];
         TrainMovementRepo trainMovementRepo = new HzTrainMovementRepo(hazelcastServers);
-        new TrainMovementStream(kafkaServers, trainMovementRepo).process();
+        TrainActivationRepo activationRepo = new HzTrainActivationRepo(hazelcastServers);
+        TrainMovementProcessor processor = new TrainMovementProcessor(trainMovementRepo, activationRepo);
+        new TrainMovementStream(kafkaServers, processor).process();
     }
 
 }
