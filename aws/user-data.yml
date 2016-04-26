@@ -22,3 +22,12 @@ runcmd:
   - '/usr/bin/curl -L -k https://aws-codedeploy-eu-west-1.s3.amazonaws.com/latest/install > /tmp/install'
   - '/usr/bin/chmod +x /tmp/install'
   - '/tmp/install auto'
+  - '/bin/curl -L -o /tmp/hazelcast.tgz "http://download.hazelcast.com/download.jsp?version=hazelcast-3.6.2&type=tar&p=177120386177120386"'
+  - '/bin/tar -xz -C /opt -f /tmp/hazelcast.tgz'
+  - '/bin/chown -R centos:centos /opt/hazelcast-3.6.2'
+  - '/bin/ln -s /opt/hazelcast-3.6.2 /opt/hazelcast'
+  - '/bin/curl -L -o /tmp/kafka.tgz http://mirrors.ukfast.co.uk/sites/ftp.apache.org/kafka/0.9.0.1/kafka_2.11-0.9.0.1.tgz'
+  - '/bin/tar -xz -C /opt -f /tmp/kafka.tgz'
+  - '/bin/chown -R centos:centos /opt/kafka_2.11-0.9.0.1'
+  - '/bin/ln -s /opt/kafka_2.11-0.9.0.1 /opt/kafka'
+ 

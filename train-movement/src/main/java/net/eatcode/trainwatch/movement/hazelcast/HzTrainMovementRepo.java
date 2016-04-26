@@ -40,11 +40,12 @@ public class HzTrainMovementRepo implements TrainMovementRepo {
 
     @Override
     public void delete(TrainMovement tm) {
-        log.debug("DELETE {}", tm);
         DelayWindow[] keys = DelayWindow.values();
         for (int i = 0; i < keys.length; i++) {
             map.remove(keys[i], tm);
         }
+        log.debug("DELETE {} {}", tm, map.containsValue(tm));
+
     }
 
     @Override
