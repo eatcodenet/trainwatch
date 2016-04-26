@@ -34,19 +34,13 @@ public class HzTrainMovementRepo implements TrainMovementRepo {
 
     @Override
     public void put(TrainMovement tm) {
-        removeExistingEntries(tm);
-        if (stillTravellingToDest(tm)) {
-            map.put(DelayWindow.from(tm.delayInMins()), tm);
-        } else {
-            log.debug("train has arrived: {}, {} - {}", tm.trainId(), tm.originCrs(), tm.destCrs());
-        }
+
+        map.put(DelayWindow.from(tm.delayInMins()), tm);
     }
 
-    private boolean stillTravellingToDest(TrainMovement tm) {
-        return !tm.hasArrivedAtDest();
-    }
-
-    private void removeExistingEntries(TrainMovement tm) {
+    @Override
+    public void delete(TrainMovement tm) {
+        log.debug("DELETE {}", tm);
         DelayWindow[] keys = DelayWindow.values();
         for (int i = 0; i < keys.length; i++) {
             map.remove(keys[i], tm);

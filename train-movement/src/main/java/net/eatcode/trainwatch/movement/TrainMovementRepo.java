@@ -9,4 +9,6 @@ public interface TrainMovementRepo {
     void put(TrainMovement tm);
 
     void evictAll(int olderThanDays);
+
+    void delete(TrainMovement tm);
 }

@@ -7,4 +7,6 @@ public interface TrainActivationRepo {
     Optional<TrainActivation> get(String trainId);
 
     void put(TrainActivation activation);
+
+    void delete(TrainMovement tm);
 }
