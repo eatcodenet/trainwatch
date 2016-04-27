@@ -32,3 +32,4 @@ case "${command}" in
     echo $"Usage: $0 {application-stop|before-install|after-install|application-start|validate-service}"
     exit 1
 esac
+
