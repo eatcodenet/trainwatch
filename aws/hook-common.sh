@@ -8,6 +8,7 @@ command=${1:-"oops"}
 case "${command}" in
   application-stop)
     echo "stop.."
+    /bin/touch /tmp/stop.txt
     ;;
 
   before-install)

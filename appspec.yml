@@ -27,6 +27,8 @@ permissions:
     group: centos
     mode: 755
 hooks:
+  ApplicationStop:
+    - location: aws/hook-application-stop.sh
   AfterInstall:
     - location: aws/hook-after-install.sh
   ApplicationStart:
