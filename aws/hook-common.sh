@@ -16,17 +16,12 @@ case "${command}" in
 
   after-install)
     echo "after..."
-    /usr/local/bin/docker-compose -f ${compose_file} stop
-    /usr/bin/docker pull eatcode/hazelcast
-    /usr/bin/docker pull eatcode/zookeeper
-    /usr/bin/docker pull eatcode/kafka
-    /usr/bin/docker pull eatcode/tw-train-movement-producer
+    /bin/touch /tmp/after.txt
     ;;
 
   application-start)
     echo "start..."
-	/usr/local/bin/docker-compose -f ${compose_file} up -d
-	/usr/bin/docker run --link=kafka --net trainwatch_default
+	/bin/touch /tmp/start.txt
     ;;
 
   validate-service)
