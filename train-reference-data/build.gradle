@@ -1,42 +1,35 @@
 dependencies {
-    compile 'com.hazelcast:hazelcast-client:3.6.2'
-    compile 'com.esotericsoftware:kryo:3.0.3'
+  compile 'com.hazelcast:hazelcast-client:3.6.2'
+  compile 'com.esotericsoftware:kryo:3.0.3'
 }
 
 jar {
-    from {
-        configurations.compile.filter( {! (it.name =~ /.*junit.*\.jar/ )}).collect {
-            it.isDirectory() ? it : zipTree(it)
-        }
-    }
-    manifest {
-        attributes("Main-Class": "Main" )
-    }
+  from (configurations.compile.filter({! (it.name =~ /.*junit.*\.jar/ )}).collect { it.isDirectory() ? it : zipTree(it) }) {
+    exclude 'META-INF/*'
+  }
+  manifest {
+    attributes("Main-Class": "Main" )
+  }
 }
 
-
-
 task(copyrefData, type: Copy) {
-    from(file('/var/trainwatch/data'))
-    into(buildDir)
+  from(file('/var/trainwatch/data'))
+  into(buildDir)
 }
 
 task dockerBuild(dependsOn: ["build", "copyrefData"]) << { 
-    println "*** building docker tw-populate-ref-data ***" 
-    exec {
-      executable "docker"
-      args "build","--no-cache", "-q", "-t", "eatcode/tw-populate-ref-data", "."
-    }
+  println "*** building docker tw-populate-ref-data ***" 
+  exec {
+    executable "docker"
+    args "build","--no-cache", "-q", "-t", "eatcode/tw-populate-ref-data", "."
+  }
 }
 
 task dockerPush(dependsOn: []) << {
-    println "*** pushing docker tw-populate-ref-data ***"
-    exec {
-      executable "docker"
-      args "push", "eatcode/tw-populate-ref-data"
-    }
+  println "*** pushing docker tw-populate-ref-data ***"
+  exec {
+    executable "docker"
+    args "push", "eatcode/tw-populate-ref-data"
+  }
 }
-
-
-
 
