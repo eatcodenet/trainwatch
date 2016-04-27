@@ -3,12 +3,14 @@ base_dir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 app_dir=/var/trainwatch
 data_dir=${app_dir}/data
 compose_file=${app_dir}/docker-compose.yml
-
+hz_home=/opt/hazelcast
 command=${1:-"oops"}
 case "${command}" in
+
   application-stop)
     echo "stop.."
     /bin/touch /tmp/stop.txt
+    ${hz_home}/bin/stop.sh
     ;;
 
   before-install)
