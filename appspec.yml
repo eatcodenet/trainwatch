@@ -13,6 +13,12 @@ files:
     destination: /opt/hazelcast/bin
   - source: creds.txt
     destination: /var/trainwatch
+  - source: aws/kafka/server.properties
+    destination: /opt/kafka/config
+  - source: aws/kafka/kafka-server-stop.sh
+    destination: /opt/kafka/bin
+  - source: aws/kafka/zookeeper-server-stop.sh
+    destination: /opt/kafka/bin
 permissions:
   - object: /var
     pattern: "trainwatch"
@@ -31,6 +37,18 @@ permissions:
     group: centos
     mode: 755
   - object: /opt/hazelcast/bin/start.sh
+    owner: centos
+    group: centos
+    mode: 755
+  - object: /opt/kafka/config/server.properties
+    owner: centos
+    group: centos
+    mode: 755
+  - object: /opt/kafka/bin/kafka-server-stop.sh
+    owner: centos
+    group: centos
+    mode: 755
+  - object: /opt/kafka/bin/zookeeper-server-stop.sh
     owner: centos
     group: centos
     mode: 755

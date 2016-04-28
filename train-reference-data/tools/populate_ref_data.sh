@@ -1,7 +1,7 @@
 #!/bin/bash
 base_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 app_dir=/var/trainwatch
-hazelcast_servers=${1:-hazelcast}
+hazelcast_servers=${1:-localhost}
 jar_file=${app_dir}/libs/train-movement-1.0-SNAPSHOT.jar
 crs_file=${app_dir}/data/stations.json
 tiploc_file=${app_dir}/data/tiplocs.json
@@ -10,13 +10,16 @@ uname=$(uname)
 
 function cleanup() {
 	echo "cleanup..."
-	killall java
+	kill_pid=$(ps -ef | grep [P]opulateLocationsApp | tr -s ' ' | cut -f2 -d' ')
+	if [ ! -z "${kill_pid}" ]; then
+		kill ${kill_pid}
+	fi
 }
 
 trap cleanup SIGINT
 
 if [ "${uname}" == "Darwin" ];then
-jar_file=${base_dir}/../build/libs/train-reference-data-1.0-SNAPSHOT.jar
+	jar_file=${base_dir}/../build/libs/train-reference-data-1.0-SNAPSHOT.jar
 fi
 echo "jar_file is ${jar_file}"
 
