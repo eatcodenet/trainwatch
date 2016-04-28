@@ -24,7 +24,7 @@ case "${command}" in
     
   application-start)
     /bin/touch /tmp/start.txt
-	${hz_home}/bin/start.sh > /var/trainwatch/hazelcast.log 2>&1 
+	${hz_home}/bin/start.sh > /var/trainwatch/hazelcast.log 2>&1 &
     ;;
     
   validate-service)
