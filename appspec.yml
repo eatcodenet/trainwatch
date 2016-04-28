@@ -1,10 +1,10 @@
-# Warning: Remember to change use to centos for Centos7 image
-# or centos for AWS image
+# Warning: Remember to change user to centos for Centos7 image
+# or ec2-user for AWS image
 version: 0.0
 os: linux
 files:
-  - source: train-reference-data/build/libs/train-reference-data-1.0-SNAPSHOT.jar
-    destination: /var/trainwatch/libs
+#  - source: train-reference-data/build/libs/train-reference-data-1.0-SNAPSHOT.jar
+#    destination: /var/trainwatch/libs
   - source: train-reference-data/tools/
     destination: /var/trainwatch/tools/   
   - source: train-movement/build/libs/train-movement-1.0-SNAPSHOT.jar
@@ -13,12 +13,16 @@ files:
     destination: /var/trainwatch/tools/
   - source: docker-compose.yml
     destination: /var/trainwatch/
+  - source: aws/hazelcast/start.sh
+    destination: /opt/hazelcast/bin
+  - source: aws/hazelcast/hazelcast.xml
+    destination: /opt/hazelcast/bin
 permissions:
   - object: /var
     pattern: "trainwatch"
     owner: centos
     group: centos
-    mode: 555
+    mode: 755
     type:
       - directory
   - object: /var/trainwatch
@@ -26,10 +30,18 @@ permissions:
     owner: centos
     group: centos
     mode: 755
+  - object: /opt/hazelcast/bin/hazelcast.xml
+    owner: centos
+    group: centos
+    mode: 755
+  - object: /opt/hazelcast/bin/start.sh
+    owner: centos
+    group: centos
+    mode: 755
 hooks:
   ApplicationStop:
     - location: aws/hook-application-stop.sh
-  AfterInstall:
-    - location: aws/hook-after-install.sh
+  BeforeInstall:
+    - location: aws/hook-before-install.sh
   ApplicationStart:
     - location: aws/hook-application-start.sh

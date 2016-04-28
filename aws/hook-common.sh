@@ -8,13 +8,14 @@ command=${1:-"oops"}
 case "${command}" in
 
   application-stop)
-    echo "stop.."
-    /bin/touch /tmp/stop.txt
+    echo "stop..."
     ${hz_home}/bin/stop.sh
     ;;
 
   before-install)
     echo "before..."
+    rm -rf ${hz_home}/bin/hazelcast.xml
+    rm -rf ${hz_home}/bin/start.sh
     ;;
 
   after-install)
@@ -24,7 +25,7 @@ case "${command}" in
 
   application-start)
     echo "start..."
-	/bin/touch /tmp/start.txt
+	${hz_home}/bin/stop.sh
     ;;
 
   validate-service)
@@ -35,4 +36,3 @@ case "${command}" in
     echo $"Usage: $0 {application-stop|before-install|after-install|application-start|validate-service}"
     exit 1
 esac
-

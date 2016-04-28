@@ -14,6 +14,7 @@ if [[ -z "${username}" || -z "${password}" ]]; then
   echo "usage: ${script_name} username password [download_dir]"
   exit 1
 fi
+mkdir -p ${download_dir}
 
 full_path="${download_dir}/${output_file}"
 echo "Downloading from: ${full_url}"
