@@ -10,7 +10,8 @@ repo_update: true
 repo_upgrade: none
 packages:
   - python
-  - ruby
+  - vim
+#  - ruby
   - java-1.8.0-openjdk-devel
 #  - docker-engine
 runcmd:
