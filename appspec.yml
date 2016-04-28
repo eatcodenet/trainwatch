@@ -11,6 +11,8 @@ files:
     destination: /opt/hazelcast/bin
   - source: aws/hazelcast/hazelcast.xml
     destination: /opt/hazelcast/bin
+  - source: creds.txt
+    destination: /var/trainwatch
 permissions:
   - object: /var
     pattern: "trainwatch"
@@ -23,7 +25,7 @@ permissions:
     pattern: "**"
     owner: centos
     group: centos
-    mode: 755
+    mode: 700
   - object: /opt/hazelcast/bin/hazelcast.xml
     owner: centos
     group: centos

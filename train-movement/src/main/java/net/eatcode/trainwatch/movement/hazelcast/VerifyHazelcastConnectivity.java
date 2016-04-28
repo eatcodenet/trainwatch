@@ -40,7 +40,6 @@ public class VerifyHazelcastConnectivity {
 
         locations.put("1", new Location("sx1", "desc", "tt", "crs", new LatLon("1", "3")));
         log.info("{} {}", locations.size(), locations.values(new SqlPredicate("stanox = 'sx1'")));
-        System.exit(0);
 
         IMap<Object, Object> schedules = client.getMap("schedule");
         // schedules.clear();

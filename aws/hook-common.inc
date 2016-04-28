@@ -4,12 +4,15 @@ app_dir=/var/trainwatch
 data_dir=${app_dir}/data
 compose_file=${app_dir}/docker-compose.yml
 hz_home=/opt/hazelcast
+kafka_home=/opt/kafka
 
 # command should be set
 case "${command}" in
   application-stop)
     echo "stop..."
     ${hz_home}/bin/stop.sh
+    # kill zookeeper as copied from script without SIGINT
+    ps ax | grep -i 'zookeeper' | grep -v grep | awk '{print $1}' | xargs kill
     ;;
     
   before-install)
@@ -25,6 +28,7 @@ case "${command}" in
   application-start)
     /bin/touch /tmp/start.txt
 	${hz_home}/bin/start.sh > /var/trainwatch/hazelcast.log 2>&1 &
+	${kafka_home}/bin/zookeeper-server-start.sh -daemon ${kafka_home}/config/zookeeper.properties
     ;;
     
   validate-service)
