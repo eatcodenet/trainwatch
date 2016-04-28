@@ -1,4 +1,4 @@
 #!/bin/bash
 base_dir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-${base_dir}/hook-common.sh "before-install"
+command="before-install"
+source ${base_dir}/hook-common.inc

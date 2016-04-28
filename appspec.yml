@@ -3,16 +3,10 @@
 version: 0.0
 os: linux
 files:
-#  - source: train-reference-data/build/libs/train-reference-data-1.0-SNAPSHOT.jar
-#    destination: /var/trainwatch/libs
-  - source: train-reference-data/tools/
+  - source: tools/
     destination: /var/trainwatch/tools/   
-  - source: train-movement/build/libs/train-movement-1.0-SNAPSHOT.jar
+  - source: libs/train-movement-1.0-SNAPSHOT.jar
     destination: /var/trainwatch/libs
-  - source: train-movement/tools/
-    destination: /var/trainwatch/tools/
-  - source: docker-compose.yml
-    destination: /var/trainwatch/
   - source: aws/hazelcast/start.sh
     destination: /opt/hazelcast/bin
   - source: aws/hazelcast/hazelcast.xml
@@ -41,7 +35,13 @@ permissions:
 hooks:
   ApplicationStop:
     - location: aws/hook-application-stop.sh
+      timeout: 30
+      runas: centos
   BeforeInstall:
     - location: aws/hook-before-install.sh
+      timeout: 30
+      runas: centos    
   ApplicationStart:
-    - location: aws/hook-application-start.sh
+    - location: aws/hook-application-stop.sh
+      timeout: 30
+      runas: centos

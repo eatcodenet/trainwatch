@@ -4,6 +4,7 @@ PRG="$0"
 PRGDIR=`dirname "$PRG"`
 HAZELCAST_HOME=`cd "$PRGDIR/.." >/dev/null; pwd`
 PID_FILE=$HAZELCAST_HOME/bin/hazelcast_instance.pid
+JAVA_OPTS="$JAVA_OPTS -Dhazelcast.config=/opt/hazelcast/bin/hazelcast.xml"
 
 if [ $JAVA_HOME ]
 then
@@ -40,7 +41,6 @@ if [ "x$MAX_HEAP_SIZE" != "x" ]; then
 fi
 
 export CLASSPATH=$HAZELCAST_HOME/lib/hazelcast-all-3.6.2.jar
-export CLASSPATH=$CLASSPATH:/var/trainwatch/libs/train-reference-data-1.0-SNAPSHOT.jar
 export CLASSPATH=$CLASSPATH:/var/trainwatch/libs/train-movement-1.0-SNAPSHOT.jar
 
 echo "########################################"
@@ -58,3 +58,4 @@ else
     echo "Another hazelcast instance is already started in this folder. To start a new instance, please unzip 3.6.2.zip/tar.gz in a new folder."
     exit 0
 fi
+

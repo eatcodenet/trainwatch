@@ -19,7 +19,7 @@ import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 public class VerifyHazelcastConnectivity {
 
     private static final Logger log = LoggerFactory.getLogger(VerifyHazelcastConnectivity.class);
-    private static final String hzServer = "54.194.63.203:5701";
+    private static final String hzServer = "54.171.218.189:5701";
 
     public static void main(String[] args) {
         HazelcastInstance client = new HzClientBuilder().buildInstance(hzServer);

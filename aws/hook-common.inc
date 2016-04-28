@@ -4,30 +4,26 @@ app_dir=/var/trainwatch
 data_dir=${app_dir}/data
 compose_file=${app_dir}/docker-compose.yml
 hz_home=/opt/hazelcast
-command=${1:-"oops"}
-case "${command}" in
 
+# command should be set
+case "${command}" in
   application-stop)
     echo "stop..."
     ${hz_home}/bin/stop.sh
     ;;
-
   before-install)
     echo "before..."
     rm -rf ${hz_home}/bin/hazelcast.xml
     rm -rf ${hz_home}/bin/start.sh
     ;;
-
   after-install)
     echo "after..."
-    /bin/touch /tmp/after.txt
     ;;
-
   application-start)
     echo "start..."
-	${hz_home}/bin/stop.sh
+	exec ${hz_home}/bin/start.sh
     ;;
-
+    
   validate-service)
     echo "validate..."
     ;;
