@@ -42,6 +42,6 @@ hooks:
       timeout: 30
       runas: centos    
   ApplicationStart:
-    - location: aws/hook-application-stop.sh
+    - location: aws/hook-application-start.sh
       timeout: 30
       runas: centos

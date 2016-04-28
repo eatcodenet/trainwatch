@@ -11,17 +11,20 @@ case "${command}" in
     echo "stop..."
     ${hz_home}/bin/stop.sh
     ;;
+    
   before-install)
     echo "before..."
     rm -rf ${hz_home}/bin/hazelcast.xml
     rm -rf ${hz_home}/bin/start.sh
     ;;
+    
   after-install)
     echo "after..."
     ;;
+    
   application-start)
-    echo "start..."
-	exec ${hz_home}/bin/start.sh
+    /bin/touch /tmp/start.txt
+	${hz_home}/bin/start.sh &
     ;;
     
   validate-service)
