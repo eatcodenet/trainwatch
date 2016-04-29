@@ -6,7 +6,7 @@
   </appender>
 
   <appender name="file" class="ch.qos.logback.core.FileAppender">
-    <file>/var/trainwatch/trainwatch.log</file>
+    <file>/var/trainwatch/logs/train-movement.log</file>
     <append>true</append>
     <encoder>
       <pattern>%date{ISO8601} %-5level %-20logger{0} - %msg%n</pattern>

@@ -40,4 +40,5 @@ if [ -z "${topic}" ]; then
   echo "Topic '${topic_name}' does not exist. Creating."
   ${base_dir}/create-topics.sh
 fi
+
 java -Xms1g -Xmx2g -cp ${jar_file} net.eatcode.trainwatch.movement.kafka.TrainMovementApp "${kafka_servers}:9092" ${zookeeper_servers} ${hazelcast_servers} ${username} ${password}

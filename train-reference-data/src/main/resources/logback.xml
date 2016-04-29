@@ -5,6 +5,14 @@
     </encoder>
   </appender>
 
+  <appender name="file" class="ch.qos.logback.core.FileAppender">
+    <file>/var/trainwatch/logs/train-ref-data.log</file>
+    <append>true</append>
+    <encoder>
+      <pattern>%date{ISO8601} %-5level %-20logger{0} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
   <root level="info">
     <appender-ref ref="console" />
   </root>
