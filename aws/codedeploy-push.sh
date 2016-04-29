@@ -23,12 +23,13 @@ else
   echo "password=${password}" >> ${build_dir}/creds.txt
 fi
 
-echo "Pushing to S3. Run command below to deploy:"
+echo "Pushing to S3"
 bundle_name=${1:-"LatestBundle.zip"}
 aws_result=$(aws --profile eatcode deploy push --source ${build_dir} --application-name TrainWatch --ignore-hidden-files --s3-location s3://eatcode-trainwatch-deploy/${bundle_name})
 etag=$(sed 's/.*eTag="\(.*\)".*/\1/g' <<< ${aws_result})
 
 echo "Deploying revision..."
-echo "aws --profile eatcode deploy create-deployment --application-name TrainWatch --s3-location bucket=eatcode-trainwatch-deploy,key=LatestBundle.zip,bundleType=zip,eTag=\"${etag}\" --deployment-group TrainWatch"
 aws --profile eatcode deploy create-deployment --application-name TrainWatch --s3-location bucket=eatcode-trainwatch-deploy,key=LatestBundle.zip,bundleType=zip,eTag=\"${etag}\" --deployment-group TrainWatch
+echo "To deploy same revision again run:"
+echo "aws --profile eatcode deploy create-deployment --application-name TrainWatch --s3-location bucket=eatcode-trainwatch-deploy,key=LatestBundle.zip,bundleType=zip,eTag=\"${etag}\" --deployment-group TrainWatch"
 echo
