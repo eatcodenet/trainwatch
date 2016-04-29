@@ -31,7 +31,7 @@ echo "Starting app..."
 username=$(grep username ${creds} | cut -d'=' -f2)
 password=$(grep password ${creds} | cut -d'=' -f2)
 echo "kafka_servers ${kafka_servers}"
-echo "zookeeper_servers ${hazelcast_servers}"
+echo "zookeeper_servers ${zookeeper_servers}"
 echo "hazelcast_servers ${hazelcast_servers}"
 
 topic_name=tw-train-movement

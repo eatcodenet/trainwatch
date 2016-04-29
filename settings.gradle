@@ -1,4 +1,5 @@
 rootProject.name = 'net.eatcode.trainwatch'
 include 'tw-ref-data'
 include 'tw-train-movement'
+include 'tw-search-api'
 
