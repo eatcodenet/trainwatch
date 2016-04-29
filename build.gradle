@@ -1,21 +1,20 @@
-group 'net.eatcode'
+group 'net.eatcode.trainwatch'
 
 allprojects {
 
     repositories {
+        mavenLocal()
         mavenCentral()
         maven {
           url 'http://packages.confluent.io/maven/'
         }
     }
 
-    project.ext {
-        someProperty = 'someValue'
-    }
-
     apply plugin: 'java'
 
     apply plugin: 'eclipse'
+    
+    apply plugin: 'maven'
 
     version = '1.0-SNAPSHOT'
 
