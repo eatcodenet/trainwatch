@@ -2,7 +2,7 @@
 base_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 app_home=/var/trainwatch
 hazelcast_servers=${1:-localhost}
-jar_file=${app_home}/libs/train-movement-1.0-SNAPSHOT.jar
+jar_file=${app_home}/libs/tw-train-movement-1.0-SNAPSHOT.jar
 crs_file=${app_home}/data/stations.json
 tiploc_file=${app_home}/data/tiplocs.json
 schedule_file=${app_home}/data/full-train-schedules
@@ -19,7 +19,7 @@ function cleanup() {
 trap cleanup SIGINT
 
 if [ "${uname}" == "Darwin" ];then
-	jar_file=${base_dir}/../build/libs/train-reference-data-1.0-SNAPSHOT.jar
+	jar_file=${base_dir}/../build/libs/tw-ref-data-1.0-SNAPSHOT.jar
 fi
 echo "jar_file is ${jar_file}"
 

@@ -1,4 +1,4 @@
-name := """train-webapp"""
+name := """tw-webapp"""
 
 version := "1.0-SNAPSHOT"
 
@@ -11,7 +11,7 @@ libraryDependencies ++= Seq(
   cache,
   ws,
   "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test,
-  "net.eatcode.trainwatch" % "train-movement" % "1.0-SNAPSHOT"
+  "net.eatcode.trainwatch" % "tw-train-movement" % "1.0-SNAPSHOT"
 )
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"

@@ -5,7 +5,7 @@ os: linux
 files:
   - source: tools/
     destination: /var/trainwatch/tools/   
-  - source: libs/train-movement-1.0-SNAPSHOT.jar
+  - source: libs/tw-train-movement-1.0-SNAPSHOT.jar
     destination: /var/trainwatch/libs
   - source: aws/hazelcast/start.sh
     destination: /opt/hazelcast/bin

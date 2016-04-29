@@ -1,5 +1,5 @@
 dependencies {
-  compile project(':train-reference-data')
+  compile project(':tw-ref-data')
   compile 'com.hazelcast:hazelcast-client:3.6.2'
   compile 'com.esotericsoftware:kryo:3.0.3'
   compile 'org.apache.kafka:kafka_2.11:0.9.1.0-cp1'
@@ -18,17 +18,17 @@ jar {
 }
 
 task dockerBuild(dependsOn: ["build"]) << {
-  println "*** building docker tw-train-movement-app ***"
+  println "*** building docker tw-tw-train-movement-app ***"
   exec {
     executable "docker"
-    args "build", "--build-arg", "nrUsername=${username}", "--build-arg", "nrPassword=${password}", "--no-cache", "-q", "-t", "eatcode/tw-train-movement-app", "."
+    args "build", "--build-arg", "nrUsername=${username}", "--build-arg", "nrPassword=${password}", "--no-cache", "-q", "-t", "eatcode/tw-tw-train-movement-app", "."
   }
 }
 
 task dockerPush(dependsOn: []) << {
-  println "*** pushing docker tw-train-movement-producer ***"
+  println "*** pushing docker tw-tw-train-movement-producer ***"
   exec {
     executable "docker"
-    args "push", "eatcode/tw-train-movement-app"
+    args "push", "eatcode/tw-tw-train-movement-app"
   }
 }

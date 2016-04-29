@@ -5,7 +5,7 @@ Real time UK Train monitor. Created for _experimenting_ with Apache Kafka and st
 Very much a work in progress! [Also trying out Docker automated builds!] (https://hub.docker.com/r/eatcode/)
 
 ## Network Rail Data feeds
-The `train-reference-data` and `train-movement` modules use open data from [Network Rail](https://datafeeds.networkrail.co.uk).
+The `tw-ref-data` and `tw-train-movement` modules use open data from [Network Rail](https://datafeeds.networkrail.co.uk).
 
 **NB: When connecting to the NR data you will need to use your own credentials from the data feeds website**
 

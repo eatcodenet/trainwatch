@@ -10,7 +10,7 @@ ADD build/full-train-schedules /var/trainwatch/data/
 
 ADD tools/populate_ref_data.sh /var/trainwatch/tools/
 
-ADD build/libs/train-reference-data-1.0-SNAPSHOT.jar /var/trainwatch/libs/
+ADD build/libs/tw-ref-data-1.0-SNAPSHOT.jar /var/trainwatch/libs/
 
 CMD ["/var/trainwatch/tools/populate_ref_data.sh"]
 

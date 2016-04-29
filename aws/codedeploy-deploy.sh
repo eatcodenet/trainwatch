@@ -5,9 +5,9 @@ build_dir=${src_dir}/build/awscodedeploy
 
 rm -rf ${build_dir}
 mkdir -p ${build_dir}/libs
-cp ${src_dir}/train-movement/build/libs/train-movement-1.0-SNAPSHOT.jar ${build_dir}/libs
-cp -R ${src_dir}/train-movement/tools ${build_dir}
-cp -R ${src_dir}/train-reference-data/tools ${build_dir}
+cp ${src_dir}/tw-train-movement/build/libs/tw-train-movement-1.0-SNAPSHOT.jar ${build_dir}/libs
+cp -R ${src_dir}/tw-train-movement/tools ${build_dir}
+cp -R ${src_dir}/tw-ref-data/tools ${build_dir}
 cp -R ${src_dir}/aws ${build_dir}
 cp ${src_dir}/appspec.yml ${build_dir}
 
