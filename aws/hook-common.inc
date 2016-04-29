@@ -10,16 +10,16 @@ kafka_home=/opt/kafka
 case "${command}" in
   application-stop)
     echo "stop..."
-  ${kafka_home}/bin/kafka-server-stop.sh
+    ${kafka_home}/bin/kafka-server-stop.sh
     ;;
 
   before-install)
     echo "before..."
     rm -rf ${hz_home}/bin/hazelcast.xml
     rm -rf ${hz_home}/bin/start.sh
-  rm -rf ${kafka_home}/config/server.properties
-  rm -rf ${kafka_home}/bin/kafka-server-stop.sh
-  rm -rf ${kafka_home}/bin/zookeeper-server-stop.sh
+	rm -rf ${kafka_home}/config/server.properties
+	rm -rf ${kafka_home}/bin/kafka-server-stop.sh
+	rm -rf ${kafka_home}/bin/zookeeper-server-stop.sh
     ;;
 
   after-install)
@@ -27,9 +27,8 @@ case "${command}" in
     ;;
 
   application-start)
-  ${hz_home}/bin/start.sh > /var/trainwatch/hazelcast.log 2>&1 &
-  ${kafka_home}/bin/zookeeper-server-start.sh -daemon ${kafka_home}/config/zookeeper.properties
-  ${kafka_home}/bin/kafka-server-start.sh -daemon ${kafka_home}/config/server.properties
+    ${hz_home}/bin/start.sh > /var/trainwatch/hazelcast.log 2>&1 &
+	${kafka_home}/bin/kafka-server-start.sh -daemon ${kafka_home}/config/server.properties
     ;;
 
   validate-service)
