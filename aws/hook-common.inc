@@ -9,10 +9,7 @@ kafka_home=/opt/kafka
 # command should be set
 case "${command}" in
   application-stop)
-    echo "stop1..."
-    if [[ -x ${kafka_home}/bin/kafka-server-stop.sh ]];then
-      ${kafka_home}/bin/kafka-server-stop.sh
-	fi
+    echo "stop..."
     ;;
 
   before-install)
@@ -29,8 +26,6 @@ case "${command}" in
     ;;
 
   application-start)
-    ${hz_home}/bin/start.sh > /var/trainwatch/hazelcast.log 2>&1 &
-	${kafka_home}/bin/kafka-server-start.sh -daemon ${kafka_home}/config/server.properties
     ;;
 
   validate-service)

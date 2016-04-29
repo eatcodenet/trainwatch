@@ -1,11 +1,11 @@
 #!/bin/bash
 base_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-app_dir=/var/trainwatch
+app_home=/var/trainwatch
 hazelcast_servers=${1:-localhost}
-jar_file=${app_dir}/libs/train-movement-1.0-SNAPSHOT.jar
-crs_file=${app_dir}/data/stations.json
-tiploc_file=${app_dir}/data/tiplocs.json
-schedule_file=${app_dir}/data/full-train-schedules
+jar_file=${app_home}/libs/train-movement-1.0-SNAPSHOT.jar
+crs_file=${app_home}/data/stations.json
+tiploc_file=${app_home}/data/tiplocs.json
+schedule_file=${app_home}/data/full-train-schedules
 uname=$(uname)
 
 function cleanup() {

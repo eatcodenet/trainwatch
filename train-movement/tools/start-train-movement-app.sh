@@ -1,12 +1,12 @@
 #!/bin/bash
 base_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-app_dir=/var/trainwatch
+app_home=/var/trainwatch
 kafka_servers=${1:-localhost}
 zookeeper_servers=${1:-localhost}
 hazelcast_servers=${2:-localhost}
-jar_file=${app_dir}/libs/train-movement-1.0-SNAPSHOT.jar
+jar_file=${app_home}/libs/train-movement-1.0-SNAPSHOT.jar
 uname=$(uname)
-creds=${app_dir}/creds.txt
+creds=${app_home}/creds.txt
 
 function cleanup() {
   echo "cleanup..."
