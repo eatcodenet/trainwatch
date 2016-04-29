@@ -9,8 +9,10 @@ kafka_home=/opt/kafka
 # command should be set
 case "${command}" in
   application-stop)
-    echo "stop..."
-    ${kafka_home}/bin/kafka-server-stop.sh
+    echo "stop1..."
+    if [[ -x ${kafka_home}/bin/kafka-server-stop.sh ]];then
+      ${kafka_home}/bin/kafka-server-stop.sh
+	fi
     ;;
 
   before-install)

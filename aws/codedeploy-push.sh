@@ -29,6 +29,6 @@ aws_result=$(aws --profile eatcode deploy push --source ${build_dir} --applicati
 etag=$(sed 's/.*eTag="\(.*\)".*/\1/g' <<< ${aws_result})
 
 echo "Deploying revision..."
-echo "aws --profile eatcode deploy create-deployment --application-name TrainWatch --s3-location bucket=eatcode-trainwatch-deploy,key=LatestBundle.zip,bundleType=zip,eTag=\"${etag}\" --deployment-group trainwatch-app"
-aws --profile eatcode deploy create-deployment --application-name TrainWatch --s3-location bucket=eatcode-trainwatch-deploy,key=LatestBundle.zip,bundleType=zip,eTag=\"${etag}\" --deployment-group trainwatch-app
+echo "aws --profile eatcode deploy create-deployment --application-name TrainWatch --s3-location bucket=eatcode-trainwatch-deploy,key=LatestBundle.zip,bundleType=zip,eTag=\"${etag}\" --deployment-group TrainWatch"
+aws --profile eatcode deploy create-deployment --application-name TrainWatch --s3-location bucket=eatcode-trainwatch-deploy,key=LatestBundle.zip,bundleType=zip,eTag=\"${etag}\" --deployment-group TrainWatch
 echo
