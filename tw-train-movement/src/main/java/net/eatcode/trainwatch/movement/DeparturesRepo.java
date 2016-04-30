@@ -2,7 +2,7 @@ package net.eatcode.trainwatch.movement;
 
 import java.util.List;
 
-public interface LiveDeparturesRepo {
+public interface DeparturesRepo {
 
     void put(TrainDeparture td);
 

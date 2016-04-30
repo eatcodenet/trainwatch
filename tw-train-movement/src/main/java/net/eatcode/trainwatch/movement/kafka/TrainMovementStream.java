@@ -13,11 +13,11 @@ import org.apache.kafka.streams.kstream.KStreamBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.eatcode.trainwatch.movement.TrainActivationRepo;
+import net.eatcode.trainwatch.movement.ActivationRepo;
 import net.eatcode.trainwatch.movement.TrainMovement;
-import net.eatcode.trainwatch.movement.TrainMovementRepo;
-import net.eatcode.trainwatch.movement.hazelcast.HzTrainActivationRepo;
-import net.eatcode.trainwatch.movement.hazelcast.HzTrainMovementRepo;
+import net.eatcode.trainwatch.movement.MovementRepo;
+import net.eatcode.trainwatch.movement.hazelcast.HzActivationRepo;
+import net.eatcode.trainwatch.movement.hazelcast.HzMovementRepo;
 
 public class TrainMovementStream {
 
@@ -50,9 +50,9 @@ public class TrainMovementStream {
     public static void main(String[] args) {
         String kafkaServers = args[0];
         String hazelcastServers = args[1];
-        TrainMovementRepo trainMovementRepo = new HzTrainMovementRepo(hazelcastServers);
-        TrainActivationRepo activationRepo = new HzTrainActivationRepo(hazelcastServers);
-        TrainMovementProcessor processor = new TrainMovementProcessor(trainMovementRepo, activationRepo);
+        MovementRepo movementRepo = new HzMovementRepo(hazelcastServers);
+        ActivationRepo activationRepo = new HzActivationRepo(hazelcastServers);
+        TrainMovementProcessor processor = new TrainMovementProcessor(movementRepo, activationRepo);
         new TrainMovementStream(kafkaServers, processor).process();
     }
 

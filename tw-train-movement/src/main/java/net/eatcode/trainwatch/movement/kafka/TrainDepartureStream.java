@@ -15,20 +15,20 @@ import org.apache.kafka.streams.kstream.KStreamBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.eatcode.trainwatch.movement.LiveDeparturesRepo;
+import net.eatcode.trainwatch.movement.DeparturesRepo;
 import net.eatcode.trainwatch.movement.TrainDeparture;
 import net.eatcode.trainwatch.movement.TrainMovement;
-import net.eatcode.trainwatch.movement.hazelcast.HzLiveDeparturesRepo;
+import net.eatcode.trainwatch.movement.hazelcast.HzDeparturesRepo;
 
-public class LiveDepartureStream {
+public class TrainDepartureStream {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final String kafkaServers;
-    private final LiveDeparturesRepo liveDeparturesRepo;
+    private final DeparturesRepo departuresRepo;
 
-    public LiveDepartureStream(String kafkaServers, LiveDeparturesRepo liveDeparturesRepo) {
+    public TrainDepartureStream(String kafkaServers, DeparturesRepo departuresRepo) {
         this.kafkaServers = kafkaServers;
-        this.liveDeparturesRepo = liveDeparturesRepo;
+        this.departuresRepo = departuresRepo;
     }
 
     public void process() {
@@ -45,7 +45,7 @@ public class LiveDepartureStream {
                 .filter((k, v) -> makeFullDate(v.departure()).isAfter(v.timestamp()))
                 .mapValues(tm -> new TrainDeparture(tm.trainId(), tm.origin(), tm.departure(), tm.destination(),
                         tm.arrival()))
-                .process(() -> new LiveDepartureProcessor(liveDeparturesRepo));
+                .process(() -> new TrainDepartureProcessor(departuresRepo));
 
         log.info("Starting live departures stream...");
         KafkaStreams streams = new KafkaStreams(builder, props);
@@ -60,7 +60,7 @@ public class LiveDepartureStream {
     public static void main(String[] args) {
         String kafkaServers = args[0];
         String hazelcastServers = args[1];
-        new LiveDepartureStream(kafkaServers, new HzLiveDeparturesRepo(hazelcastServers)).process();
+        new TrainDepartureStream(kafkaServers, new HzDeparturesRepo(hazelcastServers)).process();
 
     }
 

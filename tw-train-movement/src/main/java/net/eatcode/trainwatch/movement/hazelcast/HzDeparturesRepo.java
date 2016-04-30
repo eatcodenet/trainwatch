@@ -9,18 +9,18 @@ import org.slf4j.LoggerFactory;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.MultiMap;
 
-import net.eatcode.trainwatch.movement.LiveDeparturesRepo;
+import net.eatcode.trainwatch.movement.DeparturesRepo;
 import net.eatcode.trainwatch.movement.TrainDeparture;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 
-public class HzLiveDeparturesRepo implements LiveDeparturesRepo {
+public class HzDeparturesRepo implements DeparturesRepo {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final HazelcastInstance client;
     private final MultiMap<String, TrainDeparture> map;
 
-    public HzLiveDeparturesRepo(String bootStrapServers) {
+    public HzDeparturesRepo(String bootStrapServers) {
         this.client = new HzClientBuilder().buildInstance(bootStrapServers);
         this.map = client.getMultiMap("trainDeparture");
     }

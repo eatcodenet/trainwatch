@@ -6,15 +6,15 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 
 import net.eatcode.trainwatch.movement.TrainActivation;
-import net.eatcode.trainwatch.movement.TrainActivationRepo;
+import net.eatcode.trainwatch.movement.ActivationRepo;
 import net.eatcode.trainwatch.movement.TrainMovement;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 
-public class HzTrainActivationRepo implements TrainActivationRepo {
+public class HzActivationRepo implements ActivationRepo {
     private final HazelcastInstance client;
     private final IMap<String, TrainActivation> map;
 
-    public HzTrainActivationRepo(String bootStrapServers) {
+    public HzActivationRepo(String bootStrapServers) {
         this.client = new HzClientBuilder().buildInstance(bootStrapServers);
         this.map = client.getMap("trainActivation");
     }

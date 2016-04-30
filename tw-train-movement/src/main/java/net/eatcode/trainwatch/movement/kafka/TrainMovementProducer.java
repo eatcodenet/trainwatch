@@ -13,9 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.eatcode.trainwatch.movement.TrainActivation;
-import net.eatcode.trainwatch.movement.TrainActivationRepo;
+import net.eatcode.trainwatch.movement.ActivationRepo;
 import net.eatcode.trainwatch.movement.TrainMovement;
-import net.eatcode.trainwatch.movement.hazelcast.HzTrainActivationRepo;
+import net.eatcode.trainwatch.movement.hazelcast.HzActivationRepo;
 import net.eatcode.trainwatch.movement.trust.GsonTrustMessageParser;
 import net.eatcode.trainwatch.movement.trust.TrustMessageParser;
 import net.eatcode.trainwatch.movement.trust.TrustMessagesStomp;
@@ -33,11 +33,11 @@ public class TrainMovementProducer {
 
     private final KafkaProducer<String, byte[]> producer;
     private final TrustMessageParser parser = new GsonTrustMessageParser();
-    private final TrainActivationRepo activationRepo;
+    private final ActivationRepo activationRepo;
     private final LocationRepo locationRepo;
     private final ScheduleRepo scheduleRepo;
 
-    public TrainMovementProducer(String kafkaServers, TrainActivationRepo activationRepo, ScheduleRepo scheduleRepo,
+    public TrainMovementProducer(String kafkaServers, ActivationRepo activationRepo, ScheduleRepo scheduleRepo,
             LocationRepo locationRepo) {
         this.activationRepo = activationRepo;
         this.scheduleRepo = scheduleRepo;
@@ -90,7 +90,7 @@ public class TrainMovementProducer {
         String networkRailPassword = args[4];
         checkTopicExists(zookeeperServers);
 
-        TrainActivationRepo activationRepo = new HzTrainActivationRepo(hazelcastServers);
+        ActivationRepo activationRepo = new HzActivationRepo(hazelcastServers);
         ScheduleRepo scheduleRepo = new HzScheduleRepo(hazelcastServers);
         LocationRepo locationRepo = new HzLocationRepo(hazelcastServers);
 

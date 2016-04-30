@@ -2,10 +2,10 @@ package net.eatcode.trainwatch.movement.kafka;
 
 import static net.eatcode.trainwatch.movement.kafka.Topic.trainMovement;
 
-import net.eatcode.trainwatch.movement.TrainActivationRepo;
-import net.eatcode.trainwatch.movement.hazelcast.HzLiveDeparturesRepo;
-import net.eatcode.trainwatch.movement.hazelcast.HzTrainActivationRepo;
-import net.eatcode.trainwatch.movement.hazelcast.HzTrainMovementRepo;
+import net.eatcode.trainwatch.movement.ActivationRepo;
+import net.eatcode.trainwatch.movement.hazelcast.HzDeparturesRepo;
+import net.eatcode.trainwatch.movement.hazelcast.HzActivationRepo;
+import net.eatcode.trainwatch.movement.hazelcast.HzMovementRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzLocationRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
 
@@ -19,7 +19,7 @@ public class TrainMovementApp {
         String networkRailPassword = args[4];
         checkTopicExists(zookeeperServers);
 
-        TrainActivationRepo activationRepo = new HzTrainActivationRepo(hazelcastServers);
+        ActivationRepo activationRepo = new HzActivationRepo(hazelcastServers);
 
         Runnable movementProducer = () -> {
             System.out.println("running producer");
@@ -30,14 +30,14 @@ public class TrainMovementApp {
 
         Runnable movements = () -> {
             System.out.println("running movements");
-            TrainMovementProcessor processor = new TrainMovementProcessor(new HzTrainMovementRepo(hazelcastServers),
+            TrainMovementProcessor processor = new TrainMovementProcessor(new HzMovementRepo(hazelcastServers),
                     activationRepo);
             new TrainMovementStream(kafkaServers, processor).process();
         };
 
         Runnable liveDepartures = () -> {
             System.out.println("running liveDepartures");
-            new LiveDepartureStream(kafkaServers, new HzLiveDeparturesRepo(hazelcastServers)).process();
+            new TrainDepartureStream(kafkaServers, new HzDeparturesRepo(hazelcastServers)).process();
         };
 
         new Thread(movementProducer).start();

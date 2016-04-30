@@ -3,14 +3,14 @@ package net.eatcode.trainwatch.movement.kafka;
 import org.apache.kafka.streams.processor.Processor;
 import org.apache.kafka.streams.processor.ProcessorContext;
 
-import net.eatcode.trainwatch.movement.LiveDeparturesRepo;
+import net.eatcode.trainwatch.movement.DeparturesRepo;
 import net.eatcode.trainwatch.movement.TrainDeparture;
 
-public class LiveDepartureProcessor implements Processor<String, TrainDeparture> {
+public class TrainDepartureProcessor implements Processor<String, TrainDeparture> {
 
-    private final LiveDeparturesRepo repo;
+    private final DeparturesRepo repo;
 
-    public LiveDepartureProcessor(LiveDeparturesRepo repo) {
+    public TrainDepartureProcessor(DeparturesRepo repo) {
         this.repo = repo;
     }
 

@@ -2,7 +2,7 @@ package net.eatcode.trainwatch.movement;
 
 import java.util.Optional;
 
-public interface TrainActivationRepo {
+public interface ActivationRepo {
 
     Optional<TrainActivation> get(String trainId);
 

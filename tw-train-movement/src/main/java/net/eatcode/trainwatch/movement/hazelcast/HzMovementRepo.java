@@ -12,17 +12,17 @@ import com.hazelcast.core.MultiMap;
 
 import net.eatcode.trainwatch.movement.DelayWindow;
 import net.eatcode.trainwatch.movement.TrainMovement;
-import net.eatcode.trainwatch.movement.TrainMovementRepo;
+import net.eatcode.trainwatch.movement.MovementRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 
-public class HzTrainMovementRepo implements TrainMovementRepo {
+public class HzMovementRepo implements MovementRepo {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final HazelcastInstance client;
     private final MultiMap<DelayWindow, TrainMovement> map;
 
-    public HzTrainMovementRepo(String servers) {
+    public HzMovementRepo(String servers) {
         this.client = new HzClientBuilder().buildInstance(servers);
         this.map = client.getMultiMap("trainMovement");
     }
