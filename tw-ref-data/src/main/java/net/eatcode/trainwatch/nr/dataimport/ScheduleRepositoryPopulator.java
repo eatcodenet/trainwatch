@@ -11,19 +11,19 @@ import net.eatcode.trainwatch.nr.ScheduleRepo;
 import net.eatcode.trainwatch.nr.TransformTrustSchedule;
 import net.eatcode.trainwatch.nr.TrustSchedule;
 
-public class ScheduleRepositoryPopulator {
+class ScheduleRepositoryPopulator {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private final ScheduleRepo scheduleRepo;
     private final LocationRepo locationRepo;
 
-    public ScheduleRepositoryPopulator(ScheduleRepo scheduleRepo, LocationRepo locationRepo) {
+    ScheduleRepositoryPopulator(ScheduleRepo scheduleRepo, LocationRepo locationRepo) {
         this.scheduleRepo = scheduleRepo;
         this.locationRepo = locationRepo;
     }
 
-    public CompletableFuture<Void> populateFromFile(String fileName) {
+    CompletableFuture<Void> populateFromFile(String fileName) {
         log.info("Starting populating from: {}", fileName);
         log.info("This will take a while!");
         return new ScheduleFileParser(fileName).parse(ts -> generateScheduleAndFilter(ts));

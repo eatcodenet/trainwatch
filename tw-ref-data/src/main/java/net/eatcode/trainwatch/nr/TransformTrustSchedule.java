@@ -42,9 +42,9 @@ public class TransformTrustSchedule {
         s.startDate = start;
         s.endDate = end;
         s.origin = getLocation(origin);
-        s.departure = LocalTime.parse(origin.departure.substring(0, 4), timeFormat);
+        s.departure = LocalTime.parse(origin.public_departure.substring(0, 4), timeFormat);
         s.destination = getLocation(dest);
-        s.arrival = LocalTime.parse(dest.arrival.substring(0, 4), timeFormat);
+        s.arrival = LocalTime.parse(dest.public_arrival.substring(0, 4), timeFormat);
         s.runDays = runDays;
         s.trainServiceCode = trainServiceCode;
         s.atocCode = atoc;
