@@ -1,6 +1,8 @@
 package net.eatcode.trainwatch.movement;
 
 import java.io.Serializable;
+import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
@@ -20,7 +22,7 @@ public class TrainDeparture implements Serializable {
     private final Location destination;
     private final LocalTime arrival;
 
-    private final String expectedDeparture;
+    private final LocalDateTime expectedDeparture;
 
     public TrainDeparture(String trainId, String expectedDeparture, Schedule schedule) {
         this.trainId = trainId;
@@ -28,10 +30,10 @@ public class TrainDeparture implements Serializable {
         this.departure = schedule.departure;
         this.destination = schedule.destination;
         this.arrival = schedule.arrival;
-        this.expectedDeparture = expectedDeparture;
+        this.expectedDeparture = makeDateFrom(expectedDeparture);
     }
 
-    public LocalTime departure() {
+    public LocalTime scheduledDeparture() {
         return departure;
     }
 
@@ -47,8 +49,16 @@ public class TrainDeparture implements Serializable {
         return destination.crs;
     }
 
-    public String expectedDeparture() {
-        return expectedDeparture;
+    public LocalTime expectedDepartureTime() {
+        return expectedDeparture.toLocalTime();
+    }
+
+    public long delayInMins() {
+        return Duration.between(departure.atDate(LocalDate.now()), expectedDeparture).toMinutes();
+    }
+
+    private LocalDateTime makeDateFrom(String timestamp) {
+        return LocalDateTime.ofEpochSecond(Long.parseLong(timestamp) / 1000, 0, ZoneOffset.UTC);
     }
 
     @Override
@@ -73,10 +83,10 @@ public class TrainDeparture implements Serializable {
             String oCrs = t.originCrs().equals("") ? "---" : t.originCrs();
             String dCrs = t.destCrs().equals("") ? "---" : t.destCrs();
             String dest = t.destination == null ? "N/A" : t.destination.description;
-            String expt = LocalDateTime.ofEpochSecond(Long.parseLong(t.expectedDeparture)/1000, 0, ZoneOffset.UTC)
-                    .toString();
-            return String.format("%1$s (%7$s) %2$-3s %3$-32s %4$s %5$-3s %6$-32s",
-                    t.departure, oCrs, orig, t.arrival, dCrs, dest, expt);
+            Long mins = t.delayInMins();
+            System.out.println(t.expectedDeparture);
+            return String.format("%1$s (%7$dm) %2$-3s %3$-32s %4$s %5$-3s %6$-32s",
+                    t.expectedDepartureTime(), oCrs, orig, t.arrival, dCrs, dest, mins);
         }
     }
 
