@@ -20,14 +20,14 @@ public class HzDeparturesRepo implements DeparturesRepo {
     private final HazelcastInstance client;
     private final MultiMap<String, TrainDeparture> map;
 
-    public HzDeparturesRepo(String bootStrapServers) {
-        this.client = new HzClientBuilder().buildInstance(bootStrapServers);
+    public HzDeparturesRepo(String servers) {
+        this.client = new HzClientBuilder().buildInstance(servers);
         this.map = client.getMultiMap("trainDeparture");
     }
 
     @Override
     public void put(TrainDeparture td) {
-        log.debug("PUT: {}", td);
+        log.info("PUT: {}", td);
         map.put(td.originCrs(), td);
     }
 

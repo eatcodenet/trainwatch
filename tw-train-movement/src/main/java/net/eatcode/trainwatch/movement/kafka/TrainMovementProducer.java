@@ -12,10 +12,13 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.eatcode.trainwatch.movement.TrainActivation;
 import net.eatcode.trainwatch.movement.ActivationRepo;
+import net.eatcode.trainwatch.movement.DeparturesRepo;
+import net.eatcode.trainwatch.movement.TrainActivation;
+import net.eatcode.trainwatch.movement.TrainDeparture;
 import net.eatcode.trainwatch.movement.TrainMovement;
 import net.eatcode.trainwatch.movement.hazelcast.HzActivationRepo;
+import net.eatcode.trainwatch.movement.hazelcast.HzDeparturesRepo;
 import net.eatcode.trainwatch.movement.trust.GsonTrustMessageParser;
 import net.eatcode.trainwatch.movement.trust.TrustMessageParser;
 import net.eatcode.trainwatch.movement.trust.TrustMessagesStomp;
@@ -36,12 +39,14 @@ public class TrainMovementProducer {
     private final ActivationRepo activationRepo;
     private final LocationRepo locationRepo;
     private final ScheduleRepo scheduleRepo;
+    private final DeparturesRepo departuresRepo;
 
     public TrainMovementProducer(String kafkaServers, ActivationRepo activationRepo, ScheduleRepo scheduleRepo,
-            LocationRepo locationRepo) {
+            LocationRepo locationRepo, DeparturesRepo departuresRepo) {
         this.activationRepo = activationRepo;
         this.scheduleRepo = scheduleRepo;
         this.locationRepo = locationRepo;
+        this.departuresRepo = departuresRepo;
         Properties props = new PropertiesBuilder().forProducer(kafkaServers).withByteArrayValueSerializer().build();
         this.producer = new KafkaProducer<>(props);
     }
@@ -55,17 +60,19 @@ public class TrainMovementProducer {
     }
 
     private void sendMessage(TrustMovementMessage msg) {
+        Optional<Schedule> schedule = lookupSchedule(msg);
         if (msg.isActivation()) {
             activationRepo.put(new TrainActivation(msg.body.train_id, msg.body.train_service_code, msg.body.train_uid));
+            departuresRepo.put(schedule
+                    .map(s -> new TrainDeparture(msg.body.train_id, msg.body.origin_dep_timestamp, s)).get());
         } else {
-            trainMovementFrom(msg).map(KryoUtils::toByteArray).ifPresent(bytes -> {
+            trainMovementFrom(msg, schedule).map(KryoUtils::toByteArray).ifPresent(bytes -> {
                 producer.send(new ProducerRecord<>(trainMovement.topicName(), msg.body.train_service_code, bytes));
             });
         }
     }
 
-    private Optional<TrainMovement> trainMovementFrom(TrustMovementMessage msg) {
-        Optional<Schedule> schedule = lookupSchedule(msg);
+    private Optional<TrainMovement> trainMovementFrom(TrustMovementMessage msg, Optional<Schedule> schedule) {
         return schedule.map(s -> {
             Location current = locationRepo.getByStanox(msg.body.loc_stanox);
             return new TrainMovement(msg.body.train_id, dateTime(msg),
@@ -93,8 +100,8 @@ public class TrainMovementProducer {
         ActivationRepo activationRepo = new HzActivationRepo(hazelcastServers);
         ScheduleRepo scheduleRepo = new HzScheduleRepo(hazelcastServers);
         LocationRepo locationRepo = new HzLocationRepo(hazelcastServers);
-
-        new TrainMovementProducer(kafkaServers, activationRepo, scheduleRepo, locationRepo)
+        DeparturesRepo departuresRepo = new HzDeparturesRepo(hazelcastServers);
+        new TrainMovementProducer(kafkaServers, activationRepo, scheduleRepo, locationRepo, departuresRepo)
                 .produceMessages(networkRailUsername, networkRailPassword);
     }
 

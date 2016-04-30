@@ -3,8 +3,9 @@ package net.eatcode.trainwatch.movement.kafka;
 import static net.eatcode.trainwatch.movement.kafka.Topic.trainMovement;
 
 import net.eatcode.trainwatch.movement.ActivationRepo;
-import net.eatcode.trainwatch.movement.hazelcast.HzDeparturesRepo;
+import net.eatcode.trainwatch.movement.DeparturesRepo;
 import net.eatcode.trainwatch.movement.hazelcast.HzActivationRepo;
+import net.eatcode.trainwatch.movement.hazelcast.HzDeparturesRepo;
 import net.eatcode.trainwatch.movement.hazelcast.HzMovementRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzLocationRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
@@ -20,11 +21,12 @@ public class TrainMovementApp {
         checkTopicExists(zookeeperServers);
 
         ActivationRepo activationRepo = new HzActivationRepo(hazelcastServers);
+        DeparturesRepo departuresRepo = new HzDeparturesRepo(hazelcastServers);
 
         Runnable movementProducer = () -> {
             System.out.println("running producer");
             new TrainMovementProducer(kafkaServers, activationRepo,
-                    new HzScheduleRepo(hazelcastServers), new HzLocationRepo(hazelcastServers))
+                    new HzScheduleRepo(hazelcastServers), new HzLocationRepo(hazelcastServers), departuresRepo)
                             .produceMessages(networkRailUsername, networkRailPassword);
         };
 
@@ -35,14 +37,8 @@ public class TrainMovementApp {
             new TrainMovementStream(kafkaServers, processor).process();
         };
 
-        Runnable liveDepartures = () -> {
-            System.out.println("running liveDepartures");
-            new TrainDepartureStream(kafkaServers, new HzDeparturesRepo(hazelcastServers)).process();
-        };
-
         new Thread(movementProducer).start();
         new Thread(movements).start();
-        new Thread(liveDepartures).start();
     }
 
     private static void checkTopicExists(String zookeeperServers) {

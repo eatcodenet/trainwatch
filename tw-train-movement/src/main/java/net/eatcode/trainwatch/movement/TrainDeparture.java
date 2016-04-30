@@ -1,10 +1,13 @@
 package net.eatcode.trainwatch.movement;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.Objects;
 
 import net.eatcode.trainwatch.nr.Location;
+import net.eatcode.trainwatch.nr.Schedule;
 
 public class TrainDeparture implements Serializable {
 
@@ -17,13 +20,15 @@ public class TrainDeparture implements Serializable {
     private final Location destination;
     private final LocalTime arrival;
 
-    public TrainDeparture(String trainId, Location origin, LocalTime departure, Location destination,
-            LocalTime arrival) {
+    private final String expectedDeparture;
+
+    public TrainDeparture(String trainId, String expectedDeparture, Schedule schedule) {
         this.trainId = trainId;
-        this.origin = origin;
-        this.departure = departure;
-        this.destination = destination;
-        this.arrival = arrival;
+        this.origin = schedule.origin;
+        this.departure = schedule.departure;
+        this.destination = schedule.destination;
+        this.arrival = schedule.arrival;
+        this.expectedDeparture = expectedDeparture;
     }
 
     public LocalTime departure() {
@@ -40,6 +45,10 @@ public class TrainDeparture implements Serializable {
 
     public String destCrs() {
         return destination.crs;
+    }
+
+    public String expectedDeparture() {
+        return expectedDeparture;
     }
 
     @Override
@@ -64,8 +73,10 @@ public class TrainDeparture implements Serializable {
             String oCrs = t.originCrs().equals("") ? "---" : t.originCrs();
             String dCrs = t.destCrs().equals("") ? "---" : t.destCrs();
             String dest = t.destination == null ? "N/A" : t.destination.description;
-            return String.format("%1$s %2$-3s %3$-32s %4$s %5$-3s %6$-32s",
-                    t.departure, oCrs, orig, t.arrival, dCrs, dest);
+            String expt = LocalDateTime.ofEpochSecond(Long.parseLong(t.expectedDeparture)/1000, 0, ZoneOffset.UTC)
+                    .toString();
+            return String.format("%1$s (%7$s) %2$-3s %3$-32s %4$s %5$-3s %6$-32s",
+                    t.departure, oCrs, orig, t.arrival, dCrs, dest, expt);
         }
     }
 

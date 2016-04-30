@@ -14,8 +14,8 @@ public class HzActivationRepo implements ActivationRepo {
     private final HazelcastInstance client;
     private final IMap<String, TrainActivation> map;
 
-    public HzActivationRepo(String bootStrapServers) {
-        this.client = new HzClientBuilder().buildInstance(bootStrapServers);
+    public HzActivationRepo(String servers) {
+        this.client = new HzClientBuilder().buildInstance(servers);
         this.map = client.getMap("trainActivation");
     }
 
