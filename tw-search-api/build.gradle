@@ -6,12 +6,4 @@ dependencies {
   testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
-jar {
-  from (configurations.compile.filter({! (it.name =~ /.*junit.*\.jar/ )}).collect { it.isDirectory() ? it : zipTree(it) }) {
-    exclude 'META-INF/*'
-  }
-  manifest {
-    attributes("Main-Class": "Main" )
-  }
-}
 

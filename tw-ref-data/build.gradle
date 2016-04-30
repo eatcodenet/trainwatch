@@ -3,14 +3,6 @@ dependencies {
   compile 'com.esotericsoftware:kryo:3.0.3'
 }
 
-jar {
-  from (configurations.compile.filter({! (it.name =~ /.*junit.*\.jar/ )}).collect { it.isDirectory() ? it : zipTree(it) }) {
-    exclude 'META-INF/*'
-  }
-  manifest {
-    attributes("Main-Class": "Main" )
-  }
-}
 
 task(copyrefData, type: Copy) {
   from(file('/var/trainwatch/data'))
