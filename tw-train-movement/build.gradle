@@ -12,7 +12,7 @@ task fatJar(type: Jar) {
   from (configurations.compile.filter({! (it.name =~ /.*junit.*\.jar/ )}).collect { it.isDirectory() ? it : zipTree(it) }) {
     exclude 'META-INF/*'
   }
-
+  with jar
   manifest {
     attributes("Main-Class": "Main" )
   }
