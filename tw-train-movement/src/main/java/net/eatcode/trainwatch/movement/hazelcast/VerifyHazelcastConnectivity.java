@@ -1,13 +1,5 @@
 package net.eatcode.trainwatch.movement.hazelcast;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
-import com.hazelcast.core.MultiMap;
-import com.hazelcast.query.SqlPredicate;
-
 import net.eatcode.trainwatch.movement.DelayWindow;
 import net.eatcode.trainwatch.movement.TrainActivation;
 import net.eatcode.trainwatch.movement.TrainDeparture;
@@ -15,6 +7,14 @@ import net.eatcode.trainwatch.movement.TrainMovement;
 import net.eatcode.trainwatch.nr.LatLon;
 import net.eatcode.trainwatch.nr.Location;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.IMap;
+import com.hazelcast.core.MultiMap;
+import com.hazelcast.query.SqlPredicate;
 
 public class VerifyHazelcastConnectivity {
 
@@ -53,12 +53,12 @@ public class VerifyHazelcastConnectivity {
         MultiMap<String, TrainDeparture> liveDepartures = client.getMultiMap("trainDeparture");
         // liveDepartures.clear();
         System.out.println("Live departures: " + liveDepartures.size());
-        liveDepartures.values().stream().limit(100).forEach(System.out::println);
+        liveDepartures.values().stream().limit(10).forEach(System.out::println);
 
         MultiMap<DelayWindow, TrainMovement> movements = client.getMultiMap("trainMovement");
         // movements.clear();
         System.out.println("\nMovements: " + movements.size());
-        movements.get(DelayWindow.upTo10Mins).stream().limit(100).forEach(System.out::println);
+        movements.get(DelayWindow.upTo10Mins).stream().limit(10).forEach(System.out::println);
 
     }
 

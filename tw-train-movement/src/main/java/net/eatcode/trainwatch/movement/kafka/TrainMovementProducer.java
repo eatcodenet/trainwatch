@@ -7,11 +7,6 @@ import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.Properties;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import net.eatcode.trainwatch.movement.ActivationRepo;
 import net.eatcode.trainwatch.movement.DeparturesRepo;
 import net.eatcode.trainwatch.movement.TrainActivation;
@@ -29,6 +24,11 @@ import net.eatcode.trainwatch.nr.Schedule;
 import net.eatcode.trainwatch.nr.ScheduleRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzLocationRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
+
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TrainMovementProducer {
 
@@ -60,19 +60,20 @@ public class TrainMovementProducer {
     }
 
     private void sendMessage(TrustMovementMessage msg) {
-        Optional<Schedule> schedule = lookupSchedule(msg);
         if (msg.isActivation()) {
             activationRepo.put(new TrainActivation(msg.body.train_id, msg.body.train_service_code, msg.body.train_uid));
+            Optional<Schedule> schedule = lookupSchedule(msg);
             departuresRepo.put(schedule
                     .map(s -> new TrainDeparture(msg.body.train_id, msg.body.origin_dep_timestamp, s)).get());
         } else {
-            trainMovementFrom(msg, schedule).map(KryoUtils::toByteArray).ifPresent(bytes -> {
+            trainMovementFrom(msg).map(KryoUtils::toByteArray).ifPresent(bytes -> {
                 producer.send(new ProducerRecord<>(trainMovement.topicName(), msg.body.train_service_code, bytes));
             });
         }
     }
 
-    private Optional<TrainMovement> trainMovementFrom(TrustMovementMessage msg, Optional<Schedule> schedule) {
+    private Optional<TrainMovement> trainMovementFrom(TrustMovementMessage msg) {
+        Optional<Schedule> schedule = lookupSchedule(msg);
         return schedule.map(s -> {
             Location current = locationRepo.getByStanox(msg.body.loc_stanox);
             return new TrainMovement(msg.body.train_id, dateTime(msg),

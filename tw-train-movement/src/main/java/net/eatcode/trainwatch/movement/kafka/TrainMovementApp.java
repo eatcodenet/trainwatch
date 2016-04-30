@@ -1,7 +1,6 @@
 package net.eatcode.trainwatch.movement.kafka;
 
 import static net.eatcode.trainwatch.movement.kafka.Topic.trainMovement;
-
 import net.eatcode.trainwatch.movement.ActivationRepo;
 import net.eatcode.trainwatch.movement.DeparturesRepo;
 import net.eatcode.trainwatch.movement.hazelcast.HzActivationRepo;
@@ -10,7 +9,12 @@ import net.eatcode.trainwatch.movement.hazelcast.HzMovementRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzLocationRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class TrainMovementApp {
+
+    private static final Logger log = LoggerFactory.getLogger(TrainMovementApp.class);
 
     public static void main(String[] args) throws InterruptedException {
         String kafkaServers = args[0];
@@ -24,14 +28,14 @@ public class TrainMovementApp {
         DeparturesRepo departuresRepo = new HzDeparturesRepo(hazelcastServers);
 
         Runnable movementProducer = () -> {
-            System.out.println("running producer");
+            log.info("running producer");
             new TrainMovementProducer(kafkaServers, activationRepo,
                     new HzScheduleRepo(hazelcastServers), new HzLocationRepo(hazelcastServers), departuresRepo)
-                            .produceMessages(networkRailUsername, networkRailPassword);
+                    .produceMessages(networkRailUsername, networkRailPassword);
         };
 
         Runnable movements = () -> {
-            System.out.println("running movements");
+            log.info("running movements");
             TrainMovementProcessor processor = new TrainMovementProcessor(new HzMovementRepo(hazelcastServers),
                     activationRepo);
             new TrainMovementStream(kafkaServers, processor).process();

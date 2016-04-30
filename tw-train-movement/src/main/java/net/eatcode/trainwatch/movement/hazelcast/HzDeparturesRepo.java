@@ -24,8 +24,14 @@ public class HzDeparturesRepo implements DeparturesRepo {
 
     @Override
     public void put(TrainDeparture td) {
-        log.info("PUT: {}", td);
-        map.put(td.originCrs(), td);
+        if (hasCrs(td)) {
+            log.info("PUT: {}", td);
+            map.put(td.originCrs(), td);
+        }
+    }
+
+    private boolean hasCrs(TrainDeparture td) {
+        return td.originCrs() != null && td.originCrs().length() == 3;
     }
 
 }

@@ -15,6 +15,10 @@ import com.hazelcast.nio.serialization.Serializer;
 
 public class HzClientBuilder {
 
+    static {
+        System.setProperty("hazelcast.logging.type", "slf4j");
+    }
+
     private final ClientConfig config = new ClientConfig();
     private final SerializationConfig serialization = config.getSerializationConfig();
 

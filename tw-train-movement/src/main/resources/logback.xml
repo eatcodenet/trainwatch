@@ -1,18 +1,22 @@
 <configuration debug="false">
-
-  <appender name="file" class="ch.qos.logback.core.FileAppender">
-    <file>/var/trainwatch/logs/trainwatch.log</file>
-    <append>true</append>
-    <encoder>
-      <pattern>%date{ISO8601} %-5level %-20logger{0} - %msg%n</pattern>
-    </encoder>
-  </appender>
-
-  <root level="info">
-    <appender-ref ref="file" />
-  </root>
-
-  <logger name="net.eatcode" level="debug" />
-
-  <logger name="com.hazelcast.client" level="warn" />
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/var/trainwatch/logs/trainwatch.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover. Make sure the path matches the one in the file element or else the rollover logs are placed in the working directory. -->
+            <fileNamePattern>/var/trainwatch/logs/trainwatch.log_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>32MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%date{ISO8601} %-5level %-20logger{0} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <root level="info">
+        <appender-ref ref="file" />
+    </root>
+    <logger name="net.eatcode" level="debug" />
+    <logger name="com.hazelcast.client" level="warn" />
 </configuration>

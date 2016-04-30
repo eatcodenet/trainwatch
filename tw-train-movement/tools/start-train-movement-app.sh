@@ -41,4 +41,5 @@ if [ -z "${topic}" ]; then
   ${base_dir}/create-topics.sh
 fi
 
+rm ${app_home}/logs/trainwatch.log
 java -Xms1g -Xmx2g -cp ${jar_file} net.eatcode.trainwatch.movement.kafka.TrainMovementApp "${kafka_servers}:9092" ${zookeeper_servers} ${hazelcast_servers} ${username} ${password} &

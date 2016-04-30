@@ -4,7 +4,7 @@ PRG="$0"
 PRGDIR=`dirname "$PRG"`
 HAZELCAST_HOME=`cd "$PRGDIR/.." >/dev/null; pwd`
 PID_FILE=$HAZELCAST_HOME/bin/hazelcast_instance.pid
-JAVA_OPTS="$JAVA_OPTS -Dhazelcast.config=/opt/hazelcast/bin/hazelcast.xml"
+JAVA_OPTS="$JAVA_OPTS -Dhazelcast.logging.type=slf4j -Dhazelcast.config=/opt/hazelcast/bin/hazelcast.xml"
 
 if [ $JAVA_HOME ]
 then
