@@ -42,13 +42,25 @@ public class TransformTrustSchedule {
         s.startDate = start;
         s.endDate = end;
         s.origin = getLocation(origin);
-        s.departure = LocalTime.parse(origin.public_departure.substring(0, 4), timeFormat);
+        s.departure = LocalTime.parse(depFrom(origin), timeFormat);
         s.destination = getLocation(dest);
-        s.arrival = LocalTime.parse(dest.public_arrival.substring(0, 4), timeFormat);
+        s.arrival = LocalTime.parse(arrFrom(dest), timeFormat);
         s.runDays = runDays;
         s.trainServiceCode = trainServiceCode;
         s.atocCode = atoc;
         return s;
+    }
+
+    private String depFrom(Schedule_location loc) {
+        if (loc.public_departure == null)
+            return loc.departure.substring(0, 4);
+        return loc.public_departure;
+    }
+
+    private String arrFrom(Schedule_location loc) {
+        if (loc.public_arrival == null)
+            return loc.arrival.substring(0, 4);
+        return loc.public_arrival;
     }
 
     private Location getLocation(Schedule_location loc) {

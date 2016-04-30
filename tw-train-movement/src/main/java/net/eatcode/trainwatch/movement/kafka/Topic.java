@@ -2,7 +2,7 @@ package net.eatcode.trainwatch.movement.kafka;
 
 public enum Topic {
 
-    trainMovement("tw-train-movement");
+    trainMovement("train-movement");
 
     private String topicName;
 
