@@ -195,6 +195,8 @@
   <serialization>
     <serializers>
       <serializer type-class="net.eatcode.trainwatch.nr.Location" class-name="net.eatcode.trainwatch.nr.hazelcast.LocationSerializer" />
+      <serializer type-class="net.eatcode.trainwatch.nr.Schedule" class-name="net.eatcode.trainwatch.nr.hazelcast.ScheduleSerializer" />
+      <serializer type-class="net.eatcode.trainwatch.movement.TrainDeparture" class-name="net.eatcode.trainwatch.movement.hazelcast.TrainDepartureSerializer" />
     </serializers>
   </serialization>
 

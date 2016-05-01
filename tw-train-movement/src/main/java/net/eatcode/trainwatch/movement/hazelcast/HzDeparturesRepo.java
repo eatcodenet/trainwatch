@@ -8,30 +8,35 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.MultiMap;
+import com.hazelcast.core.IMap;
 
 public class HzDeparturesRepo implements DeparturesRepo {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final HazelcastInstance client;
-    private final MultiMap<String, TrainDeparture> map;
+
+    private final IMap<String, TrainDeparture> map;
 
     public HzDeparturesRepo(String servers) {
         this.client = new HzClientBuilder().buildInstance(servers);
-        this.map = client.getMultiMap("trainDeparture");
+        this.map = client.getMap("trainDeparture");
     }
 
     @Override
     public void put(TrainDeparture td) {
-        if (hasCrs(td)) {
+        if (hasBothCrsCodes(td)) {
             log.info("PUT: {}", td);
-            map.put(td.originCrs(), td);
+            map.put(td.trainId(), td);
         }
     }
 
-    private boolean hasCrs(TrainDeparture td) {
-        return td.originCrs() != null && td.originCrs().length() == 3;
+    private boolean hasBothCrsCodes(TrainDeparture td) {
+        return hasCrs(td.originCrs()) && hasCrs(td.destCrs());
+    }
+
+    private boolean hasCrs(String crs) {
+        return crs != null && crs.length() == 3;
     }
 
 }
