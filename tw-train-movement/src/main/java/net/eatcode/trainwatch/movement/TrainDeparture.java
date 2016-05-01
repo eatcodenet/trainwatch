@@ -9,7 +9,7 @@ import java.util.Objects;
 import net.eatcode.trainwatch.nr.Location;
 import net.eatcode.trainwatch.nr.Schedule;
 
-public class TrainDeparture implements Serializable {
+public class TrainDeparture implements Serializable, Comparable<TrainDeparture> {
 
     private static final long serialVersionUID = 1L;
 
@@ -43,6 +43,14 @@ public class TrainDeparture implements Serializable {
         return origin.crs;
     }
 
+    public String originName() {
+        return origin.description;
+    }
+
+    public Location origin() {
+        return origin;
+    }
+
     public String destCrs() {
         return destination.crs;
     }
@@ -68,6 +76,11 @@ public class TrainDeparture implements Serializable {
     @Override
     public boolean equals(Object obj) {
         return Objects.equals(trainId, ((TrainDeparture) obj).trainId);
+    }
+
+    @Override
+    public int compareTo(TrainDeparture o) {
+        return scheduledDeparture().compareTo(o.scheduledDeparture());
     }
 
     static class Formatted {

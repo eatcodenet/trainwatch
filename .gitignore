@@ -11,3 +11,4 @@ out
 datafeeds/
 kafkaz.jar
 *.swp
+/bin/

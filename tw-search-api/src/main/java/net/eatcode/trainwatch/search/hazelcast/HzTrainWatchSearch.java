@@ -1,6 +1,7 @@
 package net.eatcode.trainwatch.search.hazelcast;
 
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.text.WordUtils.capitalize;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,7 +39,13 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
 
     @Override
     public List<Station> listStations() {
-        return null;
+        return departures.values().parallelStream()
+                .map(td -> makeStation(td))
+                .distinct().sorted().collect(toList());
+    }
+
+    private Station makeStation(TrainDeparture td) {
+        return new Station(capitalize(td.originName().toLowerCase()), td.originCrs());
     }
 
     @Override
@@ -59,8 +66,7 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
                 .stream().sorted((o1, o2) -> o1.departure().compareTo(o2.departure()))
                 .limit(maxResults)
                 .collect(toList());
-        long ms = System.currentTimeMillis() - start;
-        log.info("took {}ms", ms);
+        log.info("departuresBy took {}ms", System.currentTimeMillis() - start);
         return result;
     }
 
@@ -75,6 +81,10 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
         List<TrainMovement> movements = search.trainMovementsByDelay(DelayWindow.over15mins, 10);
         for (TrainMovement tm : movements) {
             System.out.println(tm);
+        }
+        List<Station> listStations = search.listStations();
+        for (Station station : listStations) {
+            System.out.println(station);
         }
         search.shutdown();
     }

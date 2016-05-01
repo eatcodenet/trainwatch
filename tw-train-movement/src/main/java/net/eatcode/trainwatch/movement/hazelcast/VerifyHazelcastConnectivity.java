@@ -53,7 +53,7 @@ public class VerifyHazelcastConnectivity {
         IMap<String, TrainDeparture> liveDepartures = client.getMap("trainDeparture");
         // liveDepartures.clear();
         System.out.println("Live departures: " + liveDepartures.size());
-        liveDepartures.values().stream().limit(10).forEach(System.out::println);
+        liveDepartures.values().stream().sorted().limit(10).forEach(System.out::println);
 
         MultiMap<DelayWindow, TrainMovement> movements = client.getMultiMap("trainMovement");
         // movements.clear();
