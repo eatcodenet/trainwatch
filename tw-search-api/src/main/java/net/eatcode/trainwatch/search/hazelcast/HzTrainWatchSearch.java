@@ -1,6 +1,6 @@
 package net.eatcode.trainwatch.search.hazelcast;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,9 +39,16 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
     @Override
     public List<TrainDeparture> getDeparturesBy(Station station) {
         MultiMap<String, TrainDeparture> map = client.getMultiMap(trainDeparture);
-        LocalTime timeWindow = LocalTime.now().minusMinutes(2);
-        return map.values()
-                .stream().collect(Collectors.toList());
+        LocalDateTime timeWindow = LocalDateTime.now().minusMinutes(2);
+        long start = System.currentTimeMillis();
+        List<TrainDeparture> res = map.values()
+                .stream()
+                .filter(td -> td.scheduledDeparture() .isAfter(timeWindow))
+                .sorted((t1, t2) -> t1.departure().compareTo(t2.departure()))
+                .collect(Collectors.toList());
+        long end = System.currentTimeMillis() - start;
+        System.out.println("took " + end);
+        return res;
     }
 
     private void shutdown() {
@@ -51,7 +58,10 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
     public static void main(String[] args) {
         HzTrainWatchSearch search = new HzTrainWatchSearch("trainwatch.eatcode.net");
         List<TrainDeparture> deps = search.getDeparturesBy(new Station("", "MAN"));
-        System.out.println(deps);
+        for (TrainDeparture td : deps) {
+            System.out.println(td.scheduledDeparture() + " " + td.originCrs() + " " + td.destCrs());
+        }
+        System.out.println(deps.size());
         search.shutdown();
     }
 }

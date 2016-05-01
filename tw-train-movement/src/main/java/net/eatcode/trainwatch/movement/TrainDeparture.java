@@ -31,8 +31,8 @@ public class TrainDeparture implements Serializable {
         this.arrival = schedule.arrival;
     }
 
-    public LocalTime scheduledDeparture() {
-        return departure;
+    public LocalDateTime scheduledDeparture() {
+        return wtt;
     }
 
     public String trainId() {
