@@ -5,6 +5,7 @@ import java.util.Map;
 /**
  * (c)2005 Sean Russell
  */
+@SuppressWarnings({ "rawtypes" })
 public interface MessageReceiver {
     public void receive(Command c, Map h, String b);
 

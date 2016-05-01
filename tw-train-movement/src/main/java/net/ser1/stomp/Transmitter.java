@@ -1,21 +1,22 @@
 package net.ser1.stomp;
 
-import java.util.Map;
-import java.util.Iterator;
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * (c)2005 Sean Russell
  */
+@SuppressWarnings({ "rawtypes" })
 class Transmitter {
     public static void transmit(Command c, Map h, String b,
-                                OutputStream out) throws IOException {
+            OutputStream out) throws IOException {
         StringBuffer message = new StringBuffer(c.toString());
         message.append("\n");
 
         if (h != null) {
-            for (Iterator keys = h.keySet().iterator(); keys.hasNext(); ) {
+            for (Iterator keys = h.keySet().iterator(); keys.hasNext();) {
                 String key = (String) keys.next();
                 String value = (String) h.get(key);
                 message.append(key);
@@ -26,7 +27,9 @@ class Transmitter {
         }
         message.append("\n");
 
-        if (b != null) message.append(b);
+        if (b != null) {
+            message.append(b);
+        }
 
         message.append("\000");
 

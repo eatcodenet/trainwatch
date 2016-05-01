@@ -19,9 +19,14 @@ public class Schedule implements Serializable {
     public String trainServiceCode;
     public String atocCode;
     public String runDays;
+    public Boolean isPassenger;
 
     public boolean isRunning() {
         return endDate.isAfter(LocalDate.now());
+    }
+
+    public boolean isPassenger() {
+        return isPassenger;
     }
 
     @Override

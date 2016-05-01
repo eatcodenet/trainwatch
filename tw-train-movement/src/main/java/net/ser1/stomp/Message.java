@@ -5,10 +5,11 @@ import java.util.Map;
 /**
  * (c)2005 Sean Russell
  */
+@SuppressWarnings({ "rawtypes" })
 public class Message {
-    private Command _command;
-    private Map _headers;
-    private String _body;
+    private final Command _command;
+    private final Map _headers;
+    private final String _body;
 
     protected Message(Command c, Map h, String b) {
         _command = c;
@@ -28,6 +29,3 @@ public class Message {
         return _command;
     }
 }
-
-
-

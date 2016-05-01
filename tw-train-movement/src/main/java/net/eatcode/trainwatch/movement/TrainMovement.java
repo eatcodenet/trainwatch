@@ -25,6 +25,8 @@ public class TrainMovement implements Serializable {
 
     private final boolean hasArrived;
 
+    private final boolean isPassenger;
+
     public TrainMovement(String trainId, LocalDateTime timestamp, Location current, String delay, String terminated,
             Schedule schedule) {
         this.trainId = trainId;
@@ -36,6 +38,7 @@ public class TrainMovement implements Serializable {
         this.arrival = schedule.arrival;
         this.hasArrived = Boolean.valueOf(terminated);
         this.delay = parse(delay);
+        this.isPassenger = schedule.isPassenger();
     }
 
     public LocalTime departure() {
@@ -78,6 +81,10 @@ public class TrainMovement implements Serializable {
         return hasArrived;
     }
 
+    public boolean isPassenger() {
+        return isPassenger;
+    }
+
     @Override
     public String toString() {
         return new Formatted().format(this);
@@ -94,8 +101,9 @@ public class TrainMovement implements Serializable {
     }
 
     private Integer parse(String delay) {
-        if (delay == null)
+        if (delay == null) {
             return 0;
+        }
         return Integer.parseInt(delay);
     }
 
@@ -106,9 +114,9 @@ public class TrainMovement implements Serializable {
             String oCrs = t.originCrs().equals("") ? "---" : t.originCrs();
             String dCrs = t.destCrs().equals("") ? "---" : t.destCrs();
             String dest = t.destination == null ? "N/A" : t.destination.description;
-            String curr = t.currentLocation == null ? "N/A" : t.currentLocation.description;
-            return String.format("%1$s %2$-3s %3$-32s %4$s %5$-3s %6$-32s %7$2dm %8$-32s %9$s",
-                    t.departure, oCrs, orig, t.arrival, dCrs, dest, t.delay, curr, t.timestamp);
+            String arrv = t.hasArrived + "";
+            return String.format("%1$s %2$-3s %3$-32s %4$s %5$-3s %6$-32s %7$2dm %8$-5s %9$s",
+                    t.departure, oCrs, orig, t.arrival, dCrs, dest, t.delay, arrv, t.timestamp);
         }
     }
 

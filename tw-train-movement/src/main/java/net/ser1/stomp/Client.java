@@ -26,7 +26,7 @@ import javax.security.auth.login.LoginException;
  * <p>
  * (c)2005 Sean Russell
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class Client extends Stomp implements MessageReceiver {
     private final Thread _listener;
     private final OutputStream _output;
@@ -81,7 +81,9 @@ public class Client extends Stomp implements MessageReceiver {
 
     @Override
     public void disconnect(Map header) {
-        if (!isConnected()) return;
+        if (!isConnected()) {
+            return;
+        }
         transmit(Command.DISCONNECT, header, null);
         _listener.interrupt();
         Thread.yield();

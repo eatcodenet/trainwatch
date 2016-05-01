@@ -16,7 +16,8 @@ echo "Source dir: ${src_dir}"
 username=${nr_username}
 password=${nr_password}
 if [[ -z "${username}" || -z "${password}" ]];then
-  echo "WARNING: Credentials not fully set. Skipping creds.txt. Set nr_username/nr_password to create creds.txt"
+  echo "ERROR: Credentials not fully set. Set nr_username/nr_password to create creds.txt"
+  exit 0
 else 
   echo "Creating creds.txt"
   echo "username=${username}" >  ${build_dir}/creds.txt

@@ -48,7 +48,7 @@ import java.util.Map;
  * <p>
  * (c)2005 Sean Russell
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class Server {
 
     private final Map _transactions;
@@ -99,8 +99,12 @@ public class Server {
      */
     public Server(int port, Authenticator auth) throws IOException {
         this();
-        if (port < 0) port = 61626;
-        if (auth != null) _authenticator = auth;
+        if (port < 0) {
+            port = 61626;
+        }
+        if (auth != null) {
+            _authenticator = auth;
+        }
         listen(port);
     }
 
@@ -464,7 +468,9 @@ public class Server {
                 }
 
             } else {
-                if (h == null) h = new HashMap();
+                if (h == null) {
+                    h = new HashMap();
+                }
                 String destination = (String) h.get("destination");
                 if (c == Command.SEND) {
                     if (y instanceof IntraVMClient ||
@@ -501,7 +507,9 @@ public class Server {
                                 l = new ArrayList();
                                 _listeners.put(destination, l);
                             }
-                            if (!l.contains(y)) l.add(y);
+                            if (!l.contains(y)) {
+                                l.add(y);
+                            }
                         }
                     } else {
                         Map error_headers = new HashMap();
@@ -515,7 +523,9 @@ public class Server {
                 } else if (c == Command.UNSUBSCRIBE) {
                     synchronized (_listeners) {
                         List l = (List) _listeners.get(destination);
-                        if (l != null) l.remove(y);
+                        if (l != null) {
+                            l.remove(y);
+                        }
                     }
 
                 } else if (c == Command.BEGIN) {

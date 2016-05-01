@@ -32,11 +32,13 @@ public class TransformTrustSchedule {
         Schedule_location dest = getLocationByType(locs, "LT");
         String trainServiceCode = s.schedule_segment.CIF_train_service_code;
         String atoc = s.atoc_code;
-        return makeDaySchedule(id, start, end, origin, dest, trainServiceCode, atoc, s.schedule_days_runs);
+        String sigid = s.schedule_segment.signalling_id;
+        Boolean isPassenger = !(sigid == null || sigid.equals(""));
+        return makeDaySchedule(id, start, end, origin, dest, trainServiceCode, atoc, s.schedule_days_runs, isPassenger);
     }
 
     private Schedule makeDaySchedule(String id, LocalDate start, LocalDate end, Schedule_location origin,
-            Schedule_location dest, String trainServiceCode, String atoc, String runDays) {
+            Schedule_location dest, String trainServiceCode, String atoc, String runDays, Boolean isPassenger) {
         Schedule s = new Schedule();
         s.id = id;
         s.startDate = start;
@@ -48,18 +50,21 @@ public class TransformTrustSchedule {
         s.runDays = runDays;
         s.trainServiceCode = trainServiceCode;
         s.atocCode = atoc;
+        s.isPassenger = isPassenger;
         return s;
     }
 
     private String depFrom(Schedule_location loc) {
-        if (loc.public_departure == null)
+        if (loc.public_departure == null) {
             return loc.departure.substring(0, 4);
+        }
         return loc.public_departure;
     }
 
     private String arrFrom(Schedule_location loc) {
-        if (loc.public_arrival == null)
+        if (loc.public_arrival == null) {
             return loc.arrival.substring(0, 4);
+        }
         return loc.public_arrival;
     }
 

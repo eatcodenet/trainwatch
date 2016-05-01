@@ -10,7 +10,7 @@ public interface TrainWatchSearch {
 
     List<Station> listStations();
 
-    List<TrainMovement> trainMovementsByDelay(DelayWindow d, int limit);
+    List<TrainMovement> trainMovementsByDelay(DelayWindow d, int maxResults);
 
-    List<TrainDeparture> getDeparturesBy(Station station);
+    List<TrainDeparture> departuresBy(Station station, int maxResults);
 }

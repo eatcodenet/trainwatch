@@ -11,24 +11,25 @@ function clean_up() {
 trap clean_up SIGINT
 
 function find_pid() {
-  kill_pid=$(ps -ef | grep ${1} | tr -s ' ' | cut -f2 -d' ')
-  echo ${kill_pid}
+  term_pid=$(ps -ef | grep ${1} | tr -s ' ' | cut -f2 -d' ')
+  echo ${term_pid}
 }
 
 function kill_pid() {
-  kill_pid=$(find_pid $1)
-  if [ ! -z "${kill_pid}" ]; then
-    kill -s SIGKILL ${kill_pid}
+  the_sig=${1}
+  the_pid=$(find_pid ${2})
+  if [ ! -z "${the_pid}" ]; then
+    kill -s ${the_sig} ${the_pid}
   fi
 }
   
 function kill_services() {
-  kill_pid "[k]afka\.Kafka"
-  kill_pid "[h]azelcast\.core"
-  kill_pid "[z]ookeeper"
+  kill_pid SIGTERM "[h]azelcast\.core"
+  kill_pid SIGTERM "[z]ookeeper"
+  kill_pid SIGKILL "[k]afka\.Kafka"
   rm -rf ${hz_home}/bin/hazelcast_instance.pid
-  rm -rf ${app_home}/logs/*-start.log
   rm -rf /tmp/kafka-logs/.lock
+  rm -rf ${app_home}/logs/*-start.log
 }
 
 function start_services() {

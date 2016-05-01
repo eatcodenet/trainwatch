@@ -10,11 +10,12 @@ import java.util.HashMap;
 /**
  * (c)2005 Sean Russell
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class Receiver extends Thread {
     private MessageReceiver _receiver;
     private BufferedReader _input;
-    //private InputStream _stream;
+
+    // private InputStream _stream;
 
     protected Receiver() {
         super();
@@ -31,7 +32,7 @@ public class Receiver extends Thread {
 
             _input = new BufferedReader(new InputStreamReader(input, Command.ENCODING));
         } catch (UnsupportedEncodingException e) {
-            // No, no, no.  Stupid Java.
+            // No, no, no. Stupid Java.
         }
     }
 
@@ -70,7 +71,9 @@ public class Receiver extends Thread {
                             }
                         } catch (Error e) {
                             try {
-                                while (_input.read() != 0) ;
+                                while (_input.read() != 0) {
+                                    ;
+                                }
                             } catch (Exception ex) {
                             }
                             try {
@@ -94,7 +97,7 @@ public class Receiver extends Thread {
                 }
             }
         } catch (IOException e) {
-            // What do we do with IO Exceptions?  Report it to the receiver, and
+            // What do we do with IO Exceptions? Report it to the receiver, and
             // exit the thread.
             System.err.println("Stomp exiting because of exception");
             e.printStackTrace(System.err);

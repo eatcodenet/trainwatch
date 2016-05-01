@@ -2,14 +2,13 @@ package net.eatcode.trainwatch.nr.dataimport;
 
 import java.util.concurrent.CompletableFuture;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import net.eatcode.trainwatch.nr.LocationRepo;
-import net.eatcode.trainwatch.nr.Schedule;
 import net.eatcode.trainwatch.nr.ScheduleRepo;
 import net.eatcode.trainwatch.nr.TransformTrustSchedule;
 import net.eatcode.trainwatch.nr.TrustSchedule;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class ScheduleRepositoryPopulator {
 
@@ -30,10 +29,7 @@ class ScheduleRepositoryPopulator {
     }
 
     private void generateScheduleAndFilter(TrustSchedule ts) {
-        Schedule schedule = new TransformTrustSchedule(locationRepo).toSchedule(ts);
-        //if (schedule.isRunning()) {
-            scheduleRepo.put(schedule);
-        //}
+        scheduleRepo.put(new TransformTrustSchedule(locationRepo).toSchedule(ts));
     }
 
 }

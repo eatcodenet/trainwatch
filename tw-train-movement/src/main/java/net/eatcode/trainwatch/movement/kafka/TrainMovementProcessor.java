@@ -1,13 +1,13 @@
 package net.eatcode.trainwatch.movement.kafka;
 
+import net.eatcode.trainwatch.movement.ActivationRepo;
+import net.eatcode.trainwatch.movement.MovementRepo;
+import net.eatcode.trainwatch.movement.TrainMovement;
+
 import org.apache.kafka.streams.processor.Processor;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.eatcode.trainwatch.movement.ActivationRepo;
-import net.eatcode.trainwatch.movement.TrainMovement;
-import net.eatcode.trainwatch.movement.MovementRepo;
 
 public class TrainMovementProcessor implements Processor<String, TrainMovement> {
 
@@ -34,9 +34,12 @@ public class TrainMovementProcessor implements Processor<String, TrainMovement> 
             log.debug("Deleting arrived movement: {}, {} - {}", tm.trainId(), tm.originCrs(), tm.destCrs());
             deleteMovement(tm);
         } else {
-            movementRepo.put(tm);
+            if (tm.isPassenger()) {
+                movementRepo.put(tm);
+            } else {
+                log.debug("Not passenger train {} {} {}", tm.trainId(), tm.origin().description, tm.destination().description);
+            }
         }
-
     }
 
     private void deleteMovement(TrainMovement tm) {

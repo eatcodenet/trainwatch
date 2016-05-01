@@ -1,6 +1,11 @@
 package net.ser1.stomp;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 
 /**
  * A Stomp messaging implementation.
@@ -17,26 +22,26 @@ import java.util.*;
  * <p>
  * (c)2005 Sean Russell
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes"})
 public abstract class Stomp {
     /**
      * A map of channel => listener pairs.  String => Listener.
      */
-    private Map _listeners = new HashMap();
+    private final Map _listeners = new HashMap();
     /**
      * Things that are listening for communication errors.  Contains
      * Listeners.
      */
-    private List _error_listeners = new ArrayList();
+    private final List _error_listeners = new ArrayList();
     /**
      * A message queue; where messages that have no listeners are
      * stored.  Contains Messages.
      */
-    private Stack _queue = new Stack();
+    private final Stack _queue = new Stack();
     /**
      * Incoming receipts (as String IDs)
      */
-    private List _receipts = new ArrayList();
+    private final List _receipts = new ArrayList();
     /**
      * True if connected to a server; false otherwise
      */
@@ -44,7 +49,7 @@ public abstract class Stomp {
     /**
      * Incoming errors (as String messages)
      */
-    private List _errors = new ArrayList();
+    private final List _errors = new ArrayList();
 
 
     /**
@@ -227,17 +232,23 @@ public abstract class Stomp {
                     list = new ArrayList();
                     _listeners.put(name, list);
                 }
-                if (!list.contains(listener)) list.add(listener);
+                if (!list.contains(listener)) {
+                    list.add(listener);
+                }
             }
         }
-        if (headers == null) headers = new HashMap();
+        if (headers == null) {
+            headers = new HashMap();
+        }
         headers.put("destination", name);
         transmit(Command.SUBSCRIBE, headers);
     }
 
 
     private String addReceipt(Map header) {
-        if (header == null) header = new HashMap();
+        if (header == null) {
+            header = new HashMap();
+        }
         String receipt = String.valueOf(hashCode()) + "&" + System.currentTimeMillis();
         header.put("receipt", receipt);
         return receipt;
@@ -314,7 +325,9 @@ public abstract class Stomp {
      * @param header Additional headers to send to the server.
      */
     public void unsubscribe(String name, Map header) {
-        if (header == null) header = new HashMap();
+        if (header == null) {
+            header = new HashMap();
+        }
         synchronized (_listeners) {
             _listeners.remove(name);
         }
@@ -398,7 +411,9 @@ public abstract class Stomp {
      * @param header Additional headers to send to the server.
      */
     public void send(String dest, String mesg, Map header) {
-        if (header == null) header = new HashMap();
+        if (header == null) {
+            header = new HashMap();
+        }
         header.put("destination", dest);
         transmit(Command.SEND, header, mesg);
     }
@@ -461,7 +476,9 @@ public abstract class Stomp {
         synchronized (_receipts) {
             for (Iterator i = _receipts.iterator(); i.hasNext(); ) {
                 String o = (String) i.next();
-                if (o.equals(receipt_id)) return true;
+                if (o.equals(receipt_id)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -477,7 +494,9 @@ public abstract class Stomp {
         synchronized (_receipts) {
             for (Iterator i = _receipts.iterator(); i.hasNext(); ) {
                 String o = (String) i.next();
-                if (o.equals(receipt_id)) i.remove();
+                if (o.equals(receipt_id)) {
+                    i.remove();
+                }
             }
         }
     }
@@ -495,16 +514,18 @@ public abstract class Stomp {
     public void waitOnReceipt(String receipt_id)
         throws InterruptedException {
         synchronized (_receipts) {
-            while (!hasReceipt(receipt_id))
+            while (!hasReceipt(receipt_id)) {
                 _receipts.wait();
+            }
         }
     }
 
     public boolean waitOnReceipt(String receipt_id, long timeout)
         throws InterruptedException {
         synchronized (_receipts) {
-            while (!hasReceipt(receipt_id))
+            while (!hasReceipt(receipt_id)) {
                 _receipts.wait(timeout);
+            }
             if (_receipts.contains(receipt_id)) {
                 return true;
             } else {
@@ -527,7 +548,9 @@ public abstract class Stomp {
     System.err.println("In nextError with "+_errors.size()+" errors from "+buff.toString());
     */
         synchronized (_errors) {
-            if (_errors.size() == 0) return null;
+            if (_errors.size() == 0) {
+                return null;
+            }
             return (String) _errors.remove(0);
         }
     }
