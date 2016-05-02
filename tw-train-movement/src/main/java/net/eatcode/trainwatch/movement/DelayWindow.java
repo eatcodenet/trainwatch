@@ -1,6 +1,12 @@
 package net.eatcode.trainwatch.movement;
 
-public enum DelayWindow {
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public enum DelayWindow implements Comparator<DelayWindow> {
+
     max5mins, max15mins, max30mins, over30mins;
 
     public static DelayWindow from(int delayInMins) {
@@ -18,6 +24,24 @@ public enum DelayWindow {
         }
 
         return over30mins;
+    }
+
+    @Override
+    public int compare(DelayWindow o1, DelayWindow o2) {
+        if (o1.ordinal() == o2.ordinal()) {
+            return 1;
+        } else if (o1.ordinal() < o2.ordinal()) {
+            return -1;
+        } else {
+            return 1;
+        }
+    }
+
+    public static List<DelayWindow> sortedValues() {
+        List<DelayWindow> values = Arrays.asList(DelayWindow.values());
+        Collections.sort(values);
+        System.out.println(values);
+        return values;
     }
 
 }

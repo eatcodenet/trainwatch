@@ -90,11 +90,12 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
 
     public static void main(String[] args) {
         HzTrainWatchSearch search = new HzTrainWatchSearch("trainwatch.eatcode.net");
-        List<TrainDeparture> deps = search.departuresBy(new Station("", "ABA"), 100);
-        System.out.println("departures count:" + deps.size());
-
-        List<Station> listStations = search.listStations();
-        System.out.println("Station count:" + listStations.size());
+        Map<DelayWindow, List<TrainMovement>> delays = search.delayedTrainsByAllWindows(20);
+        for (DelayWindow d : DelayWindow.sortedValues()) {
+            System.out.println(d.name());
+            delays.get(d).forEach(System.out::println);
+            System.out.println();
+        }
         search.shutdown();
     }
 }

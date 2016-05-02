@@ -34,6 +34,9 @@ public class HzMovementRepo implements MovementRepo {
 
     @Override
     public void put(TrainMovement tm) {
+        if (map.containsValue(tm)) {
+            delete(tm);
+        }
         map.put(DelayWindow.from(tm.delayInMins()), tm);
     }
 
@@ -43,8 +46,6 @@ public class HzMovementRepo implements MovementRepo {
         for (int i = 0; i < keys.length; i++) {
             map.remove(keys[i], tm);
         }
-        log.debug("DELETE {} {}", tm, map.containsValue(tm));
-
     }
 
     @Override

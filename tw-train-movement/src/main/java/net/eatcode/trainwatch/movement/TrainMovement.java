@@ -3,6 +3,7 @@ package net.eatcode.trainwatch.movement;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 import net.eatcode.trainwatch.nr.Location;
@@ -37,7 +38,7 @@ public class TrainMovement implements Serializable {
         this.destination = schedule.destination;
         this.arrival = schedule.arrival;
         this.hasArrived = Boolean.valueOf(terminated);
-        this.delay = parse(delay);
+        this.delay = Integer.parseInt(delay);
         this.isPassenger = schedule.isPassenger();
     }
 
@@ -100,23 +101,17 @@ public class TrainMovement implements Serializable {
         return Objects.equals(trainId, ((TrainMovement) obj).trainId);
     }
 
-    private Integer parse(String delay) {
-        if (delay == null) {
-            return 0;
-        }
-        return Integer.parseInt(delay);
-    }
-
     static class Formatted {
-
+        private final DateTimeFormatter sdf = DateTimeFormatter.ofPattern("dd/MM/yy:HHmmss");
         public String format(TrainMovement t) {
             String orig = t.origin == null ? "N/A" : t.origin.description;
             String oCrs = t.originCrs().equals("") ? "---" : t.originCrs();
             String dCrs = t.destCrs().equals("") ? "---" : t.destCrs();
             String dest = t.destination == null ? "N/A" : t.destination.description;
-            String arrv = t.hasArrived + "";
-            return String.format("%1$s %2$-3s %3$-32s %4$s %5$-3s %6$-32s %7$2dm %8$-5s %9$s",
-                    t.departure, oCrs, orig, t.arrival, dCrs, dest, t.delay, arrv, t.timestamp);
+            String tstm = sdf.format(t.timestamp);
+            String trid = t.trainId;
+            return String.format("%1$s %2$-3s %3$-32s %4$s %5$-3s %6$-32s %7$2dm %8$s %9$s",
+                    t.departure, oCrs, orig, t.arrival, dCrs, dest, t.delay, tstm, trid);
         }
     }
 
