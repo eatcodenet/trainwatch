@@ -105,7 +105,7 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
         try {
             while (true) {
                 listTrainMovements(search);
-                Thread.sleep(5000);
+                Thread.sleep(15000);
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
