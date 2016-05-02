@@ -66,7 +66,7 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
                 .stream().sorted((o1, o2) -> o1.departure().compareTo(o2.departure()))
                 .limit(maxResults)
                 .collect(toList());
-        log.info("departuresBy took {}ms", System.currentTimeMillis() - start);
+        log.info("departures search took {}ms", System.currentTimeMillis() - start);
         return result;
     }
 
@@ -78,7 +78,7 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
         HzTrainWatchSearch search = new HzTrainWatchSearch("trainwatch.eatcode.net");
         List<TrainDeparture> deps = search.departuresBy(new Station("", "MAN"), 10);
         System.out.println(deps.size());
-        List<TrainMovement> movements = search.trainMovementsByDelay(DelayWindow.over15mins, 10);
+        List<TrainMovement> movements = search.trainMovementsByDelay(DelayWindow.upTo15mins, 10);
         for (TrainMovement tm : movements) {
             System.out.println(tm);
         }
