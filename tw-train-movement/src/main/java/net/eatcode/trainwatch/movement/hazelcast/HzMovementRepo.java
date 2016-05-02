@@ -4,16 +4,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import net.eatcode.trainwatch.movement.DelayWindow;
+import net.eatcode.trainwatch.movement.MovementRepo;
+import net.eatcode.trainwatch.movement.TrainMovement;
+import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.MultiMap;
-
-import net.eatcode.trainwatch.movement.DelayWindow;
-import net.eatcode.trainwatch.movement.TrainMovement;
-import net.eatcode.trainwatch.movement.MovementRepo;
-import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 
 public class HzMovementRepo implements MovementRepo {
 
@@ -34,7 +34,6 @@ public class HzMovementRepo implements MovementRepo {
 
     @Override
     public void put(TrainMovement tm) {
-
         map.put(DelayWindow.from(tm.delayInMins()), tm);
     }
 

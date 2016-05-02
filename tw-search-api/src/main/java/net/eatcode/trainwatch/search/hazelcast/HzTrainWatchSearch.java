@@ -4,7 +4,9 @@ import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.text.WordUtils.capitalize;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.eatcode.trainwatch.movement.DelayWindow;
 import net.eatcode.trainwatch.movement.TrainDeparture;
@@ -39,7 +41,7 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
 
     @Override
     public List<Station> listStations() {
-        return departures.values().parallelStream()
+        return departures.values().stream()
                 .map(td -> makeStation(td))
                 .distinct().sorted().collect(toList());
     }
@@ -49,10 +51,23 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
     }
 
     @Override
-    public List<TrainMovement> trainMovementsByDelay(DelayWindow d, int maxResults) {
-        return movements.get(d).stream()
+    public List<TrainMovement> delayedTrainsByWindow(DelayWindow delay, int maxResults) {
+        return collectSortedMovements(delay, maxResults);
+    }
+
+    private List<TrainMovement> collectSortedMovements(DelayWindow delay, int maxResults) {
+        return movements.get(delay).stream()
                 .sorted((m1, m2) -> m2.timestamp().compareTo(m1.timestamp()))
                 .limit(maxResults).collect(toList());
+    }
+
+    @Override
+    public Map<DelayWindow, List<TrainMovement>> delayedTrainsByAllWindows(int maxResults) {
+        Map<DelayWindow, List<TrainMovement>> results = new HashMap<DelayWindow, List<TrainMovement>>(maxResults * 4);
+        movements.keySet().forEach(delay -> {
+            results.put(delay, collectSortedMovements(delay, maxResults));
+        });
+        return results;
     }
 
     @Override
@@ -60,12 +75,11 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
     public List<TrainDeparture> departuresBy(Station station, int maxResults) {
         LocalDateTime maxDeparture = LocalDateTime.now().minusMinutes(2);
         EntryObject e = new PredicateBuilder().getEntryObject();
-        Predicate predicate = e.get("wtt").greaterThan(maxDeparture).and(e.get("origin.crs").equal(station.getCrs()));
+        Predicate predicate = e.get("origin.crs")
+                .equal(station.getCrs()).and(e.get("wtt").greaterThan(maxDeparture));
         long start = System.currentTimeMillis();
         List<TrainDeparture> result = departures.values(predicate)
-                .stream().sorted((o1, o2) -> o1.departure().compareTo(o2.departure()))
-                .limit(maxResults)
-                .collect(toList());
+                .stream().sorted().limit(maxResults).collect(toList());
         log.info("departures search took {}ms", System.currentTimeMillis() - start);
         return result;
     }
@@ -76,16 +90,11 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
 
     public static void main(String[] args) {
         HzTrainWatchSearch search = new HzTrainWatchSearch("trainwatch.eatcode.net");
-        List<TrainDeparture> deps = search.departuresBy(new Station("", "MAN"), 10);
-        System.out.println(deps.size());
-        List<TrainMovement> movements = search.trainMovementsByDelay(DelayWindow.upTo15mins, 10);
-        for (TrainMovement tm : movements) {
-            System.out.println(tm);
-        }
+        List<TrainDeparture> deps = search.departuresBy(new Station("", "ABA"), 100);
+        System.out.println("departures count:" + deps.size());
+
         List<Station> listStations = search.listStations();
-        for (Station station : listStations) {
-            System.out.println(station);
-        }
+        System.out.println("Station count:" + listStations.size());
         search.shutdown();
     }
 }

@@ -1,6 +1,7 @@
 package net.eatcode.trainwatch.search;
 
 import java.util.List;
+import java.util.Map;
 
 import net.eatcode.trainwatch.movement.DelayWindow;
 import net.eatcode.trainwatch.movement.TrainDeparture;
@@ -10,7 +11,9 @@ public interface TrainWatchSearch {
 
     List<Station> listStations();
 
-    List<TrainMovement> trainMovementsByDelay(DelayWindow d, int maxResults);
+    List<TrainMovement> delayedTrainsByWindow(DelayWindow d, int maxResults);
+
+    Map<DelayWindow, List<TrainMovement>> delayedTrainsByAllWindows(int maxResults);
 
     List<TrainDeparture> departuresBy(Station station, int maxResults);
 }

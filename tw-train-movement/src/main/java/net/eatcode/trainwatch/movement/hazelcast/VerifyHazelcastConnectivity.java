@@ -58,7 +58,7 @@ public class VerifyHazelcastConnectivity {
         MultiMap<DelayWindow, TrainMovement> movements = client.getMultiMap("trainMovement");
         // movements.clear();
         System.out.println("\nMovements: " + movements.size());
-        movements.get(DelayWindow.upTo10Mins).stream().limit(10).forEach(System.out::println);
+        movements.get(DelayWindow.max15mins).stream().limit(10).forEach(System.out::println);
 
     }
 
