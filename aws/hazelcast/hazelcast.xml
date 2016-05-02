@@ -230,7 +230,13 @@
     <min-eviction-check-millis>30000</min-eviction-check-millis>
     <merge-policy>com.hazelcast.map.merge.PutIfAbsentMapMergePolicy</merge-policy>
   </map>
-
+  
+  <map name="trainDeparture">
+    <!--  3 days TTL -->
+    <time-to-live-seconds>259200</time-to-live-seconds>
+    <min-eviction-check-millis>30000</min-eviction-check-millis>
+    <merge-policy>com.hazelcast.map.merge.PutIfAbsentMapMergePolicy</merge-policy>
+  </map>
   <properties>
     <property name="hazelcast.logging.type">slf4j</property>
   </properties>

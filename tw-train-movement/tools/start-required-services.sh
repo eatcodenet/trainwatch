@@ -11,7 +11,7 @@ function clean_up() {
 trap clean_up SIGINT
 
 function find_pid() {
-  term_pid=$(ps -ef | grep ${1} | tr -s ' ' | cut -f2 -d' ')
+  term_pid=$(ps -ef | grep ${1} | awk '{print $2}')
   echo ${term_pid}
 }
 

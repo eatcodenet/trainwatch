@@ -5,9 +5,10 @@ import static org.apache.commons.lang3.text.WordUtils.capitalize;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import net.eatcode.trainwatch.movement.DelayWindow;
 import net.eatcode.trainwatch.movement.TrainDeparture;
@@ -16,14 +17,17 @@ import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 import net.eatcode.trainwatch.search.Station;
 import net.eatcode.trainwatch.search.TrainWatchSearch;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import com.hazelcast.query.EntryObject;
+import com.hazelcast.query.PagingPredicate;
 import com.hazelcast.query.Predicate;
 import com.hazelcast.query.PredicateBuilder;
+import com.hazelcast.query.Predicates;
 
 public class HzTrainWatchSearch implements TrainWatchSearch {
 
@@ -52,23 +56,28 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
 
     @Override
     public List<TrainMovement> delayedTrainsByWindow(DelayWindow delay, int maxResults) {
-        return collectSortedMovements(delay, maxResults);
+        List<TrainMovement> list = collectSortedMovements(delay, maxResults).get(delay);
+        return list == null ? new ArrayList<TrainMovement>(0) : list;
     }
 
-    private List<TrainMovement> collectSortedMovements(DelayWindow delay, int maxResults) {
-        // return movements.get(delay).stream()
-        // .sorted((m1, m2) -> m2.timestamp().compareTo(m1.timestamp()))
-        // .limit(maxResults).collect(toList());
-        return new ArrayList<TrainMovement>();
+    @SuppressWarnings("rawtypes")
+    private Map<DelayWindow, List<TrainMovement>> collectSortedMovements(DelayWindow delay, int maxResults) {
+        StopWatch sw = new StopWatch();
+        Predicate running = Predicates.equal("hasArrived", Boolean.FALSE);
+        PagingPredicate pagingPredicate = new PagingPredicate(running, maxResults);
+        sw.start();
+        Collection<TrainMovement> values = movements.values(pagingPredicate);
+        Map<DelayWindow, List<TrainMovement>> result = values.stream()
+                .sorted((o1, o2) -> o2.timestamp().compareTo(o1.timestamp()))
+                .collect(Collectors.groupingBy(tm -> DelayWindow.from(tm.delayInMins())));
+        sw.stop();
+        log.info("took {}ms", sw.getTime());
+        return result;
     }
 
     @Override
     public Map<DelayWindow, List<TrainMovement>> delayedTrainsByAllWindows(int maxResults) {
-        Map<DelayWindow, List<TrainMovement>> results = new HashMap<DelayWindow, List<TrainMovement>>(maxResults * 4);
-        movements.keySet().forEach(delay -> {
-            // results.put(delay, collectSortedMovements(DelayWindow.max15mins, maxResults));
-            });
-        return results;
+        return collectSortedMovements(DelayWindow.max15mins, maxResults);
     }
 
     @Override
@@ -90,13 +99,36 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
     }
 
     public static void main(String[] args) {
-        HzTrainWatchSearch search = new HzTrainWatchSearch("trainwatch.eatcode.net");
-        Map<DelayWindow, List<TrainMovement>> delays = search.delayedTrainsByAllWindows(20);
-        for (DelayWindow d : DelayWindow.sortedValues()) {
-            System.out.println(d.name());
-            //delays.get(d).forEach(System.out::println);
-            System.out.println();
+        String hazelcastServers = (args.length == 0) ? "trainwatch.eatcode.net" : args[0];
+        HzTrainWatchSearch search = new HzTrainWatchSearch(hazelcastServers);
+        try {
+            while (true) {
+                listTrainMovements(search);
+                Thread.sleep(3000);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            search.shutdown();
         }
-        search.shutdown();
+
     }
+
+    private static void listTrainMovements(HzTrainWatchSearch search) {
+        Map<DelayWindow, List<TrainMovement>> delays = search.delayedTrainsByAllWindows(32);
+        for (DelayWindow d : DelayWindow.sortedValues()) {
+            System.out.println("\n" + d.name());
+            printList(delays, d);
+        }
+    }
+
+    private static void printList(Map<DelayWindow, List<TrainMovement>> delays, DelayWindow d) {
+        List<TrainMovement> list = delays.get(d);
+        if (list == null) {
+            return;
+        }
+        for (TrainMovement tm : list) {
+            System.out.println(tm);
+        }
+    }
+
 }

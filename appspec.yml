@@ -7,6 +7,8 @@ files:
     destination: /var/trainwatch/tools/   
   - source: libs/tw-train-movement-1.0-SNAPSHOT.jar
     destination: /var/trainwatch/libs
+  - source: libs/tw-search-api-1.0-SNAPSHOT.jar
+    destination: /var/trainwatch/libs
   - source: aws/hazelcast/start.sh
     destination: /opt/hazelcast/bin
   - source: aws/hazelcast/hazelcast.xml

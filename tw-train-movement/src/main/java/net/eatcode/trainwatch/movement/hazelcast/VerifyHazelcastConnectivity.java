@@ -52,7 +52,7 @@ public class VerifyHazelcastConnectivity {
         System.out.println("Live departures: " + liveDepartures.size());
 
         IMap<String, TrainMovement> movements = client.getMap("trainMovement");
-        // movements.clear();
+        //movements.clear();
         System.out.println("Movements: " + movements.size());
 
     }

@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-kill_pid=$(ps -ef | grep [k]afka\.Kafka | tr -s ' ' | cut -f2 -d' ')
+kill_pid=$(ps -ef | grep [k]afka\.Kafka | awk '{print $2}')
 if [ ! -z "${kill_pid}" ]; then
 kill -9 ${kill_pid} # WARNING added -9 flag!
 fi

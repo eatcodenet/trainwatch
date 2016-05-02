@@ -8,15 +8,15 @@ tiploc_file=${app_home}/data/tiplocs.json
 schedule_file=${app_home}/data/full-train-schedules
 uname=$(uname)
 
-function cleanup() {
-	echo "cleanup..."
-	kill_pid=$(ps -ef | grep [P]opulateLocationsApp | tr -s ' ' | cut -f2 -d' ')
+function clean_up() {
+	echo "clean_up..."
+	kill_pid=$(ps -ef | grep [P]opulateLocationsApp | awk '{print $2}')
 	if [ ! -z "${kill_pid}" ]; then
 		kill ${kill_pid}
 	fi
 }
 
-trap cleanup SIGINT
+trap clean_up SIGINT
 
 if [ "${uname}" == "Darwin" ];then
 	jar_file=${base_dir}/../build/libs/tw-ref-data-1.0-SNAPSHOT.jar

@@ -9,7 +9,7 @@ import java.util.Objects;
 import net.eatcode.trainwatch.nr.Location;
 import net.eatcode.trainwatch.nr.Schedule;
 
-public class TrainMovement implements Serializable {
+public class TrainMovement implements Serializable, Comparable<TrainMovement> {
 
     private static final long serialVersionUID = 1L;
 
@@ -103,6 +103,7 @@ public class TrainMovement implements Serializable {
 
     static class Formatted {
         private final DateTimeFormatter sdf = DateTimeFormatter.ofPattern("dd/MM/yy:HHmmss");
+
         public String format(TrainMovement t) {
             String orig = t.origin == null ? "N/A" : t.origin.description;
             String oCrs = t.originCrs().equals("") ? "---" : t.originCrs();
@@ -117,5 +118,10 @@ public class TrainMovement implements Serializable {
 
     public Location currentLocation() {
         return currentLocation;
+    }
+
+    @Override
+    public int compareTo(TrainMovement o) {
+        return o.timestamp.compareTo(timestamp); // reverse
     }
 }

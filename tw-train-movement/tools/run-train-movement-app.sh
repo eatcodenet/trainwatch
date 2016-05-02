@@ -8,14 +8,14 @@ jar_file=${app_home}/libs/tw-train-movement-1.0-SNAPSHOT.jar
 uname=$(uname)
 creds=${app_home}/creds.txt
 
-function cleanup() {
-  echo "cleanup..."
-  kill_pid=$(ps -ef | grep [P]opulateLocationsApp | tr -s ' ' | cut -f2 -d' ')
+function clean_up() {
+  echo "clean_up..."
+  kill_pid=$(ps -ef | grep [P]opulateLocationsApp | awk '{print $2}')
   if [ ! -z "${kill_pid}" ]; then
     kill ${kill_pid}
   fi
 }
-trap cleanup SIGINT
+trap clean_up SIGINT
 
 if [ "${uname}" == "Darwin" ];then
   jar_file=${base_dir}/../build/libs/tw-train-movement-1.0-SNAPSHOT.jar
