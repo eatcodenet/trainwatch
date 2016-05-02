@@ -66,12 +66,13 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
         Predicate running = Predicates.equal("hasArrived", Boolean.FALSE);
         PagingPredicate pagingPredicate = new PagingPredicate(running, maxResults);
         sw.start();
-        Collection<TrainMovement> values = movements.values(pagingPredicate);
+        Collection<TrainMovement> values = movements.values();
         Map<DelayWindow, List<TrainMovement>> result = values.stream()
                 .sorted((o1, o2) -> o2.timestamp().compareTo(o1.timestamp()))
+                .limit(maxResults)
                 .collect(Collectors.groupingBy(tm -> DelayWindow.from(tm.delayInMins())));
         sw.stop();
-        log.info("took {}ms", sw.getTime());
+        log.debug("movement took {}ms", sw.getTime());
         return result;
     }
 
@@ -104,7 +105,7 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
         try {
             while (true) {
                 listTrainMovements(search);
-                Thread.sleep(3000);
+                Thread.sleep(5000);
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -114,7 +115,10 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
     }
 
     private static void listTrainMovements(HzTrainWatchSearch search) {
-        Map<DelayWindow, List<TrainMovement>> delays = search.delayedTrainsByAllWindows(32);
+        Map<DelayWindow, List<TrainMovement>> delays = search.delayedTrainsByAllWindows(16);
+        System.out.println("------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("                                            Train Movements                                                             ");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------");
         for (DelayWindow d : DelayWindow.sortedValues()) {
             System.out.println("\n" + d.name());
             printList(delays, d);

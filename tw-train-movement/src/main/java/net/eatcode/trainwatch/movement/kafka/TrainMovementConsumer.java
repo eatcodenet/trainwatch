@@ -24,13 +24,13 @@ public class TrainMovementConsumer {
         consumer.subscribe(Arrays.asList(Topic.trainMovement.topicName()));
         log.debug("Waiting...");
         while (true) {
-            consumer.poll(100).forEach(record -> consume(record));
+            consumer.poll(200).forEach(record -> consume(record));
         }
     }
 
     private void consume(ConsumerRecord<String, byte[]> r) {
         TrustMovementMessage tm = KryoUtils.fromByteArray(r.value(), TrustMovementMessage.class);
-        log.info("{}", tm);
+        log.debug("{}", tm);
     }
 
     public static void main(String[] args) {

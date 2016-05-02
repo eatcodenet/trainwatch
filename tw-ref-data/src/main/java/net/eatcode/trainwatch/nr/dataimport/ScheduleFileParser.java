@@ -26,7 +26,7 @@ public class ScheduleFileParser {
     }
 
     public CompletableFuture<Void> parse(ParsedItemProcessor<TrustSchedule> scheduleProcessor) {
-        log.debug("sourceFile: {}", this.sourceFile);
+        log.info("sourceFile: {}", this.sourceFile);
         CompletableFuture<Void> result = new CompletableFuture<>();
         CompletableFuture.runAsync(() -> {
             try (Stream<String> lines = Files.lines(Paths.get(sourceFile))) {

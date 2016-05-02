@@ -37,7 +37,7 @@ public class TrainMovementProcessor implements Processor<String, TrainMovement> 
             if (tm.isPassenger()) {
                 movementRepo.put(tm);
             } else {
-                log.debug("Not passenger train {} {} {}", tm.trainId(), tm.origin().description, tm.destination().description);
+                log.debug("Skipping non passenger train - {} {} {}", tm.trainId(), tm.origin().description, tm.destination().description);
             }
         }
     }

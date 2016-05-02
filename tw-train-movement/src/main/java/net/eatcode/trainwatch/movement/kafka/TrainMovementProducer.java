@@ -53,7 +53,7 @@ public class TrainMovementProducer {
 
     public void produceMessages(String nrUsername, String nrPassword) {
         TrustMessagesStomp stomp = new TrustMessagesStomp(nrUsername, nrPassword);
-        log.debug("created stomp service");
+        log.info("created stomp service");
         stomp.subscribe(movements -> {
             parser.parseArray(movements).forEach((tm) -> sendMessage(tm));
         });
