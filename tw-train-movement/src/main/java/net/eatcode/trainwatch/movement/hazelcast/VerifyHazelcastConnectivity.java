@@ -1,6 +1,5 @@
 package net.eatcode.trainwatch.movement.hazelcast;
 
-import net.eatcode.trainwatch.movement.DelayWindow;
 import net.eatcode.trainwatch.movement.TrainActivation;
 import net.eatcode.trainwatch.movement.TrainDeparture;
 import net.eatcode.trainwatch.movement.TrainMovement;
@@ -13,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
-import com.hazelcast.core.MultiMap;
 import com.hazelcast.query.SqlPredicate;
 
 public class VerifyHazelcastConnectivity {
@@ -50,11 +48,11 @@ public class VerifyHazelcastConnectivity {
         System.out.println("Activations: " + activations.size());
 
         IMap<String, TrainDeparture> liveDepartures = client.getMap("trainDeparture");
-        //liveDepartures.clear();
+        // liveDepartures.clear();
         System.out.println("Live departures: " + liveDepartures.size());
 
-        MultiMap<DelayWindow, TrainMovement> movements = client.getMultiMap("trainMovement");
-        //movements.clear();
+        IMap<String, TrainMovement> movements = client.getMap("trainMovement");
+        // movements.clear();
         System.out.println("Movements: " + movements.size());
 
     }

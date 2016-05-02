@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.text.WordUtils.capitalize;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,6 @@ import org.slf4j.LoggerFactory;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
-import com.hazelcast.core.MultiMap;
 import com.hazelcast.query.EntryObject;
 import com.hazelcast.query.Predicate;
 import com.hazelcast.query.PredicateBuilder;
@@ -31,12 +31,12 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
 
     private final HazelcastInstance client;
     private final IMap<String, TrainDeparture> departures;
-    private final MultiMap<DelayWindow, TrainMovement> movements;
+    private final IMap<String, TrainMovement> movements;
 
     public HzTrainWatchSearch(String servers) {
         this.client = new HzClientBuilder().buildInstance(servers);
         this.departures = client.getMap("trainDeparture");
-        this.movements = client.getMultiMap("trainMovement");
+        this.movements = client.getMap("trainMovement");
     }
 
     @Override
@@ -56,17 +56,18 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
     }
 
     private List<TrainMovement> collectSortedMovements(DelayWindow delay, int maxResults) {
-        return movements.get(delay).stream()
-                .sorted((m1, m2) -> m2.timestamp().compareTo(m1.timestamp()))
-                .limit(maxResults).collect(toList());
+        // return movements.get(delay).stream()
+        // .sorted((m1, m2) -> m2.timestamp().compareTo(m1.timestamp()))
+        // .limit(maxResults).collect(toList());
+        return new ArrayList<TrainMovement>();
     }
 
     @Override
     public Map<DelayWindow, List<TrainMovement>> delayedTrainsByAllWindows(int maxResults) {
         Map<DelayWindow, List<TrainMovement>> results = new HashMap<DelayWindow, List<TrainMovement>>(maxResults * 4);
         movements.keySet().forEach(delay -> {
-            results.put(delay, collectSortedMovements(delay, maxResults));
-        });
+            // results.put(delay, collectSortedMovements(DelayWindow.max15mins, maxResults));
+            });
         return results;
     }
 
@@ -93,7 +94,7 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
         Map<DelayWindow, List<TrainMovement>> delays = search.delayedTrainsByAllWindows(20);
         for (DelayWindow d : DelayWindow.sortedValues()) {
             System.out.println(d.name());
-            delays.get(d).forEach(System.out::println);
+            //delays.get(d).forEach(System.out::println);
             System.out.println();
         }
         search.shutdown();
