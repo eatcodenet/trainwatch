@@ -70,7 +70,7 @@ public class TrainMovement implements Serializable, Comparable<TrainMovement> {
         return this.origin;
     }
 
-    public int delayInMins() {
+    public Integer delayInMins() {
         return this.delay;
     }
 
@@ -102,7 +102,7 @@ public class TrainMovement implements Serializable, Comparable<TrainMovement> {
     }
 
     static class Formatted {
-        private final DateTimeFormatter sdf = DateTimeFormatter.ofPattern("dd/MM/yy:HHmmss");
+        private final DateTimeFormatter sdf = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm");
 
         public String format(TrainMovement t) {
             String orig = t.origin == null ? "N/A" : t.origin.description;

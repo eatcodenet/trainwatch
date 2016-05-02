@@ -4,8 +4,6 @@ import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.text.WordUtils.capitalize;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -24,10 +22,8 @@ import org.slf4j.LoggerFactory;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import com.hazelcast.query.EntryObject;
-import com.hazelcast.query.PagingPredicate;
 import com.hazelcast.query.Predicate;
 import com.hazelcast.query.PredicateBuilder;
-import com.hazelcast.query.Predicates;
 
 public class HzTrainWatchSearch implements TrainWatchSearch {
 
@@ -56,19 +52,14 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
 
     @Override
     public List<TrainMovement> delayedTrainsByWindow(DelayWindow delay, int maxResults) {
-        List<TrainMovement> list = collectSortedMovements(delay, maxResults).get(delay);
-        return list == null ? new ArrayList<TrainMovement>(0) : list;
+        return collectSortedMovements(maxResults).get(delay);
     }
 
-    @SuppressWarnings("rawtypes")
-    private Map<DelayWindow, List<TrainMovement>> collectSortedMovements(DelayWindow delay, int maxResults) {
+    private Map<DelayWindow, List<TrainMovement>> collectSortedMovements(int maxResults) {
         StopWatch sw = new StopWatch();
-        Predicate running = Predicates.equal("hasArrived", Boolean.FALSE);
-        PagingPredicate pagingPredicate = new PagingPredicate(running, maxResults);
         sw.start();
-        Collection<TrainMovement> values = movements.values();
-        Map<DelayWindow, List<TrainMovement>> result = values.stream()
-                .sorted((o1, o2) -> o2.timestamp().compareTo(o1.timestamp()))
+        Map<DelayWindow, List<TrainMovement>> result = movements.values().stream()
+                .sorted((t1, t2) -> t2.delayInMins().compareTo(t1.delayInMins()))
                 .limit(maxResults)
                 .collect(Collectors.groupingBy(tm -> DelayWindow.from(tm.delayInMins())));
         sw.stop();
@@ -78,7 +69,7 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
 
     @Override
     public Map<DelayWindow, List<TrainMovement>> delayedTrainsByAllWindows(int maxResults) {
-        return collectSortedMovements(DelayWindow.max15mins, maxResults);
+        return collectSortedMovements(maxResults);
     }
 
     @Override
@@ -99,6 +90,7 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
         client.shutdown();
     }
 
+
     public static void main(String[] args) {
         String hazelcastServers = (args.length == 0) ? "trainwatch.eatcode.net" : args[0];
         HzTrainWatchSearch search = new HzTrainWatchSearch(hazelcastServers);
@@ -116,9 +108,12 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
 
     private static void listTrainMovements(HzTrainWatchSearch search) {
         Map<DelayWindow, List<TrainMovement>> delays = search.delayedTrainsByAllWindows(16);
-        System.out.println("------------------------------------------------------------------------------------------------------------------------");
-        System.out.println("                                            Train Movements                                                             ");
-        System.out.println("------------------------------------------------------------------------------------------------------------------------");
+        System.out
+                .println("------------------------------------------------------------------------------------------------------------------------");
+        System.out
+                .println("                                            Train Movements                                                             ");
+        System.out
+                .println("------------------------------------------------------------------------------------------------------------------------");
         for (DelayWindow d : DelayWindow.sortedValues()) {
             System.out.println("\n" + d.name());
             printList(delays, d);

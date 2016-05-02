@@ -29,7 +29,7 @@ public class HzMovementRepo implements MovementRepo {
 
     @Override
     public void delete(TrainMovement tm) {
-        map.delete(tm);
+        map.delete(tm.trainId());
     }
 
     public void shutdown() {
