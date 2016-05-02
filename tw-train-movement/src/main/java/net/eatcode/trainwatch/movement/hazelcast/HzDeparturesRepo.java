@@ -27,7 +27,7 @@ public class HzDeparturesRepo implements DeparturesRepo {
     public void put(TrainDeparture td) {
         if (hasBothCrsCodes(td)) {
             log.info("PUT: {}", td);
-            map.put(td.trainId(), td);
+            map.set(td.trainId(), td);
         }
     }
 
