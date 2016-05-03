@@ -11,8 +11,6 @@ public interface TrainWatchSearch {
 
     List<Station> listStations();
 
-    List<TrainMovement> delayedTrainsByWindow(DelayWindow d, int maxResults);
-
     Map<DelayWindow, List<TrainMovement>> delayedTrainsByAllWindows(int maxResults);
 
     List<TrainDeparture> departuresBy(Station station, int maxResults);
