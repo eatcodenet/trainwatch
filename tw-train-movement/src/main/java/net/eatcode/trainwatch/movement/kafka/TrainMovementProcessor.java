@@ -1,13 +1,13 @@
 package net.eatcode.trainwatch.movement.kafka;
 
-import net.eatcode.trainwatch.movement.ActivationRepo;
-import net.eatcode.trainwatch.movement.MovementRepo;
-import net.eatcode.trainwatch.movement.TrainMovement;
-
 import org.apache.kafka.streams.processor.Processor;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.eatcode.trainwatch.movement.ActivationRepo;
+import net.eatcode.trainwatch.movement.MovementRepo;
+import net.eatcode.trainwatch.movement.TrainMovement;
 
 public class TrainMovementProcessor implements Processor<String, TrainMovement> {
 
@@ -37,7 +37,7 @@ public class TrainMovementProcessor implements Processor<String, TrainMovement> 
             if (tm.isPassenger()) {
                 movementRepo.put(tm);
             } else {
-                log.debug("Skipping non passenger train - {} {} {}", tm.trainId(), tm.origin().description, tm.destination().description);
+                log.debug("Skipping non passenger train - {}", tm.trainId());
             }
         }
     }
