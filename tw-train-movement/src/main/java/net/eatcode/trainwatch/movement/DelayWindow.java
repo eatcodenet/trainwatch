@@ -7,26 +7,20 @@ import java.util.List;
 
 public enum DelayWindow implements Comparator<DelayWindow> {
 
-    max5mins(5), max15mins(15), max30mins(30), over30mins(9999);
-
-    private int delay;
-
-    private DelayWindow(int delay) {
-        this.delay = delay;
-    }
+    upTo5mins, from5to15mins, from15to30mins, over30mins;
 
     public static DelayWindow from(int delayInMins) {
 
         if (delayInMins <= 5) {
-            return max5mins;
+            return upTo5mins;
         }
 
         if (delayInMins <= 15) {
-            return max15mins;
+            return from5to15mins;
         }
 
         if (delayInMins <= 30) {
-            return max30mins;
+            return from15to30mins;
         }
 
         return over30mins;
@@ -47,10 +41,6 @@ public enum DelayWindow implements Comparator<DelayWindow> {
         List<DelayWindow> values = Arrays.asList(DelayWindow.values());
         Collections.sort(values);
         return values;
-    }
-
-    public int delay() {
-        return delay;
     }
 
 }
