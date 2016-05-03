@@ -1,16 +1,20 @@
 package net.eatcode.trainwatch.movement.kafka;
 
 import static net.eatcode.trainwatch.movement.kafka.Topic.trainMovement;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.hazelcast.core.HazelcastInstance;
+
 import net.eatcode.trainwatch.movement.ActivationRepo;
 import net.eatcode.trainwatch.movement.DeparturesRepo;
 import net.eatcode.trainwatch.movement.hazelcast.HzActivationRepo;
 import net.eatcode.trainwatch.movement.hazelcast.HzDeparturesRepo;
 import net.eatcode.trainwatch.movement.hazelcast.HzMovementRepo;
+import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 import net.eatcode.trainwatch.nr.hazelcast.HzLocationRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class TrainMovementApp {
 
@@ -26,17 +30,18 @@ public class TrainMovementApp {
 
         ActivationRepo activationRepo = new HzActivationRepo(hazelcastServers);
         DeparturesRepo departuresRepo = new HzDeparturesRepo(hazelcastServers);
+        HazelcastInstance hzClient = new HzClientBuilder().buildInstance(hazelcastServers);
 
         Runnable movementProducer = () -> {
             log.info("running producer");
             new TrainMovementProducer(kafkaServers, activationRepo,
                     new HzScheduleRepo(hazelcastServers), new HzLocationRepo(hazelcastServers), departuresRepo)
-                    .produceMessages(networkRailUsername, networkRailPassword);
+                            .produceMessages(networkRailUsername, networkRailPassword);
         };
 
         Runnable movements = () -> {
             log.info("running movements");
-            TrainMovementProcessor processor = new TrainMovementProcessor(new HzMovementRepo(hazelcastServers),
+            TrainMovementProcessor processor = new TrainMovementProcessor(new HzMovementRepo(hzClient),
                     activationRepo);
             new TrainMovementStream(kafkaServers, processor).process();
         };

@@ -12,6 +12,7 @@ public class HzLocationRepo implements LocationRepo {
     private final IMap<String, Location> byStanoxMap;
     private final IMap<String, Location> byTiplocMap;
 
+    @Deprecated
     public HzLocationRepo(String hazelcastServers) {
         this.client = new HzClientBuilder().buildInstance(hazelcastServers);
         this.byStanoxMap = client.getMap("locationByStanox");

@@ -12,7 +12,6 @@ import com.hazelcast.query.Predicates;
 
 import net.eatcode.trainwatch.movement.MovementRepo;
 import net.eatcode.trainwatch.movement.TrainMovement;
-import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 
 public class HzMovementRepo implements MovementRepo {
 
@@ -20,11 +19,6 @@ public class HzMovementRepo implements MovementRepo {
 
     private final HazelcastInstance client;
     private final IMap<String, TrainMovement> map;
-
-    public HzMovementRepo(String servers) {
-        this.client = new HzClientBuilder().buildInstance(servers);
-        this.map = client.getMap("trainMovement");
-    }
 
     public HzMovementRepo(HazelcastInstance client) {
         this.client = client;

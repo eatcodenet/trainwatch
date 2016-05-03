@@ -1,14 +1,14 @@
 package net.eatcode.trainwatch.movement.hazelcast;
 
-import net.eatcode.trainwatch.movement.DeparturesRepo;
-import net.eatcode.trainwatch.movement.TrainDeparture;
-import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
+
+import net.eatcode.trainwatch.movement.DeparturesRepo;
+import net.eatcode.trainwatch.movement.TrainDeparture;
+import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 
 public class HzDeparturesRepo implements DeparturesRepo {
 
@@ -18,6 +18,7 @@ public class HzDeparturesRepo implements DeparturesRepo {
 
     private final IMap<String, TrainDeparture> map;
 
+    @Deprecated
     public HzDeparturesRepo(String servers) {
         this.client = new HzClientBuilder().buildInstance(servers);
         this.map = client.getMap("trainDeparture");

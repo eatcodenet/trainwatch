@@ -11,6 +11,7 @@ public class HzScheduleRepo implements ScheduleRepo {
     private final HazelcastInstance client;
     private final IMap<String, Schedule> map;
 
+    @Deprecated
     public HzScheduleRepo(String servers) {
         this.client = new HzClientBuilder().buildInstance(servers);
         this.map = client.getMap("schedule");

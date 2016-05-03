@@ -2,18 +2,20 @@ package net.eatcode.trainwatch.movement.hazelcast;
 
 import java.util.Optional;
 
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.IMap;
+
 import net.eatcode.trainwatch.movement.ActivationRepo;
 import net.eatcode.trainwatch.movement.TrainActivation;
 import net.eatcode.trainwatch.movement.TrainMovement;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 
-import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
-
 public class HzActivationRepo implements ActivationRepo {
+
     private final HazelcastInstance client;
     private final IMap<String, TrainActivation> map;
 
+    @Deprecated
     public HzActivationRepo(String servers) {
         this.client = new HzClientBuilder().buildInstance(servers);
         this.map = client.getMap("trainActivation");

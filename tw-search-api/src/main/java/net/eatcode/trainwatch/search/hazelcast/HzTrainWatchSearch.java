@@ -8,13 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import net.eatcode.trainwatch.movement.DelayWindow;
-import net.eatcode.trainwatch.movement.TrainDeparture;
-import net.eatcode.trainwatch.movement.TrainMovement;
-import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
-import net.eatcode.trainwatch.search.Station;
-import net.eatcode.trainwatch.search.TrainWatchSearch;
-
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +18,13 @@ import com.hazelcast.query.EntryObject;
 import com.hazelcast.query.Predicate;
 import com.hazelcast.query.PredicateBuilder;
 
+import net.eatcode.trainwatch.movement.DelayWindow;
+import net.eatcode.trainwatch.movement.TrainDeparture;
+import net.eatcode.trainwatch.movement.TrainMovement;
+import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
+import net.eatcode.trainwatch.search.Station;
+import net.eatcode.trainwatch.search.TrainWatchSearch;
+
 public class HzTrainWatchSearch implements TrainWatchSearch {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -33,6 +33,7 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
     private final IMap<String, TrainDeparture> departures;
     private final IMap<String, TrainMovement> movements;
 
+    @Deprecated
     public HzTrainWatchSearch(String servers) {
         this.client = new HzClientBuilder().buildInstance(servers);
         this.departures = client.getMap("trainDeparture");
