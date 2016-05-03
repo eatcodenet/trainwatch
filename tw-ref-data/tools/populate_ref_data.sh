@@ -2,7 +2,7 @@
 base_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 app_home=/var/trainwatch
 hazelcast_servers=${1:-localhost}
-jar_file=${app_home}/libs/tw-train-movement-1.0-SNAPSHOT.jar
+class_path=${app_home}/libs/tw-train-movement-1.0-SNAPSHOT.jar
 crs_file=${app_home}/data/stations.json
 tiploc_file=${app_home}/data/tiplocs.json
 schedule_file=${app_home}/data/full-train-schedules
@@ -19,12 +19,12 @@ function clean_up() {
 trap clean_up SIGINT
 
 if [ "${uname}" == "Darwin" ];then
-	jar_file=${base_dir}/../build/libs/tw-ref-data-1.0-SNAPSHOT.jar
+	class_path=${base_dir}/../build/libs/tw-ref-data-1.0-SNAPSHOT.jar
 fi
-echo "jar_file is ${jar_file}"
+echo "class_path is ${class_path}"
 
 echo "Populating locations..."
-java -cp ${jar_file} net.eatcode.trainwatch.nr.dataimport.PopulateLocationsApp ${hazelcast_servers} ${crs_file} ${tiploc_file}
+java -cp ${class_path} net.eatcode.trainwatch.nr.dataimport.PopulateLocationsApp ${hazelcast_servers} ${crs_file} ${tiploc_file}
 
 if [ $? -ne 0 ];then
   echo "Populating locations failed!"
@@ -32,7 +32,7 @@ if [ $? -ne 0 ];then
 fi
 
 echo "Populating schedules..."
-java -Xms1g -Xmx2g -cp ${jar_file} net.eatcode.trainwatch.nr.dataimport.PopulateSchedulesApp ${hazelcast_servers} ${schedule_file}
+java -Xms1g -Xmx2g -cp ${class_path} net.eatcode.trainwatch.nr.dataimport.PopulateSchedulesApp ${hazelcast_servers} ${schedule_file}
 
 if [ $? -ne 0 ];then
   echo "Populating schedules failed!"

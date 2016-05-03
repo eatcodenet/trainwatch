@@ -4,7 +4,7 @@ app_home=/var/trainwatch
 kafka_servers=${1:-localhost}
 zookeeper_servers=${1:-localhost}
 hazelcast_servers=${2:-localhost}
-jar_file=${app_home}/libs/tw-train-movement-1.0-SNAPSHOT.jar
+class_path=${app_home}/libs/tw-train-movement-1.0-SNAPSHOT.jar
 uname=$(uname)
 creds=${app_home}/creds.txt
 
@@ -18,9 +18,9 @@ function clean_up() {
 trap clean_up SIGINT
 
 if [ "${uname}" == "Darwin" ];then
-  jar_file=${base_dir}/../build/libs/tw-train-movement-1.0-SNAPSHOT.jar
+  class_path=${base_dir}/../build/libs/tw-train-movement-1.0-SNAPSHOT.jar
 fi
-echo "jar_file is ${jar_file}"
+echo "class_path is ${class_path}"
 
 if [ ! -r ${creds} ]; then
   echo "no readable creds. see ya!"
@@ -42,4 +42,4 @@ if [ -z "${topic}" ]; then
 fi
 
 rm ${app_home}/logs/trainwatch.log
-java -Xms1g -Xmx2g -cp ${jar_file} net.eatcode.trainwatch.movement.kafka.TrainMovementApp "${kafka_servers}:9092" ${zookeeper_servers} ${hazelcast_servers} ${username} ${password} &
+java -Xms1g -Xmx2g -cp ${class_path} net.eatcode.trainwatch.movement.kafka.TrainMovementApp "${kafka_servers}:9092" ${zookeeper_servers} ${hazelcast_servers} ${username} ${password} &
