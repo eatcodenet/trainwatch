@@ -15,4 +15,4 @@ trap clean_up SIGINT
 echo "jar_file is ${jar_file}"
 echo "hazelcast_servers ${hazelcast_servers}"
 
-java -Xms128m -Xmx256m -cp ${jar_file} net.eatcode.trainwatch.search.hazelcast.HzTrainWatchSearch ${hazelcast_servers}
+java -Xms128m -Xmx256m -cp ${jar_file} net.eatcode.trainwatch.search.hazelcast.ListMovementsApp ${hazelcast_servers}
