@@ -6,8 +6,11 @@ import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
+import com.hazelcast.core.HazelcastInstance;
+
+import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 import net.eatcode.trainwatch.nr.hazelcast.HzLocationRepo;
+import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
 
 public class PopulateSchedulesApp {
 
@@ -19,8 +22,9 @@ public class PopulateSchedulesApp {
         String fileName = args[1];
         assertFileExists(fileName);
 
-        HzScheduleRepo scheduleRepo = new HzScheduleRepo(hazelcastServers);
-        HzLocationRepo locationRepo = new HzLocationRepo(hazelcastServers);
+        HazelcastInstance client = new HzClientBuilder().buildInstance(hazelcastServers);
+        HzScheduleRepo scheduleRepo = new HzScheduleRepo(client);
+        HzLocationRepo locationRepo = new HzLocationRepo(client);
 
         new ScheduleRepositoryPopulator(scheduleRepo, locationRepo).populateFromFile(fileName)
                 .whenCompleteAsync((v, error) -> {
@@ -29,8 +33,7 @@ public class PopulateSchedulesApp {
                     else
                         error.printStackTrace();
 
-                    scheduleRepo.shutdown();
-                    locationRepo.shutdown();
+                    client.shutdown();
                 }).get();
     }
 

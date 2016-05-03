@@ -13,11 +13,7 @@ import org.apache.kafka.streams.kstream.KStreamBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.eatcode.trainwatch.movement.ActivationRepo;
 import net.eatcode.trainwatch.movement.TrainMovement;
-import net.eatcode.trainwatch.movement.MovementRepo;
-import net.eatcode.trainwatch.movement.hazelcast.HzActivationRepo;
-import net.eatcode.trainwatch.movement.hazelcast.HzMovementRepo;
 
 public class TrainMovementStream {
 
@@ -45,15 +41,6 @@ public class TrainMovementStream {
 
         log.info("Starting train movement stream...");
         new KafkaStreams(builder, props).start();
-    }
-
-    public static void main(String[] args) {
-        String kafkaServers = args[0];
-        String hazelcastServers = args[1];
-        MovementRepo movementRepo = new HzMovementRepo(hazelcastServers);
-        ActivationRepo activationRepo = new HzActivationRepo(hazelcastServers);
-        TrainMovementProcessor processor = new TrainMovementProcessor(movementRepo, activationRepo);
-        new TrainMovementStream(kafkaServers, processor).process();
     }
 
 }

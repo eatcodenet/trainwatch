@@ -7,6 +7,13 @@ import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.Properties;
 
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.hazelcast.core.HazelcastInstance;
+
 import net.eatcode.trainwatch.movement.ActivationRepo;
 import net.eatcode.trainwatch.movement.DeparturesRepo;
 import net.eatcode.trainwatch.movement.TrainActivation;
@@ -22,13 +29,9 @@ import net.eatcode.trainwatch.nr.Location;
 import net.eatcode.trainwatch.nr.LocationRepo;
 import net.eatcode.trainwatch.nr.Schedule;
 import net.eatcode.trainwatch.nr.ScheduleRepo;
+import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 import net.eatcode.trainwatch.nr.hazelcast.HzLocationRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
-
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class TrainMovementProducer {
 
@@ -97,11 +100,11 @@ public class TrainMovementProducer {
         String networkRailUsername = args[3];
         String networkRailPassword = args[4];
         checkTopicExists(zookeeperServers);
-
-        ActivationRepo activationRepo = new HzActivationRepo(hazelcastServers);
-        ScheduleRepo scheduleRepo = new HzScheduleRepo(hazelcastServers);
-        LocationRepo locationRepo = new HzLocationRepo(hazelcastServers);
-        DeparturesRepo departuresRepo = new HzDeparturesRepo(hazelcastServers);
+        HazelcastInstance hzClient = new HzClientBuilder().buildInstance(hazelcastServers);
+        ActivationRepo activationRepo = new HzActivationRepo(hzClient);
+        ScheduleRepo scheduleRepo = new HzScheduleRepo(hzClient);
+        LocationRepo locationRepo = new HzLocationRepo(hzClient);
+        DeparturesRepo departuresRepo = new HzDeparturesRepo(hzClient);
         new TrainMovementProducer(kafkaServers, activationRepo, scheduleRepo, locationRepo, departuresRepo)
                 .produceMessages(networkRailUsername, networkRailPassword);
     }

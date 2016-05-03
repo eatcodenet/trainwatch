@@ -8,13 +8,10 @@ import net.eatcode.trainwatch.nr.LocationRepo;
 
 public class HzLocationRepo implements LocationRepo {
 
-    private final HazelcastInstance client;
     private final IMap<String, Location> byStanoxMap;
     private final IMap<String, Location> byTiplocMap;
 
-    @Deprecated
-    public HzLocationRepo(String hazelcastServers) {
-        this.client = new HzClientBuilder().buildInstance(hazelcastServers);
+    public HzLocationRepo(HazelcastInstance client) {
         this.byStanoxMap = client.getMap("locationByStanox");
         this.byTiplocMap = client.getMap("locationByTiploc");
     }
@@ -33,9 +30,5 @@ public class HzLocationRepo implements LocationRepo {
     @Override
     public Location getByTiploc(String tiploc) {
         return byTiplocMap.get(tiploc);
-    }
-
-    public void shutdown() {
-        client.shutdown();
     }
 }

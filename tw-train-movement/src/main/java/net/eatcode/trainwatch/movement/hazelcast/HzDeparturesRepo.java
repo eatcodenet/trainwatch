@@ -8,19 +8,14 @@ import com.hazelcast.core.IMap;
 
 import net.eatcode.trainwatch.movement.DeparturesRepo;
 import net.eatcode.trainwatch.movement.TrainDeparture;
-import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 
 public class HzDeparturesRepo implements DeparturesRepo {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final HazelcastInstance client;
-
     private final IMap<String, TrainDeparture> map;
 
-    @Deprecated
-    public HzDeparturesRepo(String servers) {
-        this.client = new HzClientBuilder().buildInstance(servers);
+    public HzDeparturesRepo(HazelcastInstance client) {
         this.map = client.getMap("trainDeparture");
     }
 

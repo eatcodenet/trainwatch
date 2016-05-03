@@ -28,14 +28,14 @@ public class TrainMovementApp {
         String networkRailPassword = args[4];
         checkTopicExists(zookeeperServers);
 
-        ActivationRepo activationRepo = new HzActivationRepo(hazelcastServers);
-        DeparturesRepo departuresRepo = new HzDeparturesRepo(hazelcastServers);
         HazelcastInstance hzClient = new HzClientBuilder().buildInstance(hazelcastServers);
+        ActivationRepo activationRepo = new HzActivationRepo(hzClient);
+        DeparturesRepo departuresRepo = new HzDeparturesRepo(hzClient);
 
         Runnable movementProducer = () -> {
             log.info("running producer");
             new TrainMovementProducer(kafkaServers, activationRepo,
-                    new HzScheduleRepo(hazelcastServers), new HzLocationRepo(hazelcastServers), departuresRepo)
+                    new HzScheduleRepo(hzClient), new HzLocationRepo(hzClient), departuresRepo)
                             .produceMessages(networkRailUsername, networkRailPassword);
         };
 

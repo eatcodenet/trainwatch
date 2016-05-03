@@ -6,6 +6,9 @@ import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.hazelcast.core.HazelcastInstance;
+
+import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 import net.eatcode.trainwatch.nr.hazelcast.HzLocationRepo;
 
 public class PopulateLocationsApp {
@@ -21,13 +24,14 @@ public class PopulateLocationsApp {
         String tiplocFile = args[2];
         assertFileExists(tiplocFile);
 
-        HzLocationRepo repo = new HzLocationRepo(hazelcastServers);
+        HazelcastInstance client = new HzClientBuilder().buildInstance(hazelcastServers);
+        HzLocationRepo repo = new HzLocationRepo(client);
 
         new LocationPopulator(repo).populateFromFiles(crsFile, tiplocFile).whenCompleteAsync((value, err) -> {
             if (err == null) {
                 log.info("Done populating!");
             }
-            repo.shutdown();
+            client.shutdown();
         }).get();
 
     }

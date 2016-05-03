@@ -8,12 +8,9 @@ import net.eatcode.trainwatch.nr.ScheduleRepo;
 
 public class HzScheduleRepo implements ScheduleRepo {
 
-    private final HazelcastInstance client;
     private final IMap<String, Schedule> map;
 
-    @Deprecated
-    public HzScheduleRepo(String servers) {
-        this.client = new HzClientBuilder().buildInstance(servers);
+    public HzScheduleRepo(HazelcastInstance client) {
         this.map = client.getMap("schedule");
     }
 
@@ -30,9 +27,5 @@ public class HzScheduleRepo implements ScheduleRepo {
     @Override
     public Integer count() {
         return map.size();
-    }
-
-    public void shutdown() {
-        client.shutdown();
     }
 }
