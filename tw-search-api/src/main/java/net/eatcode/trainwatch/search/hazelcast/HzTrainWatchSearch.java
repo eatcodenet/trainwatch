@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
+import com.hazelcast.mapreduce.aggregation.Aggregations;
+import com.hazelcast.mapreduce.aggregation.Supplier;
 import com.hazelcast.query.EntryObject;
 import com.hazelcast.query.Predicate;
 import com.hazelcast.query.PredicateBuilder;
@@ -82,6 +84,11 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
                 .stream().sorted().limit(maxResults).collect(toList());
         log.info("departures search took {}ms", sw.getTime());
         return result;
+    }
+
+    @Override
+    public Integer highestDelay() {
+        return movements.aggregate(Supplier.all(value -> value.delayInMins()), Aggregations.integerMax());
     }
 
     private StopWatch startStopWatch() {
