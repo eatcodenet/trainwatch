@@ -90,7 +90,7 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
         client.shutdown();
     }
 
-
+    // TODO: move to new class
     public static void main(String[] args) {
         String hazelcastServers = (args.length == 0) ? "trainwatch.eatcode.net" : args[0];
         HzTrainWatchSearch search = new HzTrainWatchSearch(hazelcastServers);
