@@ -34,11 +34,11 @@ echo "kafka_servers ${kafka_servers}"
 echo "zookeeper_servers ${zookeeper_servers}"
 echo "hazelcast_servers ${hazelcast_servers}"
 
-topic_name=train-movement
+topic_name='train-movement'
 topic=$( ${base_dir}/list-kafka-topics.sh | grep ${topic_name} )
 if [ -z "${topic}" ]; then
   echo "Topic '${topic_name}' does not exist. Creating."
-  ${base_dir}/create-kafka-topic.sh ${topic_name}
+  ${base_dir}/create-kafka-topic.sh ${zookeeper_servers} ${topic_name}
 fi
 
 rm ${app_home}/logs/trainwatch.log
