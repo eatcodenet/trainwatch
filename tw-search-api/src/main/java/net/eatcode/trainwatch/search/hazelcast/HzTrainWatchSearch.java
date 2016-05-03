@@ -88,8 +88,7 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
 
     @Override
     public Integer highestDelay() {
-        Long aggregate = movements.aggregate(Supplier.all(value -> 1), Aggregations.count());
-        return 1;
+        return movements.aggregate(Supplier.all(value -> value.delayInMins()), Aggregations.integerMax());
     }
 
     private StopWatch startStopWatch() {
