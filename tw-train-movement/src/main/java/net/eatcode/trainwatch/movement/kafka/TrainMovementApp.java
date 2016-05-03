@@ -9,7 +9,9 @@ import com.hazelcast.core.HazelcastInstance;
 
 import net.eatcode.trainwatch.movement.ActivationRepo;
 import net.eatcode.trainwatch.movement.DeparturesRepo;
+import net.eatcode.trainwatch.movement.MovementRepo;
 import net.eatcode.trainwatch.movement.hazelcast.HzActivationRepo;
+import net.eatcode.trainwatch.movement.hazelcast.HzCleanup;
 import net.eatcode.trainwatch.movement.hazelcast.HzDeparturesRepo;
 import net.eatcode.trainwatch.movement.hazelcast.HzMovementRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
@@ -31,6 +33,7 @@ public class TrainMovementApp {
         HazelcastInstance hzClient = new HzClientBuilder().buildInstance(hazelcastServers);
         ActivationRepo activationRepo = new HzActivationRepo(hzClient);
         DeparturesRepo departuresRepo = new HzDeparturesRepo(hzClient);
+        MovementRepo movementRepo = new HzMovementRepo(hzClient);
 
         Runnable movementProducer = () -> {
             log.info("running producer");
@@ -41,13 +44,14 @@ public class TrainMovementApp {
 
         Runnable movements = () -> {
             log.info("running movements");
-            TrainMovementProcessor processor = new TrainMovementProcessor(new HzMovementRepo(hzClient),
+            TrainMovementProcessor processor = new TrainMovementProcessor(movementRepo,
                     activationRepo);
             new TrainMovementStream(kafkaServers, processor).process();
         };
 
         new Thread(movementProducer).start();
         new Thread(movements).start();
+        new HzCleanup(movementRepo).start();
     }
 
     private static void checkTopicExists(String zookeeperServers) {
