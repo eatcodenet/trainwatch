@@ -23,6 +23,7 @@ public class ListMovementsApp {
     private static void listTrainMovements(HzTrainWatchSearch search) {
         Map<DelayWindow, List<TrainMovement>> delays = search.delayedTrainsByAllWindows(16);
         System.out.println("\nTrain Movements");
+        System.out.println("Highest delay: " + search.highestDelay());
         for (DelayWindow d : DelayWindow.sortedValues()) {
             System.out.println("\n" + d.name());
             printList(delays, d);
