@@ -42,4 +42,4 @@ if [ -z "${topic}" ]; then
 fi
 
 rm ${app_home}/logs/trainwatch.log
-java -Xms1g -Xmx2g -cp ${class_path} net.eatcode.trainwatch.movement.kafka.TrainMovementApp "${kafka_servers}:9092" ${zookeeper_servers} ${hazelcast_servers} ${username} ${password} &
+java -Xms512m -Xmx1g -cp ${class_path} net.eatcode.trainwatch.movement.kafka.TrainMovementApp "${kafka_servers}:9092" ${zookeeper_servers} ${hazelcast_servers} ${username} ${password} &

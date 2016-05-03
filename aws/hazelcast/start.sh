@@ -27,10 +27,10 @@ echo "Path to Java : $RUN_JAVA"
 #### you can enable following variables by uncommenting them
 
 #### minimum heap size
-MIN_HEAP_SIZE=1G
+MIN_HEAP_SIZE=512m
 
 #### maximum heap size
-MAX_HEAP_SIZE=2G
+MAX_HEAP_SIZE=1g
 
 if [ "x$MIN_HEAP_SIZE" != "x" ]; then
 	JAVA_OPTS="$JAVA_OPTS -Xms${MIN_HEAP_SIZE}"
