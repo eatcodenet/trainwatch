@@ -6,16 +6,16 @@ public class Stats implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Integer numberOfTrainsMonitored;
+    private final Long numberOfTrainsMonitored;
 
     private final Integer highestDelay;
 
-    public Stats(Integer numberOfTrainsMonitored, Integer highestDelay) {
+    public Stats(Long numberOfTrainsMonitored, Integer highestDelay) {
         this.numberOfTrainsMonitored = numberOfTrainsMonitored;
         this.highestDelay = highestDelay;
     }
 
-    public Integer getNumberOfTrainsMonitored() {
+    public Long getNumberOfTrainsMonitored() {
         return numberOfTrainsMonitored;
     }
 

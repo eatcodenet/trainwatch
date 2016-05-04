@@ -1,5 +1,7 @@
 package net.eatcode.trainwatch.search.hazelcast;
 
+import static com.hazelcast.mapreduce.aggregation.Aggregations.count;
+import static com.hazelcast.mapreduce.aggregation.Aggregations.integerMax;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.text.WordUtils.capitalize;
 
@@ -15,7 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
-import com.hazelcast.mapreduce.aggregation.Aggregations;
 import com.hazelcast.mapreduce.aggregation.Supplier;
 import com.hazelcast.query.EntryObject;
 import com.hazelcast.query.Predicate;
@@ -89,9 +90,9 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
 
     @Override
     public Stats getStats() {
-        Integer highestDelay = movements.aggregate(Supplier.all(value -> value.delayInMins()),
-                Aggregations.integerMax());
-        return new Stats(0, highestDelay);
+        Long numTrains = movements.aggregate(Supplier.all(), count());
+        Integer highestDelay = movements.aggregate(Supplier.all(value -> value.delayInMins()), integerMax());
+        return new Stats(numTrains, highestDelay);
     }
 
     private StopWatch startStopWatch() {
