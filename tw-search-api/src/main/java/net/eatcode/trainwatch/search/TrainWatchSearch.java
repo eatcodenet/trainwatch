@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.eatcode.trainwatch.movement.DelayWindow;
+import net.eatcode.trainwatch.movement.Stats;
 import net.eatcode.trainwatch.movement.TrainDeparture;
 import net.eatcode.trainwatch.movement.TrainMovement;
 
@@ -15,5 +16,5 @@ public interface TrainWatchSearch {
 
     List<TrainDeparture> departuresBy(Station station, int maxResults);
 
-    Integer highestDelay();
+    Stats getStats();
 }

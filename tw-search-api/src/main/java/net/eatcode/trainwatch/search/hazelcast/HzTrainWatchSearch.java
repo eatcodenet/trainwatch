@@ -22,6 +22,7 @@ import com.hazelcast.query.Predicate;
 import com.hazelcast.query.PredicateBuilder;
 
 import net.eatcode.trainwatch.movement.DelayWindow;
+import net.eatcode.trainwatch.movement.Stats;
 import net.eatcode.trainwatch.movement.TrainDeparture;
 import net.eatcode.trainwatch.movement.TrainMovement;
 import net.eatcode.trainwatch.search.Station;
@@ -87,8 +88,10 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
     }
 
     @Override
-    public Integer highestDelay() {
-        return movements.aggregate(Supplier.all(value -> value.delayInMins()), Aggregations.integerMax());
+    public Stats getStats() {
+        Integer highestDelay = movements.aggregate(Supplier.all(value -> value.delayInMins()),
+                Aggregations.integerMax());
+        return new Stats(0, highestDelay);
     }
 
     private StopWatch startStopWatch() {
