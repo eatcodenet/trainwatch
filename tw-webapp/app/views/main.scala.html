@@ -1,39 +1,100 @@
 @(title: String)(content: Html)
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>TrainWatch - Real-time UK rail network monitor | @title</title>
+<title>TrainWatch - Real-time UK rail network monitor | @title</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
 
-  <meta name="viewport" content="width=device-width, user-scalable=no">
-
-  <meta name="description" content="Trainwatch - Real-time UK rail network monitor">
-  <meta name="author" content="Ayub Malik/Eatcode.net">
-  <meta name="keywords" content="Trains, Network Rail, Open Data, Streaming">
-
-  <link rel="stylesheet" type="text/css" href="/assets/stylesheets/siimple.min.css">
-  <link rel="stylesheet" type="text/css" href="/assets/stylesheets/style.css">
-  <link rel="stylesheet" type="text/css" href='https://fonts.googleapis.com/css?family=Jura:400,600'>
-  
-  <link rel="shortcut icon" href="/assets/images/favicon.ico">
-
+<!-- CSS  -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Jura:400,600" rel="stylesheet">
+<link href="/assets/stylesheets/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+<link href="/assets/stylesheets/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
 </head>
-
 <body>
+  <nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="#" class="brand-logo">TrainWatch <img class="train" height="40" src="/assets/images/t64.png"></img></a>
+      
+      <ul class="right hide-on-med-and-down">
+        <li><a href="./delays">Real-time Delays</a></li>
+        <li><a href="./livedepartures">Live Departures</a></li>
+      </ul>
 
-  <nav class="header">
-    <a href="./" class="logo">TrainWatch <img class="train" src="/assets/images/t32.png"></img></a>
-    <div class="links">
-      <a href="./delays">Real-time Delays</a> |
-      <a href="./livedepartures">Live Departures</a>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
   </nav>
-
-  <div class="main">
-    @content
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">@content</div>
   </div>
 
-  <footer>&copy; <a href="https://eatcode.net">2016 Eatcode</a>
-    <span>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></span></footer>
+
+  <div class="container">
+    <div class="section">
+
+      <!--   Icon Section   -->
+      <div class="row">
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text">
+              <i class="material-icons">flash_on</i>
+            </h2>
+            <h5 class="center">Speeds up development</h5>
+
+            <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate
+              our custom components. Additionally, we refined animations and transitions to provide a smoother
+              experience for developers.</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text">
+              <i class="material-icons">group</i>
+            </h2>
+            <h5 class="center">User Experience Focused</h5>
+
+            <p class="light">By utilizing elements and principles of Material Design, we were able to create a
+              framework that incorporates components and animations that provide more feedback to users. Additionally, a
+              single underlying responsive system across all platforms allow for a more unified user experience.</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text">
+              <i class="material-icons">settings</i>
+            </h2>
+            <h5 class="center">Easy to work with</h5>
+
+            <p class="light">We have provided detailed documentation as well as specific code examples to help new
+              users get started. We are also always open to feedback and can answer any questions a user may have about
+              Materialize.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <br>
+    <br>
+
+  </div>
+
+  <footer class="page-footer orange">
+    <div class="footer-copyright">
+      <div class="container">
+        &copy; <a href="http://eatcode.net">eatcode.net</a>
+        Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="/assets/javascripts/materialize.js"></script>
+  <script src="/assets/javascripts/init.js"></script>
 
 </body>
-</head>
+</html>

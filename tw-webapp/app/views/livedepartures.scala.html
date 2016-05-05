@@ -1,8 +1,7 @@
-@main("Delays") {
-  <div class="grid grid-fluid">
-    <div class="row">
-      Live departures go here
-    </div>
-  </div>
+@(stations: List[net.eatcode.trainwatch.search.Station])
 
+@main("Delays") {
+<div class="row">Live departures go here @stations.size</div>
+
+  
 }

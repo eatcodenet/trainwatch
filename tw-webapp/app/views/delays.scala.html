@@ -1,11 +1,14 @@
 @(count: Int)
 
 @main("Delays") {
-  <div class="grid grid-fluid">
     <div class="row">
-      <div class="col-4">
+    <div class="col m12">
+    </div>
+    </div>
+    <div class="row">
+      <div class="col m4">
         <div class="results green">
-          <div class="title"> <span>5 Mins Delay - @count trains</span></div>
+          <div class="delay-title"> <span>5 Mins Delay - @count trains</span></div>
           <ul>
             <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
             <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
@@ -29,7 +32,7 @@
           </ul>
         </div>
       </div>
-      <div class="col-4">
+      <div class="col m4">
         <div class="results amber">
           <div class="title">10 Mins Delay</div>
           <ul>
@@ -55,7 +58,7 @@
           </ul>
         </div>
       </div>
-      <div class="col-4">
+      <div class="col m4">
         <div class="results red"><div class="title">15 Mins &amp; Over  Delay</div>
         <ul>
           <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
@@ -80,6 +83,6 @@
         </ul></div>
       </div>
     </div>
-  </div>
+
 
 }

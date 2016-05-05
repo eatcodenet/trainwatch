@@ -4,9 +4,10 @@ import javax.inject._
 import play.api._
 import play.api.mvc._
 import services.TrainMovements
+import services.LiveDepartures
 
 @Singleton
-class AppController @Inject() (trainMovements: TrainMovements) extends Controller {
+class AppController @Inject() (trainMovements: TrainMovements, departures: LiveDepartures ) extends Controller {
 
   def index = Action {
     Redirect(routes.AppController.delays())
@@ -17,7 +18,8 @@ class AppController @Inject() (trainMovements: TrainMovements) extends Controlle
   }
 
   def liveDepartures = Action {
-    Ok(views.html.livedepartures())
+    
+    Ok(views.html.livedepartures(departures.listStations))
   }
 
 }
