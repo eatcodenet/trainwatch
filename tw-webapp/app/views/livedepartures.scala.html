@@ -1,7 +1,17 @@
 @(stations: List[net.eatcode.trainwatch.search.Station])
 
 @main("Delays") {
-<div class="row">Live departures go here @stations.size</div>
+  <div class="row">
+    <div class="col m6">
+      <form id="stations">
+        <select>
+          <option value="">Select station</option>
+          @for(s <- stations) {
+            <option value="@s.getCrs()">@s.getName()</option>
+          }
+        </select>
+      </form>
+    </div>
+  </div>
 
-  
 }

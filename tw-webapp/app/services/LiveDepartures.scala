@@ -11,7 +11,7 @@ import net.eatcode.trainwatch.search.Station
 
 import scala.collection.JavaConversions._
 
-@ImplementedBy(classOf[HzLiveDepartures])
+@ImplementedBy(classOf[InMemDepartures])
 trait LiveDepartures {
   def listStations: List[Station]
 }
@@ -22,4 +22,14 @@ class HzLiveDepartures extends LiveDepartures {
   val client = new HzClientBuilder().buildInstance("trainwatch.eatcode.net");
   val search = new HzTrainWatchSearch(client)
   override def listStations = search.listStations.toList
+}
+
+@Singleton
+class InMemDepartures extends LiveDepartures {
+
+  override def listStations = List(
+    new Station("London Euston", "EUS"),
+    new Station("Manchester Picadilly", "MAN"),
+    new Station("Leeds", "LDS"),
+    new Station("Poole", "POO"))
 }

@@ -5,9 +5,12 @@ import play.api._
 import play.api.mvc._
 import services.TrainMovements
 import services.LiveDepartures
+import play.api.cache.CacheApi
+import net.eatcode.trainwatch.search.Station
+import scala.concurrent.duration._
 
 @Singleton
-class AppController @Inject() (trainMovements: TrainMovements, departures: LiveDepartures ) extends Controller {
+class AppController @Inject() (trainMovements: TrainMovements, departures: LiveDepartures, cache: CacheApi) extends Controller {
 
   def index = Action {
     Redirect(routes.AppController.delays())
@@ -18,8 +21,10 @@ class AppController @Inject() (trainMovements: TrainMovements, departures: LiveD
   }
 
   def liveDepartures = Action {
-    
-    Ok(views.html.livedepartures(departures.listStations))
+    val stations: List[Station] = cache.getOrElse[List[Station]]("station.list", 5.minute) {
+      departures.listStations
+    }
+    Ok(views.html.livedepartures(stations))
   }
 
 }

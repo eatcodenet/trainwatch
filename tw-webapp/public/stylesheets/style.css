@@ -2,6 +2,10 @@ footer {
 	position: relative !important;
 }
 
+select {
+	display: inline-block;
+}
+
 .train {
 	border: 0px solid red;
 	vertical-align: text-bottom;
