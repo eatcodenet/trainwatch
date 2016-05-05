@@ -8,11 +8,11 @@ footer {
 }
 
 .brand-logo {
-	font-family: Jura;
+	font-family: "Jura";
 }
 
 .results {
-	background-color: #F5F5F5;
+	background-color: #f5f5f5;
 }
 
 .results ul {
@@ -21,36 +21,21 @@ footer {
 	padding-left: 4px;
 }
 
-.delay-title {
+.delay-heading {
 	padding-left: 4px;
 	padding-top: 4px;
 }
 
-.green {
-	/*background-color: #63D656;*/
-	background-color: #F0FBEF;
+.green .heading {
+	background-color: #43a047;
 }
 
-.green .title {
-	background-color: #63D656;
+.yellow .heading {
+	background-color: #fdd835;
 }
 
-.amber {
-	/*background-color: #F7F323;*/
-	background-color: #FEFEEB;
-}
-
-.amber .title {
-	background-color: #F7F323;
-}
-
-.red {
-	/*background-color: #F61D28;*/
-	background-color: #FEEBEC;
-}
-
-.red .title {
-	background-color: #F61D28;
+.red .heading {
+	background-color: #e53935;
 }
 
 .icon-block {
