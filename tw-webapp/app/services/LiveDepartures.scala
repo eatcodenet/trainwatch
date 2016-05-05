@@ -11,7 +11,7 @@ import net.eatcode.trainwatch.search.Station
 
 import scala.collection.JavaConversions._
 
-@ImplementedBy(classOf[InMemDepartures])
+@ImplementedBy(classOf[HzLiveDepartures])
 trait LiveDepartures {
   def listStations: List[Station]
 }
