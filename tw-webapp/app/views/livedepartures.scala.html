@@ -2,10 +2,10 @@
 
 @main("Delays") {
   <div class="row">
-    <div class="col m6  ">
+    <div class="col m6">
       <form id="stations">
         <select>
-          <option value="">Select station</option>
+          <option value="">Select station (start typing)</option>
           @for(s <- stations) {
             <option value="@s.getCrs()">@s.getName()</option>
           }
