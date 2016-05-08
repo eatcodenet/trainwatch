@@ -1,4 +1,4 @@
-package net.eatcode.trainwatch.movement;
+Tpackage net.eatcode.trainwatch.movement;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
