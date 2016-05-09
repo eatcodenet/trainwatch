@@ -6,16 +6,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 
+import net.eatcode.trainwatch.movement.MovementRepo;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.eatcode.trainwatch.movement.MovementRepo;
 
 public class HzCleanup {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final long interval = 60;
+    private final long interval = 60 * 2;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     private ScheduledFuture<?> task;
@@ -31,7 +31,7 @@ public class HzCleanup {
         Runnable beeper = new Runnable() {
             @Override
             public void run() {
-                movementRepo.evictOlderThan(2);
+                movementRepo.evictOlderThan(3);
             }
         };
         task = scheduler.scheduleAtFixedRate(beeper, interval, interval, SECONDS);
