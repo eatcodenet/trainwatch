@@ -55,6 +55,10 @@ public class TrainDeparture implements Serializable, Comparable<TrainDeparture> 
         return destination.crs;
     }
 
+    public String destName() {
+        return destination.description;
+    }
+    
     public LocalTime departure() {
         return departure;
     }

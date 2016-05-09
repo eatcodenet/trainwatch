@@ -24,8 +24,10 @@ class AppController @Inject() (trainMovements: TrainMovements, departures: LiveD
     val stations: List[Station] = cache.getOrElse[List[Station]]("station.list", 5.minute) {
       departures.listStations
     }
+    
+    val deps = departures.departuresFrom(crs).toList
 
-    Ok(views.html.livedepartures(stations, crs))
+    Ok(views.html.livedepartures(stations, crs, deps))
   }
 
 }
