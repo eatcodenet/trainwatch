@@ -4,6 +4,9 @@
   <div class="row">
     <div class="col m6">
       <form id="stations">
+        <div id="the-basics">
+          <input class="typeahead" type="text" placeholder="Station name e.g. Manchester Piccadilly">
+        </div>
         <select>
           <option value="">Select station (start typing)</option>
           @for(s <- stations) {
@@ -24,4 +27,6 @@
       </ul>
     </div>
   </div>
+  <script src="/assets/javascripts/typeahead.js"></script>
+  <script src="/assets/javascripts/ldb.js"></script>
 }
