@@ -2,17 +2,11 @@
 
 @main("Delays") {
   <div class="row">
-    <div class="col m6">
+    <div class="col m8">
       <form id="stations">
-        <div id="the-basics">
-          <input class="typeahead" type="text" placeholder="Station name e.g. Manchester Piccadilly">
+        <div id="ld-tt">
+          <input name="station" id="stationQry" class="typeahead" type="text" placeholder="Station name e.g. Manchester Piccadilly">
         </div>
-        <select>
-          <option value="">Select station (start typing)</option>
-          @for(s <- stations) {
-            <option value="@s.getCrs()">@s.getName()</option>
-          }
-        </select>
       </form>
     </div>
   </div>
@@ -28,5 +22,5 @@
     </div>
   </div>
   <script src="/assets/javascripts/typeahead.js"></script>
-  <script src="/assets/javascripts/ldb.js"></script>
+  <script src="/assets/javascripts/ld.js"></script>
 }
