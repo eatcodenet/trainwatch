@@ -25,7 +25,6 @@ class Module(environment: Environment, configuration: Configuration) extends Abs
     // Set AtomicCounter as the implementation for Counter.
     bind(classOf[Counter]).to(classOf[AtomicCounter])
 
-    println(environment.mode)
     if (environment.mode == Mode.Prod) {
       bind(classOf[LiveDepartures]).to(classOf[HzLiveDepartures])
     } else {
