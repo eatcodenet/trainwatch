@@ -22,11 +22,14 @@ class AppController @Inject() (trainMovements: TrainMovements, departures: LiveD
     Ok(views.html.delays(trainMovements.count))
   }
 
-  def liveDepartures = Action {
+  def liveDepartures(crs: String) = Action {
     val stations: List[Station] = cache.getOrElse[List[Station]]("station.list", 5.minute) {
       departures.listStations
     }
-    Ok(views.html.livedepartures(stations))
+    
+    val deps = departures.departuresFrom(crs).toList
+
+    Ok(views.html.livedepartures(stations, crs, deps))
   }
 
 }

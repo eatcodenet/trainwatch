@@ -14,5 +14,4 @@ GET     /                           controllers.AppController.index
 
 GET     /delays                     controllers.AppController.delays
 
-GET     /livedepartures             controllers.AppController.liveDepartures
-
+GET     /livedepartures             controllers.AppController.liveDepartures(crs: String ?= "MAN")

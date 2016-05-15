@@ -1,17 +1,26 @@
-@(stations: List[net.eatcode.trainwatch.search.Station])
+@(stations: List[net.eatcode.trainwatch.search.Station], crs:String, trainDepartures: List[net.eatcode.trainwatch.movement.TrainDeparture])
 
 @main("Delays") {
   <div class="row">
-    <div class="col m6">
+    <div class="col m8">
       <form id="stations">
-        <select>
-          <option value="">Select station (start typing)</option>
-          @for(s <- stations) {
-            <option value="@s.getCrs()">@s.getName()</option>
-          }
-        </select>
+        <div id="ld-tt">
+          <input name="station" id="stationQry" class="typeahead" type="text" placeholder="Station name e.g. Manchester Piccadilly">
+        </div>
       </form>
     </div>
   </div>
 
+  <div class="row">
+    <div class="col m11">
+      Departures from @crs
+      <ul>
+        @for(td <- trainDepartures) {
+          <li><span>@td.departure</span> @td.originCrs @td.originName - @td.destCrs @td.destName</li>    
+        }
+      </ul>
+    </div>
+  </div>
+  <script src="/assets/javascripts/typeahead.js"></script>
+  <script src="/assets/javascripts/ld.js"></script>
 }

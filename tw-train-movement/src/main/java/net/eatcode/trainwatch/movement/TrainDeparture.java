@@ -22,6 +22,7 @@ public class TrainDeparture implements Serializable, Comparable<TrainDeparture> 
 
     private final LocalDateTime wtt;
 
+    //TODO: check whether expected departure is needed...
     public TrainDeparture(String trainId, String expectedDeparture, Schedule schedule) {
         this.trainId = trainId;
         this.origin = schedule.origin;
@@ -55,6 +56,10 @@ public class TrainDeparture implements Serializable, Comparable<TrainDeparture> 
         return destination.crs;
     }
 
+    public String destName() {
+        return destination.description;
+    }
+    
     public LocalTime departure() {
         return departure;
     }
