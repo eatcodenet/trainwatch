@@ -17,6 +17,8 @@ class AppController @Inject() (trainMovements: TrainMovements, departures: LiveD
   }
 
   def delays = Action {
+    val delays = trainMovements.all
+    
     Ok(views.html.delays(trainMovements.count))
   }
 
