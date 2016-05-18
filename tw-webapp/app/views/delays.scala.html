@@ -1,4 +1,6 @@
-@(count: Int)
+@import net.eatcode.trainwatch.movement.DelayWindow
+
+@(delays: Map[net.eatcode.trainwatch.movement.DelayWindow, List[net.eatcode.trainwatch.movement.TrainMovement]])
 
 @main("Delays") {
     <div class="row">
@@ -8,79 +10,39 @@
     <div class="row">
       <div class="col m4">
         <div class="results green lighten-2">
-          <div class="heading"> <span>5 Mins Delay - @count trains</span></div>
+          <div class="heading"> <span>5 Mins Delay - Top @delays.get(DelayWindow.upTo5mins).get.size</span></div>
           <ul>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
+            @defining(delays.get(DelayWindow.upTo5mins).get) { data =>
+              @for(tm <- data) {
+                <li><span>@tm.departure</span> @tm.origin.description - @tm.destination.description </li>    
+              }
+            }
           </ul>
         </div>
       </div>
       <div class="col m4">
         <div class="results yellow lighten-2">
-          <div class="heading">10 Mins Delay</div>
+          <div class="heading">15 Mins Delay</div>
           <ul>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-            <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-
+            @defining(delays.get(DelayWindow.from5to15mins).get) { data =>
+              @for(tm <- data) {
+                <li><span>@tm.departure</span> @tm.origin.description - @tm.destination.description </li>    
+              }
+            }
           </ul>
         </div>
       </div>
       <div class="col m4">
         <div class="results red lighten-2">
-        <div class="heading">15 Mins &amp; Over  Delay</div>
-        <ul>
-          <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-          <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-          <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-          <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-          <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-          <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-          <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-          <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-          <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-          <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-          <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-          <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-          <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-          <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-          <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-          <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-          <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-          <li>17:30 Manchester Piccadilly - London Eustion 1m</li>
-
-        </ul></div>
+          <div class="heading">15 Mins &amp; Over Delay</div>
+          <ul>
+            @defining(delays.get(DelayWindow.from15to30mins).get) { data =>
+              @for(tm <- data) {
+                <li><span>@tm.departure</span> @tm.origin.description - @tm.destination.description </li>    
+              }
+            }
+          </ul>
+        </div>
       </div>
     </div>
 
