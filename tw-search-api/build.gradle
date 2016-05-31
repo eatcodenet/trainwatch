@@ -2,6 +2,10 @@ dependencies {
   compile project(':tw-train-movement')
   compile 'com.hazelcast:hazelcast-client:3.6.2'
   compile 'com.esotericsoftware:kryo:3.0.3'
+  
+  // http://mvnrepository.com/artifact/joda-time/joda-time
+  testCompile group: 'joda-time', name: 'joda-time', version: '2.3'
+  
 
 }
 
