@@ -19,3 +19,6 @@ resolvers += "confluent-io" at "http://packages.confluent.io/maven/"
 resolvers += Resolver.mavenLocal
 
 routesGenerator := InjectedRoutesGenerator
+
+sources in (Compile,doc) := Seq.empty
+publishArtifact in (Compile, packageDoc) := false

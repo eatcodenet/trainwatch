@@ -13,7 +13,7 @@ public class DateShizzle {
 
     @Test
     public void test() {
-        Date epoch = LocalDateTime.parse("1970-01-01T03:55").toDate(tzLondon);
+        Date epoch = LocalDateTime.parse("1970-01-01T01:55").toDate(tzLondon);
         LocalTime t1 = org.joda.time.LocalTime.fromDateFields(epoch);
         System.out.println(t1);
 
