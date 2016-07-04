@@ -4,8 +4,4 @@ os: linux
 cache:
   directories:
     - $HOME/.gradle
-addons:
-  artifacts:
-    s3_region: "eu-west-1"
-    paths:
-      - tw-ref-data/build/libs/tw-ref-data-1.0-SNAPSHOT.jar
+
