@@ -17,7 +17,7 @@ import com.hazelcast.query.SqlPredicate;
 public class VerifyHazelcastConnectivity {
 
     private static final Logger log = LoggerFactory.getLogger(VerifyHazelcastConnectivity.class);
-    private static final String hzServer = "trainwatch.eatcode.net:5701";
+    private static final String hzServer = System.getProperty("trainwatch.hzServer", "localhost");
 
     public static void main(String[] args) {
         HazelcastInstance client = new HzClientBuilder().buildInstance(hzServer);
