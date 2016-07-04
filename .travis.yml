@@ -9,4 +9,3 @@ addons:
     s3_region: "eu-west-1"
     paths:
       - tw-ref-data/build/libs/tw-ref-data-1.0-SNAPSHOT.jar
-   key
