@@ -1,0 +1,10 @@
+build
+bin
+.gradle
+*/build
+*/bin*
+*/.gradle
+*/target
+*/project
+!tw-train-movement/build/libs/tw-train-movement-1.0-SNAPSHOT.jar
+
