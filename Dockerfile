@@ -8,5 +8,8 @@ ADD tw-train-movement/build/libs/tw-train-movement-1.0-SNAPSHOT.jar ${HZ_HOME}/l
 
 ADD aws/hazelcast/hazelcast.xml ${HZ_HOME}/bin
 
-# todo
-CMD ls -lrt ${HZ_HOME}/libs 
+
+#CMD java -server -cp ${HZ_HOME}/lib/hazelcast-all-${HZ_VERSION}.jar \
+#  -Xms1g -Xmx1g -Dhazelcast.config=$HZ_HOME/bin/hazelcast.xml com.hazelcast.core.server.StartServer
+
+
