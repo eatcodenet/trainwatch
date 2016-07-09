@@ -1,7 +1,7 @@
 version: "2"
 
 services:
-  tw-hazelcast:
+  hazelcast:
     build: .
     image: eatcode/tw-hazelcast
     ports:
