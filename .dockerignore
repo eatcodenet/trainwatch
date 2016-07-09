@@ -6,5 +6,6 @@ bin
 */.gradle
 */target
 */project
+!tw-ref-data/build/libs/tw-ref-data-1.0-SNAPSHOT.jar
 !tw-train-movement/build/libs/tw-train-movement-1.0-SNAPSHOT.jar
 
