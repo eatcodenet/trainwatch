@@ -1,5 +1,10 @@
 version: "2"
+
 services:
+  tw-hazelcast:
+    build: .
+    image: eatcode/tw-hazelcast
+  
   zookeeper:
     image: eatcode/zookeeper
     container_name: zookeeper
