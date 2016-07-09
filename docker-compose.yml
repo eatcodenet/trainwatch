@@ -4,6 +4,8 @@ services:
   tw-hazelcast:
     build: .
     image: eatcode/tw-hazelcast
+    ports:
+      - "5701:5701"
   
   zookeeper:
     image: eatcode/zookeeper
