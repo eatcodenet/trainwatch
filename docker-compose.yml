@@ -9,12 +9,6 @@ services:
       ZK_SERVER_ID: 1
     volumes:
       - /tmp/docker/zk1/logs:/logs
-
-  hazelcast:
-    image: eatcode/hazelcast
-    container_name: hazelcast
-    ports:
-      - "5701:5701"
   
   kafka:
     image: eatcode/kafka

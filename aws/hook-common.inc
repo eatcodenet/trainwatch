@@ -16,9 +16,9 @@ case "${command}" in
     echo "before..."
     rm -rf ${hz_home}/bin/hazelcast.xml
     rm -rf ${hz_home}/bin/start.sh
-	rm -rf ${kafka_home}/config/server.properties
-	rm -rf ${kafka_home}/bin/kafka-server-stop.sh
-	rm -rf ${kafka_home}/bin/zookeeper-server-stop.sh
+	  rm -rf ${kafka_home}/config/server.properties
+	  rm -rf ${kafka_home}/bin/kafka-server-stop.sh
+	  rm -rf ${kafka_home}/bin/zookeeper-server-stop.sh
     ;;
 
   after-install)

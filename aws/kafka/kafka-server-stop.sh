@@ -15,5 +15,5 @@
 # limitations under the License.
 kill_pid=$(ps -ef | grep [k]afka\.Kafka | awk '{print $2}')
 if [ ! -z "${kill_pid}" ]; then
-kill -9 ${kill_pid} # WARNING added -9 flag!
+  kill -9 ${kill_pid} # WARNING added -9 flag!
 fi
