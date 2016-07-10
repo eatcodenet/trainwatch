@@ -36,24 +36,24 @@ public class VerifyHazelcastConnectivity {
         Location location = locations.get("SNDYPL1");
         log.info("{} {}", locations.size(), location);
 
-        locations.put("1", new Location("sx1", "desc", "tt", "crs", new LatLon("1", "3")));
-        log.info("{} {}", locations.size(), locations.values(new SqlPredicate("stanox = 'sx1'")));
-
-        IMap<Object, Object> schedules = client.getMap("schedule");
-        // schedules.clear();
-        System.out.println("Schedule count: " + schedules.size());
-
-        IMap<String, TrainActivation> activations = client.getMap("trainActivation");
-        // activations.clear();
-        System.out.println("Activations: " + activations.size());
-
-        IMap<String, TrainDeparture> liveDepartures = client.getMap("trainDeparture");
-        // liveDepartures.clear();
-        System.out.println("Live departures: " + liveDepartures.size());
-
-        IMap<String, TrainMovement> movements = client.getMap("trainMovement");
-        //movements.clear();
-        System.out.println("Movements: " + movements.size());
+//        locations.put("1", new Location("sx1", "desc", "tt", "crs", new LatLon("1", "3")));
+//        log.info("{} {}", locations.size(), locations.values(new SqlPredicate("stanox = 'sx1'")));
+//
+//        IMap<Object, Object> schedules = client.getMap("schedule");
+//        // schedules.clear();
+//        System.out.println("Schedule count: " + schedules.size());
+//
+//        IMap<String, TrainActivation> activations = client.getMap("trainActivation");
+//        // activations.clear();
+//        System.out.println("Activations: " + activations.size());
+//
+//        IMap<String, TrainDeparture> liveDepartures = client.getMap("trainDeparture");
+//        // liveDepartures.clear();
+//        System.out.println("Live departures: " + liveDepartures.size());
+//
+//        IMap<String, TrainMovement> movements = client.getMap("trainMovement");
+//        //movements.clear();
+//        System.out.println("Movements: " + movements.size());
 
     }
 
