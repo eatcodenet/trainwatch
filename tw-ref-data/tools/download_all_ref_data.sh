@@ -4,8 +4,8 @@ app_home=/var/trainwatch
 creds=${app_home}/creds.txt
 
 if [ ! -r ${creds} ]; then
-	echo "no readable creds. see ya!"
-	exit 1
+  echo "no readable creds. see ya!"
+  exit 1
 fi
 
 username=$(grep username ${creds} | cut -d'=' -f2)
