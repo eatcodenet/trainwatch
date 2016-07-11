@@ -18,9 +18,9 @@ public class HzLocationRepo implements LocationRepo {
 
     @Override
     public void put(Location location) {
-        byte[] bytes = KryoUtils.toByteArray(location);
-        byStanoxMap.put(location.stanox, bytes);
-        byTiplocMap.put(location.tiploc, bytes);
+        byte[] data = KryoUtils.toByteArray(location);
+        byStanoxMap.set(location.stanox, data);
+        byTiplocMap.set(location.tiploc, data);
     }
 
     @Override

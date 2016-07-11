@@ -8,10 +8,11 @@ import com.hazelcast.core.IMap;
 import net.eatcode.trainwatch.movement.ActivationRepo;
 import net.eatcode.trainwatch.movement.TrainActivation;
 import net.eatcode.trainwatch.movement.TrainMovement;
+import net.eatcode.trainwatch.nr.hazelcast.KryoUtils;
 
 public class HzActivationRepo implements ActivationRepo {
 
-    private final IMap<String, TrainActivation> map;
+    private final IMap<String, byte[]> map;
 
     public HzActivationRepo(HazelcastInstance client) {
         this.map = client.getMap("trainActivation");
@@ -19,7 +20,7 @@ public class HzActivationRepo implements ActivationRepo {
 
     @Override
     public Optional<TrainActivation> get(String trainId) {
-        TrainActivation activation = map.get(trainId);
+        TrainActivation activation = KryoUtils.fromByteArray(map.get(trainId), TrainActivation.class);
         if (activation == null) {
             return Optional.empty();
         }
@@ -33,7 +34,7 @@ public class HzActivationRepo implements ActivationRepo {
 
     @Override
     public void put(TrainActivation activation) {
-        map.set(activation.trainId(), activation);
+        map.set(activation.trainId(), KryoUtils.toByteArray(activation));
     }
 
 }

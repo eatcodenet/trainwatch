@@ -28,13 +28,13 @@ public class HzCleanup {
 
     public void start() {
         log.info("Starting cleanup thread");
-        Runnable beeper = new Runnable() {
+        Runnable evict = new Runnable() {
             @Override
             public void run() {
                 movementRepo.evictOlderThan(3);
             }
         };
-        task = scheduler.scheduleAtFixedRate(beeper, interval, interval, SECONDS);
+        task = scheduler.scheduleAtFixedRate(evict, interval, interval, SECONDS);
     }
 
     public void stop() {

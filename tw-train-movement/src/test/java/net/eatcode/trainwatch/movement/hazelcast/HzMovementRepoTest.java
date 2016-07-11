@@ -13,19 +13,20 @@ import com.hazelcast.core.IMap;
 import net.eatcode.trainwatch.movement.TrainMovement;
 import net.eatcode.trainwatch.nr.Location;
 import net.eatcode.trainwatch.nr.Schedule;
-import net.eatcode.trainwatch.nr.hazelcast.HazelcastLocal;
+import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
+import net.eatcode.trainwatch.nr.hazelcast.KryoUtils;
 
 public class HzMovementRepoTest {
 
-    private final HazelcastInstance client = new HazelcastLocal().getInstance();
+    private final HazelcastInstance client = new HzClientBuilder().buildStandalone();
 
     @Test
     public void evictOlderThan() {
 
-        IMap<String, TrainMovement> map = client.getMap("trainMovement");
-        map.put("1", new StubMovement("1", LocalDateTime.now()));
-        map.put("2", new StubMovement("2", LocalDateTime.now().minusHours(2)));
-        map.put("3", new StubMovement("3", LocalDateTime.now().minusHours(3)));
+        IMap<String, byte[]> map = client.getMap("trainMovement");
+        map.set("1", movement("1", LocalDateTime.now()));
+        map.set("2", movement("2", LocalDateTime.now().minusHours(2)));
+        map.set("3", movement("3", LocalDateTime.now().minusHours(3)));
 
         HzMovementRepo repo = new HzMovementRepo(client);
         assertThat(map.size(), is(3));
@@ -34,11 +35,9 @@ public class HzMovementRepoTest {
         client.shutdown();
     }
 
-    static class StubMovement extends TrainMovement {
-        private static final long serialVersionUID = 1L;
-
-        StubMovement(String id, LocalDateTime timestamp) {
-            super(id, timestamp, new Location("stanox", "desc", "tiploc", "crs", null), "1", "false", new Schedule());
-        }
+    private byte[] movement(String id, LocalDateTime timestamp) {
+        return KryoUtils.toByteArray(
+                new TrainMovement(id, timestamp, new Location("s", "d", "t", "c", null), "1", "false", new Schedule()));
     }
+
 }

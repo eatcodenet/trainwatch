@@ -16,7 +16,7 @@ public class HzScheduleRepo implements ScheduleRepo {
 
     @Override
     public void put(Schedule schedule) {
-        map.put(schedule.id + schedule.trainServiceCode, KryoUtils.toByteArray(schedule));
+        map.set(schedule.id + schedule.trainServiceCode, KryoUtils.toByteArray(schedule));
     }
 
     @Override

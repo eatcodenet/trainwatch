@@ -12,7 +12,7 @@ import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 public class ListMovementsApp {
 
     public static void main(String[] args) {
-        String hazelcastServers = (args.length == 0) ? "trainwatch.eatcode.net" : args[0];
+        String hazelcastServers = (args.length == 0) ? "localhost" : args[0];
         HazelcastInstance client = new HzClientBuilder()
                 .build(hazelcastServers);
         HzTrainWatchSearch search = new HzTrainWatchSearch(client);

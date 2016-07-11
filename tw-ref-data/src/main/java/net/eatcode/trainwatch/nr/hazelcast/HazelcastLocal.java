@@ -14,7 +14,7 @@ public class HazelcastLocal {
 
     private final HazelcastInstance instance;
 
-    public HazelcastLocal() {
+    private HazelcastLocal() {
         Config config = new Config();
         config.setProperty("hazelcast.logging.type", "slf4j");
         config.setProperty("hazelcast.phone.home.enabled", "false");

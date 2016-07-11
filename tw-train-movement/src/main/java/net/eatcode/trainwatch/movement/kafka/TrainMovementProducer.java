@@ -70,8 +70,8 @@ public class TrainMovementProducer {
             departuresRepo.put(schedule
                     .map(s -> new TrainDeparture(msg.body.train_id, msg.body.origin_dep_timestamp, s)).get());
         } else {
-            trainMovementFrom(msg).map(KryoUtils::toByteArray).ifPresent(bytes -> {
-                producer.send(new ProducerRecord<>(trainMovement.topicName(), msg.body.train_service_code, bytes));
+            trainMovementFrom(msg).map(KryoUtils::toByteArray).ifPresent(data -> {
+                producer.send(new ProducerRecord<>(trainMovement.topicName(), msg.body.train_service_code, data));
             });
         }
     }

@@ -64,6 +64,10 @@ public class TrainDeparture implements Serializable, Comparable<TrainDeparture> 
         return departure;
     }
 
+    public LocalDateTime wtt() {
+        return this.wtt;
+    }
+    
     private LocalDateTime makeDateFrom(String timestamp) {
         return LocalDateTime.ofEpochSecond(Long.parseLong(timestamp) / 1000, 0, ZoneOffset.UTC);
     }
