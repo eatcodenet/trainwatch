@@ -10,7 +10,7 @@ public class TrustMessageConsumerApp {
 
         GsonTrustMessageParser parser = new GsonTrustMessageParser();
 
-        new TrustMessagesStomp(username, password).subscribe(json -> print(parser.parseArray(json)));
+        new TrustMessagesStomp(username, password).subscribe(json -> print(parser.parseJsonArray(json)));
     }
 
     private static void print(List<TrustMovementMessage> msgs) {

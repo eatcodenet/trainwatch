@@ -59,7 +59,7 @@ public class TrainMovementProducer {
         TrustMessagesStomp stomp = new TrustMessagesStomp(nrUsername, nrPassword);
         log.info("created stomp service");
         stomp.subscribe(movements -> {
-            parser.parseArray(movements).forEach((tm) -> sendMessage(tm));
+            parser.parseJsonArray(movements).forEach((tm) -> sendMessage(tm));
         });
     }
 

@@ -11,7 +11,7 @@ public class GsonTrustMessageParser implements TrustMessageParser {
     private final Gson gson = new GsonBuilder().create();
 
     @Override
-    public List<TrustMovementMessage> parseArray(String json) {
+    public List<TrustMovementMessage> parseJsonArray(String json) {
         return Arrays.asList(gson.fromJson(json, TrustMovementMessage[].class));
     }
 

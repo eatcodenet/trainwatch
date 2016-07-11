@@ -19,7 +19,7 @@ public class GsonTrustMessageParserTest {
     @Test
     public void parseArrayOfMessages() throws Exception {
         String json = readFile("src/test/resources/sampledata/32TrainMovementsArray.json");
-        List<TrustMovementMessage> movements = new GsonTrustMessageParser().parseArray(json);
+        List<TrustMovementMessage> movements = new GsonTrustMessageParser().parseJsonArray(json);
         assertThat(movements.size(), is(32));
         assertThat(movements.get(31).body.train_id, is("861H47MT01"));
     }
