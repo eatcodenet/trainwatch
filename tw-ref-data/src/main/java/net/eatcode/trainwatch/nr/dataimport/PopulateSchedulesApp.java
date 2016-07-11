@@ -22,7 +22,7 @@ public class PopulateSchedulesApp {
         String fileName = args[1];
         assertFileExists(fileName);
 
-        HazelcastInstance client = new HzClientBuilder().buildInstance(hazelcastServers);
+        HazelcastInstance client = new HzClientBuilder().build(hazelcastServers);
         HzScheduleRepo scheduleRepo = new HzScheduleRepo(client);
         HzLocationRepo locationRepo = new HzLocationRepo(client);
 

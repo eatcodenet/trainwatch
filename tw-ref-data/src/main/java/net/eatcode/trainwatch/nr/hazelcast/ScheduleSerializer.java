@@ -2,6 +2,7 @@ package net.eatcode.trainwatch.nr.hazelcast;
 
 import net.eatcode.trainwatch.nr.Schedule;
 
+@Deprecated
 public class ScheduleSerializer extends CommonSerializer<Schedule> {
 
     @Override

@@ -21,7 +21,7 @@ public abstract class CommonSerializer<T> implements StreamSerializer<T> {
     @Override
     public void write(ObjectDataOutput objectDataOutput, T object) {
         Output output = new Output((OutputStream) objectDataOutput);
-        Kryo kryo = KryoInstances.get();
+        Kryo kryo = KryoInstances.get(getClassToSerialize());
         kryo.writeObject(output, object);
         output.flush(); // do not close!
         KryoInstances.release(kryo);
@@ -30,7 +30,7 @@ public abstract class CommonSerializer<T> implements StreamSerializer<T> {
     @Override
     public T read(ObjectDataInput objectDataInput) {
         Input input = new Input((InputStream) objectDataInput);
-        Kryo kryo = KryoInstances.get();
+        Kryo kryo = KryoInstances.get(getClassToSerialize());
         T result = kryo.readObject(input, getClassToSerialize());
         KryoInstances.release(kryo);
         return result;

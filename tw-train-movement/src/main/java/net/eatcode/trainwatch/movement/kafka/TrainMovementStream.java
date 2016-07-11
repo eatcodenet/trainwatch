@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.eatcode.trainwatch.movement.TrainMovement;
+import net.eatcode.trainwatch.nr.hazelcast.KryoUtils;
 
 public class TrainMovementStream {
 

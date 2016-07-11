@@ -7,7 +7,6 @@ import com.hazelcast.core.HazelcastInstance;
 
 import net.eatcode.trainwatch.movement.DelayWindow;
 import net.eatcode.trainwatch.movement.TrainMovement;
-import net.eatcode.trainwatch.movement.hazelcast.TrainMovementSerializer;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 
 public class ListMovementsApp {
@@ -15,8 +14,7 @@ public class ListMovementsApp {
     public static void main(String[] args) {
         String hazelcastServers = (args.length == 0) ? "trainwatch.eatcode.net" : args[0];
         HazelcastInstance client = new HzClientBuilder()
-                .addSerializer(new TrainMovementSerializer(), TrainMovement.class)
-                .buildInstance(hazelcastServers);
+                .build(hazelcastServers);
         HzTrainWatchSearch search = new HzTrainWatchSearch(client);
         listTrainMovements(search);
         client.shutdown();

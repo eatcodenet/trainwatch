@@ -43,7 +43,7 @@ allprojects {
         compile 'com.google.code.gson:gson:2.6.2'
         compile 'ch.qos.logback:logback-classic:1.1.7'
         compile 'org.apache.commons:commons-lang3:3.4'
-        testCompile('junit:junit-dep:4.11')
+        testCompile('junit:junit:4.11')
     }
 
     eclipse {

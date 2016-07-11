@@ -30,7 +30,7 @@ public class TrainMovementApp {
         String networkRailPassword = args[4];
         checkTopicExists(zookeeperServers);
 
-        HazelcastInstance hzClient = new HzClientBuilder().buildInstance(hazelcastServers);
+        HazelcastInstance hzClient = new HzClientBuilder().build(hazelcastServers);
         ActivationRepo activationRepo = new HzActivationRepo(hzClient);
         DeparturesRepo departuresRepo = new HzDeparturesRepo(hzClient);
         MovementRepo movementRepo = new HzMovementRepo(hzClient);

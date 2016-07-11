@@ -8,7 +8,7 @@ import net.eatcode.trainwatch.nr.ScheduleRepo;
 
 public class HzScheduleRepo implements ScheduleRepo {
 
-    private final IMap<String, Schedule> map;
+    private final IMap<String, byte[]> map;
 
     public HzScheduleRepo(HazelcastInstance client) {
         this.map = client.getMap("schedule");
@@ -16,12 +16,12 @@ public class HzScheduleRepo implements ScheduleRepo {
 
     @Override
     public void put(Schedule schedule) {
-        map.put(schedule.id + schedule.trainServiceCode, schedule);
+        map.put(schedule.id + schedule.trainServiceCode, KryoUtils.toByteArray(schedule));
     }
 
     @Override
     public Schedule getByIdAndServiceCode(String id, String serviceCode) {
-        return map.get(id + serviceCode);
+        return KryoUtils.fromByteArray(map.get(id + serviceCode), Schedule.class);
     }
 
     @Override

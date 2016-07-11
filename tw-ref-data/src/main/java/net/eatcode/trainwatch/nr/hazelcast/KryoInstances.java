@@ -16,8 +16,10 @@ class KryoInstances {
 
     private static KryoPool pool = new KryoPool.Builder(factory).softReferences().build();
 
-    static Kryo get() {
-        return pool.borrow();
+    static <T> Kryo get(Class<T> clazz) {
+        Kryo k = pool.borrow();
+        k.register(clazz);
+        return k;
     }
 
     static void release(Kryo instance) {

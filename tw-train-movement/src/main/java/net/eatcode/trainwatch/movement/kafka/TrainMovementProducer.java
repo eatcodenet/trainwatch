@@ -32,6 +32,7 @@ import net.eatcode.trainwatch.nr.ScheduleRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 import net.eatcode.trainwatch.nr.hazelcast.HzLocationRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
+import net.eatcode.trainwatch.nr.hazelcast.KryoUtils;
 
 public class TrainMovementProducer {
 
@@ -100,7 +101,7 @@ public class TrainMovementProducer {
         String networkRailUsername = args[3];
         String networkRailPassword = args[4];
         checkTopicExists(zookeeperServers);
-        HazelcastInstance hzClient = new HzClientBuilder().buildInstance(hazelcastServers);
+        HazelcastInstance hzClient = new HzClientBuilder().build(hazelcastServers);
         ActivationRepo activationRepo = new HzActivationRepo(hzClient);
         ScheduleRepo scheduleRepo = new HzScheduleRepo(hzClient);
         LocationRepo locationRepo = new HzLocationRepo(hzClient);

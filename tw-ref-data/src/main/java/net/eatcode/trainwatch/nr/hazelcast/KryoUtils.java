@@ -1,15 +1,15 @@
-package net.eatcode.trainwatch.movement.kafka;
+package net.eatcode.trainwatch.nr.hazelcast;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
-class KryoUtils {
+public class KryoUtils {
 
     private static final int _1K = 1024;
     private static final int _16K = 16324;
 
-    static <T> byte[] toByteArray(T object) {
+    public static <T> byte[] toByteArray(T object) {
         Kryo kryo = KryoInstances.get(object.getClass());
 
         try (Output output = new Output(_1K, _16K)) {
@@ -20,7 +20,7 @@ class KryoUtils {
         }
     }
 
-    static <T> T fromByteArray(byte[] data, Class<T> clazz) {
+    public static <T> T fromByteArray(byte[] data, Class<T> clazz) {
         Kryo kryo = KryoInstances.get(clazz);
         try (Input input = new Input(data)) {
             return kryo.readObject(input, clazz);

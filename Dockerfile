@@ -24,5 +24,7 @@ RUN wget -q -O - "http://www.slf4j.org/dist/slf4j-${SLF4J_VERSION}.tar.gz" | tar
 
 RUN cp /opt/slf4j-${SLF4J_VERSION}/slf4j-api-${SLF4J_VERSION}.jar ${HZ_HOME}/lib
 
+ADD https://bintray.com/artifact/download/easymock/distributions/objenesis-2.4-bin.zip /tmp
+
 CMD java -server -cp ${HZ_HOME}/lib/'*' -Xms1g -Xmx1g -Dhazelcast.config=$HZ_HOME/bin/hazelcast.xml com.hazelcast.core.server.StartServer
 

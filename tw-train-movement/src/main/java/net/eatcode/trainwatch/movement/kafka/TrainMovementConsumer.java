@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.eatcode.trainwatch.movement.trust.TrustMovementMessage;
+import net.eatcode.trainwatch.nr.hazelcast.KryoUtils;
 
 public class TrainMovementConsumer {
     private final Logger log = LoggerFactory.getLogger(getClass());

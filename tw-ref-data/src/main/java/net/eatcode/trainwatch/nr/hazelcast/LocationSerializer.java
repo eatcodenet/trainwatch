@@ -2,6 +2,7 @@ package net.eatcode.trainwatch.nr.hazelcast;
 
 import net.eatcode.trainwatch.nr.Location;
 
+@Deprecated
 public class LocationSerializer extends CommonSerializer<Location> {
 
     @Override

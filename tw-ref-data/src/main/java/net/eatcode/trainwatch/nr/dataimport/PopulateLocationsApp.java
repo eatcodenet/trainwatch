@@ -24,7 +24,7 @@ public class PopulateLocationsApp {
         String tiplocFile = args[2];
         assertFileExists(tiplocFile);
 
-        HazelcastInstance client = new HzClientBuilder().buildInstance(hazelcastServers);
+        HazelcastInstance client = new HzClientBuilder().build(hazelcastServers);
         HzLocationRepo repo = new HzLocationRepo(client);
 
         new LocationPopulator(repo).populateFromFiles(crsFile, tiplocFile).whenCompleteAsync((value, err) -> {

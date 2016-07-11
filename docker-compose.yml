@@ -2,8 +2,8 @@ version: "2"
 
 services:
   hazelcast:
-    build: .
-    image: eatcode/tw-hazelcast
+    image: eatcode/hazelcast
+    container_name: hazelcast
     ports:
       - "5701:5701"
   
