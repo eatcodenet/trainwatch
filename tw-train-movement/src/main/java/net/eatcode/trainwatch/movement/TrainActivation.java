@@ -11,7 +11,7 @@ public class TrainActivation implements Serializable {
     private final String trainId;
     private final String scheduleId;
     private final String serviceCode;
-    private final LocalDateTime timestamp = LocalDateTime.now();
+    private final LocalDateTime timestamp = null;
 
     public TrainActivation(String trainId, String serviceCode, String scheduleId) {
         this.trainId = trainId;

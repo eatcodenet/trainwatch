@@ -30,6 +30,8 @@ public class HzLocationRepo implements LocationRepo {
 
     @Override
     public Location getByTiploc(String tiploc) {
-        return KryoUtils.fromByteArray(byTiplocMap.get(tiploc), Location.class);
+        byte[] data = byTiplocMap.get(tiploc);
+        if (data == null ) return null;
+        return KryoUtils.fromByteArray(data, Location.class);
     }
 }

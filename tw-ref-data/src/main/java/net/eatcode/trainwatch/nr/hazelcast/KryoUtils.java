@@ -6,13 +6,13 @@ import com.esotericsoftware.kryo.io.Output;
 
 public class KryoUtils {
 
-    private static final int _1K = 1024;
-    private static final int _16K = 16324;
+    private static final int _2K = 2048;
+    private static final int _32K = 32768;
 
     public static <T> byte[] toByteArray(T object) {
         Kryo kryo = KryoInstances.get(object.getClass());
 
-        try (Output output = new Output(_1K, _16K)) {
+        try (Output output = new Output(_2K, _32K)) {
             kryo.writeObject(output, object);
             return output.getBuffer();
         } finally {
@@ -24,9 +24,12 @@ public class KryoUtils {
         Kryo kryo = KryoInstances.get(clazz);
         try (Input input = new Input(data)) {
             return kryo.readObject(input, clazz);
+        } catch(Exception e) {
+            throw new RuntimeException(e);
         } finally {
             KryoInstances.release(kryo);
         }
+       
     }
 
 }

@@ -2,6 +2,9 @@ package net.eatcode.trainwatch.movement.hazelcast;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 
@@ -12,6 +15,8 @@ import net.eatcode.trainwatch.nr.hazelcast.KryoUtils;
 
 public class HzActivationRepo implements ActivationRepo {
 
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     private final IMap<String, byte[]> map;
 
     public HzActivationRepo(HazelcastInstance client) {
@@ -20,11 +25,11 @@ public class HzActivationRepo implements ActivationRepo {
 
     @Override
     public Optional<TrainActivation> get(String trainId) {
-        TrainActivation activation = KryoUtils.fromByteArray(map.get(trainId), TrainActivation.class);
-        if (activation == null) {
+        byte[] data = map.get(trainId);
+        if (data == null) {
             return Optional.empty();
         }
-        return Optional.of(activation);
+        return Optional.of(KryoUtils.fromByteArray(data, TrainActivation.class));
     }
 
     @Override
@@ -34,6 +39,7 @@ public class HzActivationRepo implements ActivationRepo {
 
     @Override
     public void put(TrainActivation activation) {
+        log.debug("PUT: {}", activation.trainId());
         map.set(activation.trainId(), KryoUtils.toByteArray(activation));
     }
 

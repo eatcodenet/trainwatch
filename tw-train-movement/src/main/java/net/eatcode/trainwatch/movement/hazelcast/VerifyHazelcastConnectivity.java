@@ -6,11 +6,8 @@ import org.slf4j.LoggerFactory;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 
-import net.eatcode.trainwatch.movement.TrainActivation;
 import net.eatcode.trainwatch.movement.TrainDeparture;
 import net.eatcode.trainwatch.movement.TrainMovement;
-import net.eatcode.trainwatch.nr.LatLon;
-import net.eatcode.trainwatch.nr.Location;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 
 public class VerifyHazelcastConnectivity {
@@ -31,28 +28,25 @@ public class VerifyHazelcastConnectivity {
 
         log.info("Server: {}", hzServer);
 
-        IMap<String, Location> locations = client.getMap("locationByTiploc");
-        Location location = locations.get("SNDYPL1");
-        log.info("{} {}", locations.size(), location);
-
-        locations.put("1", new Location("sx1", "desc", "tt", "crs", new LatLon("1", "3")));
-       // log.info("{} {}", locations.size(), locations.values(new SqlPredicate("stanox = 'sx1'")));
+        IMap<String, byte[]> locations = client.getMap("locationByTiploc");
+        log.info("locations size: {}", locations.size());
 
         IMap<Object, Object> schedules = client.getMap("schedule");
         // schedules.clear();
-        System.out.println("Schedule count: " + schedules.size());
+        log.info("Schedule count: {} ", schedules.size());
 
-        IMap<String, TrainActivation> activations = client.getMap("trainActivation");
+        IMap<String, byte[]> activations = client.getMap("trainActivation");
+        //activations.values().stream().map(data -> KryoUtils.fromByteArray(data, TrainActivation.class)).forEach(System.out::println);
         // activations.clear();
-        System.out.println("Activations: " + activations.size());
+        log.info("Activations: {} ", activations.size());
 
         IMap<String, TrainDeparture> liveDepartures = client.getMap("trainDeparture");
         // liveDepartures.clear();
-        System.out.println("Live departures: " + liveDepartures.size());
+        log.info("Live departures: {} ", liveDepartures.size());
 
         IMap<String, TrainMovement> movements = client.getMap("trainMovement");
-        //movements.clear();
-        System.out.println("Movements: " + movements.size());
+        // movements.clear();
+        log.info("Movements: {}", movements.size());
 
     }
 

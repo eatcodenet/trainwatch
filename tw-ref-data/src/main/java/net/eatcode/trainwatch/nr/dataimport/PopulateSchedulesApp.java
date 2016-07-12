@@ -19,14 +19,14 @@ public class PopulateSchedulesApp {
     public static void main(String[] args) throws Exception {
         checkUsage(args);
         String hazelcastServers = args[0];
-        String fileName = args[1];
-        assertFileExists(fileName);
+        String scheduleFileName = args[1];
+        assertFileExists(scheduleFileName);
 
         HazelcastInstance client = new HzClientBuilder().build(hazelcastServers);
         HzScheduleRepo scheduleRepo = new HzScheduleRepo(client);
         HzLocationRepo locationRepo = new HzLocationRepo(client);
 
-        new ScheduleRepositoryPopulator(scheduleRepo, locationRepo).populateFromFile(fileName)
+        new ScheduleRepositoryPopulator(scheduleRepo, locationRepo).populateFromFile(scheduleFileName)
                 .whenCompleteAsync((v, error) -> {
                     if (error == null)
                         log.info("Done populating schedules!");

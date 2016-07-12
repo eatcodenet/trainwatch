@@ -15,7 +15,7 @@ public class HzCleanup {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final long interval = 60 * 2;
+    private final long interval = 60 * 3;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     private ScheduledFuture<?> task;
