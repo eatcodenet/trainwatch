@@ -67,9 +67,7 @@ public class TrainMovementProducer {
         if (msg.isActivation()) {
             log.debug("Activation {}", msg);
             activationRepo.put(new TrainActivation(msg.body.train_id, msg.body.train_service_code, msg.body.train_uid));
-            log.debug("A");
             Optional<Schedule> schedule = lookupSchedule(msg);
-            log.debug("B");
             log.debug("schedule {}", schedule);
             departuresRepo.put(schedule
                     .map(s -> new TrainDeparture(msg.body.train_id, msg.body.origin_dep_timestamp, s)).get());

@@ -39,7 +39,7 @@ public class HzActivationRepo implements ActivationRepo {
 
     @Override
     public void put(TrainActivation activation) {
-        log.debug("PUT: {}", activation.trainId());
+        log.debug("PUT: {} {}", activation.trainId(), activation.scheduleId());
         map.set(activation.trainId(), KryoUtils.toByteArray(activation));
     }
 
