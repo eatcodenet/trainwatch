@@ -22,7 +22,6 @@ public class HzDeparturesRepo implements DeparturesRepo {
 
     @Override
     public void put(TrainDeparture td) {
-        log.debug("TD {}", td);
         if (hasBothCrsCodes(td)) {
             log.info("PUT: {}", td);
             map.set(td.trainId(), KryoUtils.toByteArray(td));
@@ -34,7 +33,7 @@ public class HzDeparturesRepo implements DeparturesRepo {
     }
 
     private boolean hasCrs(String crs) {
-        return crs != null && crs.length() == 3;
+        return (crs != null) && (crs.length() == 3);
     }
 
 }

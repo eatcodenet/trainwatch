@@ -25,13 +25,20 @@ public class HzLocationRepo implements LocationRepo {
 
     @Override
     public Location getByStanox(String stanox) {
-        return KryoUtils.fromByteArray(byStanoxMap.get(stanox), Location.class);
+        byte[] data = byStanoxMap.get(stanox);
+        if (data == null) {
+            return null;
+        }
+        return KryoUtils.fromByteArray(data, Location.class);
+
     }
 
     @Override
     public Location getByTiploc(String tiploc) {
         byte[] data = byTiplocMap.get(tiploc);
-        if (data == null ) return null;
+        if (data == null) {
+            return null;
+        }
         return KryoUtils.fromByteArray(data, Location.class);
     }
 }

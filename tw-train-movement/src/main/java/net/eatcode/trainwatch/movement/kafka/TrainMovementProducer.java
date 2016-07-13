@@ -65,10 +65,8 @@ public class TrainMovementProducer {
 
     private void sendMessage(TrustMovementMessage msg) {
         if (msg.isActivation()) {
-            log.debug("Activation {}", msg);
             activationRepo.put(new TrainActivation(msg.body.train_id, msg.body.train_service_code, msg.body.train_uid));
             Optional<Schedule> schedule = lookupSchedule(msg);
-            log.debug("schedule {}", schedule);
             departuresRepo.put(schedule
                     .map(s -> new TrainDeparture(msg.body.train_id, msg.body.origin_dep_timestamp, s)).get());
         } else {
@@ -89,7 +87,6 @@ public class TrainMovementProducer {
 
     public Optional<Schedule> lookupSchedule(TrustMovementMessage msg) {
         Optional<TrainActivation> optional = activationRepo.get(msg.body.train_id);
-        System.out.println("TA "+ optional);
         return optional
                 .map(ta -> scheduleRepo.getByIdAndServiceCode(ta.scheduleId(), ta.serviceCode()));
     }

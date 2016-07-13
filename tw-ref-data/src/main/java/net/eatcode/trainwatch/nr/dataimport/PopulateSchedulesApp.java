@@ -3,6 +3,7 @@ package net.eatcode.trainwatch.nr.dataimport;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,14 +26,18 @@ public class PopulateSchedulesApp {
         HazelcastInstance client = new HzClientBuilder().build(hazelcastServers);
         HzScheduleRepo scheduleRepo = new HzScheduleRepo(client);
         HzLocationRepo locationRepo = new HzLocationRepo(client);
-
+        StopWatch sw = new StopWatch();
+        sw.start();
         new ScheduleRepositoryPopulator(scheduleRepo, locationRepo).populateFromFile(scheduleFileName)
                 .whenCompleteAsync((v, error) -> {
-                    if (error == null)
+                    if (error == null) {
                         log.info("Done populating schedules!");
-                    else
-                        error.printStackTrace();
+                    } else {
+                        log.error("Error populating schedules!", error);
+                    }
 
+                    sw.stop();
+                    log.info("Took {}s", sw.getTime() / 1000);
                     client.shutdown();
                 }).get();
     }
