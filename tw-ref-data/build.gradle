@@ -1,6 +1,6 @@
 dependencies {
   compile 'com.esotericsoftware:kryo:4.0.0'
-  compile 'com.hazelcast:hazelcast-client:3.6.2'
+  compile 'com.hazelcast:hazelcast-client:3.6.4'
 }
 
 task(copyrefData, type: Copy) {

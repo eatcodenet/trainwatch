@@ -1,6 +1,6 @@
 dependencies {
   compile project(':tw-ref-data')
-  compile 'com.hazelcast:hazelcast-client:3.6.2'
+  compile 'com.hazelcast:hazelcast-client:3.6.4'
   compile 'org.apache.kafka:kafka_2.11:0.9.1.0-cp1'
   compile 'org.apache.kafka:kafka-streams:0.9.1.0-cp1'
 }
