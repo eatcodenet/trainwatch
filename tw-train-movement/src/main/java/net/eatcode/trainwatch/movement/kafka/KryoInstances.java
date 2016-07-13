@@ -3,6 +3,7 @@ package net.eatcode.trainwatch.movement.kafka;
 import org.objenesis.strategy.StdInstantiatorStrategy;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.Kryo.DefaultInstantiatorStrategy;
 import com.esotericsoftware.kryo.pool.KryoFactory;
 import com.esotericsoftware.kryo.pool.KryoPool;
 
@@ -10,7 +11,7 @@ class KryoInstances {
 
     private static KryoFactory factory = () -> {
         Kryo kryo = new Kryo();
-        kryo.setInstantiatorStrategy(new StdInstantiatorStrategy());
+        kryo.setInstantiatorStrategy(new DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
         return kryo;
     };
 

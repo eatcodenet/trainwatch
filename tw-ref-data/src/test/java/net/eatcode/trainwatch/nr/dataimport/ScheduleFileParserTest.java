@@ -19,7 +19,10 @@ public class ScheduleFileParserTest {
         parse.parse(schedule -> {
             result.add(schedule);
             System.err.println(schedule.JsonScheduleV1.schedule_segment.schedule_location[0].location_type);
+            System.err.println(schedule.JsonScheduleV1.schedule_segment.schedule_location[0].location_type);
         }).whenCompleteAsync((value, err) -> {
+            System.err.println(result.get(0).JsonScheduleV1.schedule_start_date);
+            System.err.println(result.get(0).JsonScheduleV1.schedule_end_date);
             assertThat(result.size(), is(10));
             assertThat(result.get(0).JsonScheduleV1.schedule_segment.CIF_train_service_code, is("57610314"));
             assertThat(result.get(9).JsonScheduleV1.schedule_segment.CIF_train_service_code, is("21702001"));

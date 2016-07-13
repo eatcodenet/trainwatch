@@ -1,5 +1,7 @@
 package net.eatcode.trainwatch.nr;
 
+import static java.time.format.DateTimeFormatter.ISO_DATE;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -25,14 +27,14 @@ public class TransformTrustSchedule {
 
         List<Schedule_location> locs = Arrays.asList(s.schedule_segment.schedule_location);
         String id = s.CIF_train_uid;
-        LocalDate start = LocalDate.parse(s.schedule_start_date);
-        LocalDate end = LocalDate.parse(s.schedule_end_date);
+        LocalDate start = LocalDate.parse(s.schedule_start_date, ISO_DATE);
+        LocalDate end = LocalDate.parse(s.schedule_end_date, ISO_DATE);
         Schedule_location origin = getLocationByType(locs, "LO");
         Schedule_location dest = getLocationByType(locs, "LT");
         String trainServiceCode = s.schedule_segment.CIF_train_service_code;
         String atoc = s.atoc_code;
         String sigId = s.schedule_segment.signalling_id;
-        Boolean isPassenger = !(sigId == null || sigId.equals(""));
+        Boolean isPassenger = !((sigId == null) || sigId.equals(""));
         return makeDaySchedule(id, start, end, origin, dest, trainServiceCode, atoc, s.schedule_days_runs, isPassenger);
     }
 

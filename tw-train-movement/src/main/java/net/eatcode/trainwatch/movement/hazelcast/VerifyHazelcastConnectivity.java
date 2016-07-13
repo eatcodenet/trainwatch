@@ -9,6 +9,7 @@ import com.hazelcast.core.IMap;
 import net.eatcode.trainwatch.movement.TrainDeparture;
 import net.eatcode.trainwatch.movement.TrainMovement;
 import net.eatcode.trainwatch.nr.Location;
+import net.eatcode.trainwatch.nr.Schedule;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 import net.eatcode.trainwatch.nr.hazelcast.KryoUtils;
 
@@ -36,6 +37,7 @@ public class VerifyHazelcastConnectivity {
 
         IMap<String, byte[]> schedules = client.getMap("schedule");
         // schedules.clear();
+        schedules.values().stream().limit(100).map(data -> KryoUtils.fromByteArray(data, Schedule.class)).forEachOrdered(System.out::println);
         log.info("Schedule count: {} ", schedules.size());
 
         IMap<String, byte[]> activations = client.getMap("trainActivation");
