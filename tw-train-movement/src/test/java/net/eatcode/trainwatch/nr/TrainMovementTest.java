@@ -22,33 +22,10 @@ public class TrainMovementTest {
         System.out.println(tm.header.msg_type);
 
         System.out.println(tm.body.actual_timestamp);
-        System.out.println(tm.body.auto_expected);
-        System.out.println(tm.body.correction_ind);
-        System.out.println(tm.body.current_train_id);
-        System.out.println(tm.body.delay_monitoring_point);
-        System.out.println(tm.body.direction_ind);
-        System.out.println(tm.body.division_code);
-        System.out.println(tm.body.event_source);
-        System.out.println(tm.body.event_type);
-        System.out.println(tm.body.event_source);
-        System.out.println(tm.body.gbtt_timestamp);
-        System.out.println(tm.body.line_ind);
         System.out.println(tm.body.loc_stanox);
-        System.out.println(tm.body.next_report_run_time);
-        System.out.println(tm.body.next_report_stanox);
-        System.out.println(tm.body.offroute_ind);
-        System.out.println(tm.body.original_loc_stanox);
-        System.out.println(tm.body.original_loc_timestamp);
-        System.out.println(tm.body.planned_event_type);
-        System.out.println(tm.body.planned_timestamp);
-        System.out.println(tm.body.platform);
-        System.out.println(tm.body.reporting_stanox);
-        System.out.println(tm.body.route);
         System.out.println(tm.body.timetable_variation);
-        System.out.println(tm.body.toc_id);
         System.out.println(tm.body.train_id);
         System.out.println(tm.body.train_service_code);
         System.out.println(tm.body.train_terminated);
-        System.out.println(tm.body.variation_status);
     }
 }
