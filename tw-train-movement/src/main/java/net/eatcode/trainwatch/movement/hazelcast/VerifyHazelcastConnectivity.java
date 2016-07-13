@@ -1,8 +1,5 @@
 package net.eatcode.trainwatch.movement.hazelcast;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +8,7 @@ import com.hazelcast.core.IMap;
 
 import net.eatcode.trainwatch.movement.TrainDeparture;
 import net.eatcode.trainwatch.movement.TrainMovement;
-import net.eatcode.trainwatch.nr.Schedule;
+import net.eatcode.trainwatch.nr.Location;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 import net.eatcode.trainwatch.nr.hazelcast.KryoUtils;
 
@@ -35,18 +32,13 @@ public class VerifyHazelcastConnectivity {
 
         IMap<String, byte[]> locations = client.getMap("locationByTiploc");
         log.info("locations size: {}", locations.size());
+        log.info("{}", KryoUtils.fromByteArray(locations.get("FLXSNFL"), Location.class));
 
         IMap<String, byte[]> schedules = client.getMap("schedule");
         // schedules.clear();
         log.info("Schedule count: {} ", schedules.size());
-        List<Schedule> collect = schedules.values().stream().map(data -> KryoUtils.fromByteArray(data, Schedule.class))
-                .filter(s -> s.id.equals("H38661")).collect(Collectors.toList());
-        System.out.println(collect);
 
         IMap<String, byte[]> activations = client.getMap("trainActivation");
-        // activations.values().stream().map(data ->
-        // KryoUtils.fromByteArray(data,
-        // TrainActivation.class)).forEach(System.out::println);
         // activations.clear();
         log.info("Activations: {} ", activations.size());
 
