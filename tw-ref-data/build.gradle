@@ -1,8 +1,7 @@
 dependencies {
-  compile 'com.hazelcast:hazelcast-client:3.6.2'
   compile 'com.esotericsoftware:kryo:4.0.0'
+  compile 'com.hazelcast:hazelcast-client:3.6.2'
 }
-
 
 task(copyrefData, type: Copy) {
   from(file('/var/trainwatch/data'))
