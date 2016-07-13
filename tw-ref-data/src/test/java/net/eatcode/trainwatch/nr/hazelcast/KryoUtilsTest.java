@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import org.junit.Test;
@@ -58,6 +59,13 @@ public class KryoUtilsTest {
 		Schedule s2 = KryoUtils.fromByteArray(data, Schedule.class);
 		assertThat(s2.id, is("schedule id"));
 		assertThat(s2.startDate, is(LocalDate.now()));
+	}
+	
+	@Test
+	public void serializesLocalDateTime() {
+		LocalDateTime now = LocalDateTime.now();
+		byte[] data = KryoUtils.toByteArray(now);
+		assertThat(KryoUtils.fromByteArray(data, LocalDateTime.class), is(now));
 	}
 
 
