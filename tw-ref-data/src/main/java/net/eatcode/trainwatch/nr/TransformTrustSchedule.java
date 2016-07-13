@@ -12,7 +12,6 @@ import net.eatcode.trainwatch.nr.TrustSchedule.JsonScheduleV1.Schedule_segment.S
 public class TransformTrustSchedule {
 
     private final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HHmm");
-    private final DateTimeFormatter dateFormat = DateTimeFormatter.ISO_DATE;
 
     private final LocationRepo repo;
 
@@ -26,14 +25,14 @@ public class TransformTrustSchedule {
 
         List<Schedule_location> locs = Arrays.asList(s.schedule_segment.schedule_location);
         String id = s.CIF_train_uid;
-        LocalDate start = LocalDate.parse(s.schedule_start_date, dateFormat);
-        LocalDate end = LocalDate.parse(s.schedule_end_date, dateFormat);
+        LocalDate start = LocalDate.parse(s.schedule_start_date);
+        LocalDate end = LocalDate.parse(s.schedule_end_date);
         Schedule_location origin = getLocationByType(locs, "LO");
         Schedule_location dest = getLocationByType(locs, "LT");
         String trainServiceCode = s.schedule_segment.CIF_train_service_code;
         String atoc = s.atoc_code;
-        String sigid = s.schedule_segment.signalling_id;
-        Boolean isPassenger = !(sigid == null || sigid.equals(""));
+        String sigId = s.schedule_segment.signalling_id;
+        Boolean isPassenger = !(sigId == null || sigId.equals(""));
         return makeDaySchedule(id, start, end, origin, dest, trainServiceCode, atoc, s.schedule_days_runs, isPassenger);
     }
 
@@ -44,9 +43,9 @@ public class TransformTrustSchedule {
         s.startDate = start;
         s.endDate = end;
         s.origin = getLocation(origin);
-        s.departure = LocalTime.parse(depFrom(origin), timeFormat);
+        s.departure = getTime(origin.departure);
         s.destination = getLocation(dest);
-        s.arrival = LocalTime.parse(arrFrom(dest), timeFormat);
+        s.arrival = getTime(dest.arrival);
         s.runDays = runDays;
         s.trainServiceCode = trainServiceCode;
         s.atocCode = atoc;
@@ -54,18 +53,8 @@ public class TransformTrustSchedule {
         return s;
     }
 
-    private String depFrom(Schedule_location loc) {
-        if (loc.public_departure == null) {
-            return loc.departure.substring(0, 4);
-        }
-        return loc.public_departure;
-    }
-
-    private String arrFrom(Schedule_location loc) {
-        if (loc.public_arrival == null) {
-            return loc.arrival.substring(0, 4);
-        }
-        return loc.public_arrival;
+    private LocalTime getTime(String timeInHHmmss) {
+        return LocalTime.parse(timeInHHmmss.substring(0, 4), timeFormat);
     }
 
     private Location getLocation(Schedule_location loc) {

@@ -13,8 +13,8 @@ public class Schedule implements Serializable {
     public LocalDate startDate;
     public LocalDate endDate;
     public Location origin;
-    public LocalTime departure;
     public Location destination;
+    public LocalTime departure;
     public LocalTime arrival;
     public String trainServiceCode;
     public String atocCode;

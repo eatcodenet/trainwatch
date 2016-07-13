@@ -88,7 +88,9 @@ public class TrainMovementProducer {
     }
 
     public Optional<Schedule> lookupSchedule(TrustMovementMessage msg) {
-        return activationRepo.get(msg.body.train_id)
+        Optional<TrainActivation> optional = activationRepo.get(msg.body.train_id);
+        System.out.println("TA "+ optional);
+        return optional
                 .map(ta -> scheduleRepo.getByIdAndServiceCode(ta.scheduleId(), ta.serviceCode()));
     }
 
