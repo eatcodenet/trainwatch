@@ -8,37 +8,27 @@ import net.eatcode.trainwatch.nr.LocationRepo;
 
 public class HzLocationRepo implements LocationRepo {
 
-    private final IMap<String, byte[]> byStanoxMap;
-    private final IMap<String, byte[]> byTiplocMap;
+	private final IMap<String, Location> byStanoxMap;
+	private final IMap<String, Location> byTiplocMap;
 
-    public HzLocationRepo(HazelcastInstance client) {
-        this.byStanoxMap = client.getMap("locationByStanox");
-        this.byTiplocMap = client.getMap("locationByTiploc");
-    }
+	public HzLocationRepo(HazelcastInstance client) {
+		this.byStanoxMap = client.getMap("locationByStanox");
+		this.byTiplocMap = client.getMap("locationByTiploc");
+	}
 
-    @Override
-    public void put(Location location) {
-        byte[] data = KryoUtils.toByteArray(location);
-        byStanoxMap.set(location.stanox, data);
-        byTiplocMap.set(location.tiploc, data);
-    }
+	@Override
+	public void put(Location location) {
+		byStanoxMap.set(location.stanox, location);
+		byTiplocMap.set(location.tiploc, location);
+	}
 
-    @Override
-    public Location getByStanox(String stanox) {
-        byte[] data = byStanoxMap.get(stanox);
-        if (data == null) {
-            return null;
-        }
-        return KryoUtils.fromByteArray(data, Location.class);
+	@Override
+	public Location getByStanox(String stanox) {
+		return byStanoxMap.get(stanox);
+	}
 
-    }
-
-    @Override
-    public Location getByTiploc(String tiploc) {
-        byte[] data = byTiplocMap.get(tiploc);
-        if (data == null) {
-            return null;
-        }
-        return KryoUtils.fromByteArray(data, Location.class);
-    }
+	@Override
+	public Location getByTiploc(String tiploc) {
+		return byTiplocMap.get(tiploc);
+	}
 }
