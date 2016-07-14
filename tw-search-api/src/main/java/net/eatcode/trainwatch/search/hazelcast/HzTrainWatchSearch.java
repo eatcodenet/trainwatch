@@ -23,7 +23,6 @@ import net.eatcode.trainwatch.movement.DelayWindow;
 import net.eatcode.trainwatch.movement.Stats;
 import net.eatcode.trainwatch.movement.TrainDeparture;
 import net.eatcode.trainwatch.movement.TrainMovement;
-import net.eatcode.trainwatch.nr.hazelcast.KryoUtils;
 import net.eatcode.trainwatch.search.Station;
 import net.eatcode.trainwatch.search.TrainWatchSearch;
 
@@ -31,7 +30,7 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final IMap<String, byte[]> departures;
+    private final IMap<String, TrainDeparture> departures;
     private final IMap<String, TrainMovement> movements;
 
     public HzTrainWatchSearch(HazelcastInstance client) {
@@ -46,8 +45,7 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
                 .distinct().sorted().collect(toList());
     }
 
-    private Station makeStation(byte[] data) {
-        TrainDeparture td = KryoUtils.fromByteArray(data, TrainDeparture.class);
+    private Station makeStation(TrainDeparture td) {
         return new Station(capitalize(td.originName().toLowerCase()), td.originCrs());
     }
 
@@ -79,7 +77,6 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
         LocalDateTime cutOff = LocalDateTime.now().minusMinutes(2);
         StopWatch sw = startStopWatch();
         List<TrainDeparture> result = departures.values().stream()
-                .map(data -> KryoUtils.fromByteArray(data, TrainDeparture.class))
                 .filter(td -> td.origin().crs.equals(station.getCrs()) && td.wtt().isAfter(cutOff))
                 .sorted().limit(maxResults).collect(toList());
         log.info("departures search took {}ms", sw.getTime());

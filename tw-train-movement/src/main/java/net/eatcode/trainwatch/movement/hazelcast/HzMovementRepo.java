@@ -12,13 +12,12 @@ import com.hazelcast.core.IMap;
 
 import net.eatcode.trainwatch.movement.MovementRepo;
 import net.eatcode.trainwatch.movement.TrainMovement;
-import net.eatcode.trainwatch.nr.hazelcast.KryoUtils;
 
 public class HzMovementRepo implements MovementRepo {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final IMap<String, byte[]> map;
+    private final IMap<String, TrainMovement> map;
 
     public HzMovementRepo(HazelcastInstance client) {
         this.map = client.getMap("trainMovement");
@@ -26,7 +25,7 @@ public class HzMovementRepo implements MovementRepo {
 
     @Override
     public void put(TrainMovement tm) {
-        map.set(tm.trainId(), KryoUtils.toByteArray(tm));
+        map.set(tm.trainId(), tm);
     }
 
     @Override
@@ -39,7 +38,6 @@ public class HzMovementRepo implements MovementRepo {
         log.info("evicting with timestamp older than {} hours", ttlHours);
         LocalDateTime cutoff = LocalDateTime.now().minusHours(ttlHours);
         List<TrainMovement> stale = map.values().stream()
-                .map(data -> KryoUtils.fromByteArray(data, TrainMovement.class))
                 .filter(tm -> tm.timestamp().isBefore(cutoff))
                 .collect(Collectors.toList());
         stale.forEach(tm -> map.evict(tm.trainId()));

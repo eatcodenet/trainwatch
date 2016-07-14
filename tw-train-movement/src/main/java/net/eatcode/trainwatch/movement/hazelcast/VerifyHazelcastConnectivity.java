@@ -6,12 +6,12 @@ import org.slf4j.LoggerFactory;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 
+import net.eatcode.trainwatch.movement.TrainActivation;
 import net.eatcode.trainwatch.movement.TrainDeparture;
 import net.eatcode.trainwatch.movement.TrainMovement;
 import net.eatcode.trainwatch.nr.Location;
 import net.eatcode.trainwatch.nr.Schedule;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
-import net.eatcode.trainwatch.nr.hazelcast.KryoUtils;
 
 public class VerifyHazelcastConnectivity {
 
@@ -31,16 +31,15 @@ public class VerifyHazelcastConnectivity {
 
         log.info("Server: {}", hzServer);
 
-        IMap<String, byte[]> locations = client.getMap("locationByTiploc");
+        IMap<String, Location> locations = client.getMap("locationByTiploc");
         log.info("locations size: {}", locations.size());
-        log.info("{}", KryoUtils.fromByteArray(locations.get("FLXSNFL"), Location.class));
+        log.info("{}", Location.class);
 
-        IMap<String, byte[]> schedules = client.getMap("schedule");
+        IMap<String, Schedule> schedules = client.getMap("schedule");
         // schedules.clear();
-        schedules.values().stream().limit(100).map(data -> KryoUtils.fromByteArray(data, Schedule.class)).forEachOrdered(System.out::println);
         log.info("Schedule count: {} ", schedules.size());
 
-        IMap<String, byte[]> activations = client.getMap("trainActivation");
+        IMap<String, TrainActivation> activations = client.getMap("trainActivation");
         // activations.clear();
         log.info("Activations: {} ", activations.size());
 

@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 
+import net.eatcode.trainwatch.nr.Schedule;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 
 public class ClearHazelcastSchedules {
@@ -16,17 +17,17 @@ public class ClearHazelcastSchedules {
     public static void main(String[] args) {
         HazelcastInstance client = new HzClientBuilder().build(hzServer);
         try {
-            clearRep(client);
+            clearRepo(client);
         } finally {
             client.shutdown();
         }
     }
 
-    private static void clearRep(HazelcastInstance client) {
+    private static void clearRepo(HazelcastInstance client) {
 
         log.info("Server: {}", hzServer);
 
-        IMap<String, byte[]> schedules = client.getMap("schedule");
+        IMap<String, Schedule> schedules = client.getMap("schedule");
         log.info("Schedule count: {} ", schedules.size());
         schedules.clear();
         log.info("Schedule count: {} ", schedules.size());
