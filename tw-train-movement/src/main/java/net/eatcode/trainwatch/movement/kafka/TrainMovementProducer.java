@@ -100,6 +100,9 @@ public class TrainMovementProducer {
     }
 
     private LocalDateTime dateTime(TrustMovementMessage msg) {
+        if (msg.body.actual_timestamp == null) {
+            return LocalDateTime.now();
+        }
         return LocalDateTime.ofEpochSecond(Long.parseLong(msg.body.actual_timestamp) / 1000, 0, ZoneOffset.UTC);
     }
 

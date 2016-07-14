@@ -5,9 +5,9 @@ import static net.eatcode.trainwatch.movement.kafka.Topic.trainMovement;
 import java.util.Properties;
 
 import org.apache.commons.lang3.SerializationUtils;
-import org.apache.kafka.common.serialization.ByteArrayDeserializer;
-import org.apache.kafka.common.serialization.Deserializer;
-import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.Serde;
+import org.apache.kafka.common.serialization.Serdes.ByteArraySerde;
+import org.apache.kafka.common.serialization.Serdes.StringSerde;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KStreamBuilder;
@@ -31,8 +31,8 @@ public class TrainMovementStream {
         log.info("Kafka servers: {}", kafkaServers);
         Properties props = new PropertiesBuilder().forStream(kafkaServers, "trainMovements").build();
 
-        Deserializer<String> kDeserializer = new StringDeserializer();
-        Deserializer<byte[]> vDeserializer = new ByteArrayDeserializer();
+        Serde<String> kDeserializer = new StringSerde();
+        Serde<byte[]> vDeserializer = new ByteArraySerde();
 
         KStreamBuilder builder = new KStreamBuilder();
         KStream<String, byte[]> movements = builder.stream(kDeserializer, vDeserializer, trainMovement.topicName());

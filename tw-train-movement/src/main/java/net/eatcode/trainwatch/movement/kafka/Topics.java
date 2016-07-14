@@ -26,7 +26,7 @@ public class Topics {
         ZkUtils zkUtils = zkUtils();
         Properties topicConfig = new Properties();
         topicConfig.put("retention.ms", "86400000");
-        AdminUtils.createTopic(zkUtils, topic.topicName(), partitions, replication, topicConfig);
+        AdminUtils.createTopic(zkUtils, topic.topicName(), partitions, replication, topicConfig, null);
         zkUtils.close();
     }
 
