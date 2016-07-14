@@ -4,6 +4,7 @@ import static net.eatcode.trainwatch.movement.kafka.Topic.trainMovement;
 
 import java.util.Properties;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -14,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.eatcode.trainwatch.movement.TrainMovement;
-import net.eatcode.trainwatch.nr.hazelcast.KryoUtils;
 
 public class TrainMovementStream {
 
@@ -37,7 +37,7 @@ public class TrainMovementStream {
         KStreamBuilder builder = new KStreamBuilder();
         KStream<String, byte[]> movements = builder.stream(kDeserializer, vDeserializer, trainMovement.topicName());
         movements
-                .mapValues(value -> KryoUtils.fromByteArray(value, TrainMovement.class))
+                .mapValues(value -> (TrainMovement) SerializationUtils.deserialize(value))
                 .process(() -> movementProcessor);
 
         log.info("Starting train movement stream...");

@@ -24,7 +24,11 @@ public class HzActivationRepo implements ActivationRepo {
 
     @Override
     public Optional<TrainActivation> get(String trainId) {
-        return Optional.of(map.get(trainId));
+        TrainActivation value = map.get(trainId);
+        if (value == null ) {
+            return Optional.empty();
+        }
+        return Optional.of(value);
     }
 
     @Override

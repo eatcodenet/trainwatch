@@ -3,13 +3,13 @@ package net.eatcode.trainwatch.movement.kafka;
 import java.util.Arrays;
 import java.util.Properties;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.eatcode.trainwatch.movement.trust.TrustMovementMessage;
-import net.eatcode.trainwatch.nr.hazelcast.KryoUtils;
 
 public class TrainMovementConsumer {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -30,7 +30,7 @@ public class TrainMovementConsumer {
     }
 
     private void consume(ConsumerRecord<String, byte[]> r) {
-        TrustMovementMessage tm = KryoUtils.fromByteArray(r.value(), TrustMovementMessage.class);
+        TrustMovementMessage tm = SerializationUtils.deserialize(r.value());
         log.debug("{}", tm);
     }
 

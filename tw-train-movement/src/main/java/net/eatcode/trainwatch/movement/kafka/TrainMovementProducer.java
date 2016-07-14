@@ -7,6 +7,7 @@ import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.Properties;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
@@ -32,7 +33,6 @@ import net.eatcode.trainwatch.nr.ScheduleRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 import net.eatcode.trainwatch.nr.hazelcast.HzLocationRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
-import net.eatcode.trainwatch.nr.hazelcast.KryoUtils;
 
 public class TrainMovementProducer {
 
@@ -70,10 +70,18 @@ public class TrainMovementProducer {
             departuresRepo.put(schedule
                     .map(s -> new TrainDeparture(msg.body.train_id, msg.body.origin_dep_timestamp, s)).get());
         } else {
-            trainMovementFrom(msg).map(KryoUtils::toByteArray).ifPresent(data -> {
-                producer.send(new ProducerRecord<>(trainMovement.topicName(), msg.body.train_service_code, data));
-            });
+            try {
+                trainMovementFrom(msg).map(this::toByteArray).ifPresent(data -> {
+                    producer.send(new ProducerRecord<>(trainMovement.topicName(), msg.body.train_service_code, null));
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    private Optional<byte[]> toByteArray(TrainMovement msg) {
+        return Optional.of(SerializationUtils.serialize(msg));
     }
 
     private Optional<TrainMovement> trainMovementFrom(TrustMovementMessage msg) {
