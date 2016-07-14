@@ -18,8 +18,8 @@ public class PopulateLocationsApp {
     public static void main(String[] args) throws Exception {
 
         String hazelcastServers = args[0];
-        String crsFile = args[1];
-        assertFileExists(crsFile);
+        String stationsFile = args[1];
+        assertFileExists(stationsFile);
 
         String tiplocFile = args[2];
         assertFileExists(tiplocFile);
@@ -27,7 +27,7 @@ public class PopulateLocationsApp {
         HazelcastInstance client = new HzClientBuilder().build(hazelcastServers);
         HzLocationRepo repo = new HzLocationRepo(client);
 
-        new LocationPopulator(repo).populateFromFiles(crsFile, tiplocFile).whenCompleteAsync((value, err) -> {
+        new LocationPopulator(repo).populateFromFiles(stationsFile, tiplocFile).whenCompleteAsync((value, err) -> {
             if (err == null) {
                 log.info("Done populating!");
             }

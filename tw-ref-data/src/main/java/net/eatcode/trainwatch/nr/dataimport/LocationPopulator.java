@@ -23,18 +23,18 @@ public class LocationPopulator {
         this.repo = repo;
     }
 
-    public CompletableFuture<Void> populateFromFiles(String crsFile, String tiplocFile) {
+    public CompletableFuture<Void> populateFromFiles(String stationsFile, String tiplocFile) {
         CompletableFuture<Void> result = new CompletableFuture<>();
-        populateAsync(crsFile, tiplocFile, result);
+        populateAsync(stationsFile, tiplocFile, result);
         return result;
     }
 
-    private void populateAsync(String crsFile, String tiplocFile, CompletableFuture<Void> result) {
+    private void populateAsync(String stationsFile, String tiplocFile, CompletableFuture<Void> result) {
         CompletableFuture.runAsync(() -> {
             try {
                 log.info("Starting populating repo");
                 Map<String, Crs> crsMap = new HashMap<>();
-                new CrsFileParser(crsFile).parse(crs -> crsMap.put(crs.crs, crs));
+                new CrsFileParser(stationsFile).parse(crs -> crsMap.put(crs.crs, crs));
                 log.info("Crs count: {}", crsMap.size());
                 new TiplocFileParser(tiplocFile).parse(tiploc -> locationFrom(tiploc, crsMap));
                 result.complete(null);
