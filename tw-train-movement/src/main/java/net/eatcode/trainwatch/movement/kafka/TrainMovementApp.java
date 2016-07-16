@@ -42,15 +42,14 @@ public class TrainMovementApp {
                             .produceMessages(networkRailUsername, networkRailPassword);
         };
 
-        Runnable movements = () -> {
+       /* Runnable movements = () -> {
             log.info("running movements");
-            TrainMovementProcessor processor = new TrainMovementProcessor(movementRepo,
-                    activationRepo);
+            TrainMovementProcessor processor = new TrainMovementProcessor(movementRepo, activationRepo);
             new TrainMovementStream(kafkaServers, processor).process();
         };
-
+        */
         new Thread(movementProducer).start();
-        new Thread(movements).start();
+        //new Thread(movements).start();
         new HzCleanup(movementRepo).start();
     }
 

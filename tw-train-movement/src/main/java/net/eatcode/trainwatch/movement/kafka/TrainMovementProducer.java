@@ -5,7 +5,6 @@ import static net.eatcode.trainwatch.movement.kafka.Topic.trainMovement;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Optional;
-import java.util.Properties;
 
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -51,8 +50,7 @@ public class TrainMovementProducer {
         this.scheduleRepo = scheduleRepo;
         this.locationRepo = locationRepo;
         this.departuresRepo = departuresRepo;
-        Properties props = new PropertiesBuilder().forProducer(kafkaServers).withByteArrayValueSerializer().build();
-        this.producer = new KafkaProducer<>(props);
+        this.producer = new KafkaProducer<>(new PropertiesBuilder().forProducer(kafkaServers).build());
     }
 
     public void produceMessages(String nrUsername, String nrPassword) {
@@ -72,7 +70,8 @@ public class TrainMovementProducer {
         } else {
             try {
                 trainMovementFrom(msg).map(this::toByteArray).ifPresent(data -> {
-                    producer.send(new ProducerRecord<>(trainMovement.topicName(), msg.body.train_service_code, null));
+                    producer.send(
+                            new ProducerRecord<>(trainMovement.topicName(), msg.body.train_service_code, data.get()));
                 });
             } catch (Exception e) {
                 e.printStackTrace();

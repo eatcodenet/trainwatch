@@ -29,7 +29,7 @@ public class TrainMovementProcessor implements Processor<String, TrainMovement> 
 
     @Override
     public void process(String key, TrainMovement tm) {
-        log.debug("{}", tm);
+        log.debug("Movement {}", tm);
         if (tm.hasArrivedAtDest()) {
             log.debug("Deleting arrived movement: {}, {} - {}", tm.trainId(), tm.originCrs(), tm.destCrs());
             deleteMovement(tm);
