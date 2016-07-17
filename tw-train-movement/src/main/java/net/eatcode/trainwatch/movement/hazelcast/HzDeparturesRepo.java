@@ -22,8 +22,17 @@ public class HzDeparturesRepo implements DeparturesRepo {
     @Override
     public void put(TrainDeparture td) {
         if (hasBothCrsCodes(td)) {
-            log.info("PUT: {}", td);
+            log.debug("PUT: {}", td);
             map.set(td.trainId(), td);
+        }
+    }
+
+    @Override
+    public void delete(String trainId) {
+        TrainDeparture trainDeparture = map.get(trainId);
+        if ((trainDeparture != null) && trainDeparture.hasDepartedAccordingToSchedule()) {
+            log.debug("DELETE {}", trainId);
+            map.delete(trainId);
         }
     }
 

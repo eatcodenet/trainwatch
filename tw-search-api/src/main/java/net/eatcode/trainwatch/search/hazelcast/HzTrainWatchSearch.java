@@ -77,7 +77,7 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
         LocalDateTime cutOff = LocalDateTime.now().minusMinutes(2);
         StopWatch sw = startStopWatch();
         List<TrainDeparture> result = departures.values().stream()
-                .filter(td -> td.origin().crs.equals(station.getCrs()) && td.wtt().isAfter(cutOff))
+                .filter(td -> td.origin().crs.equals(station.getCrs()) && td.scheduledDeparture().isAfter(cutOff))
                 .sorted().limit(maxResults).collect(toList());
         log.info("departures search took {}ms", sw.getTime());
         return result;

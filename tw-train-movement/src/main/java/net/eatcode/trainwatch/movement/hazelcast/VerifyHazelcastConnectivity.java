@@ -40,7 +40,7 @@ public class VerifyHazelcastConnectivity {
         log.info("Schedule count: {} ", schedules.size());
 
         IMap<String, TrainActivation> activations = client.getMap("trainActivation");
-        // activations.clear();
+        //activations.clear();
         log.info("Activations: {} ", activations.size());
 
         IMap<String, TrainDeparture> liveDepartures = client.getMap("trainDeparture");

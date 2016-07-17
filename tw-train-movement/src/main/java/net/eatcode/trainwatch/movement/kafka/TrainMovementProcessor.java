@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.eatcode.trainwatch.movement.ActivationRepo;
+import net.eatcode.trainwatch.movement.DeparturesRepo;
 import net.eatcode.trainwatch.movement.MovementRepo;
 import net.eatcode.trainwatch.movement.TrainMovement;
 
@@ -17,9 +18,13 @@ public class TrainMovementProcessor implements Processor<String, TrainMovement> 
 
     private final ActivationRepo activationRepo;
 
-    public TrainMovementProcessor(MovementRepo movementRepo, ActivationRepo activationRepo) {
+    private final DeparturesRepo departuresRepo;
+
+    public TrainMovementProcessor(MovementRepo movementRepo, ActivationRepo activationRepo,
+            DeparturesRepo departuresRepo) {
         this.movementRepo = movementRepo;
         this.activationRepo = activationRepo;
+        this.departuresRepo = departuresRepo;
     }
 
     @Override
@@ -32,19 +37,16 @@ public class TrainMovementProcessor implements Processor<String, TrainMovement> 
         log.debug("Movement {}", tm);
         if (tm.hasArrivedAtDest()) {
             log.debug("Deleting arrived movement: {}, {} - {}", tm.trainId(), tm.originCrs(), tm.destCrs());
-            deleteMovement(tm);
+            movementRepo.delete(tm);
         } else {
             if (tm.isPassenger()) {
                 movementRepo.put(tm);
+                departuresRepo.delete(tm.trainId());
+                activationRepo.delete(tm.trainId());
             } else {
                 log.debug("Skipping non passenger train - {}", tm.trainId());
             }
         }
-    }
-
-    private void deleteMovement(TrainMovement tm) {
-        activationRepo.delete(tm);
-        movementRepo.delete(tm);
     }
 
     @Override

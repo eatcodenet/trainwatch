@@ -44,7 +44,7 @@ public class TrainMovementApp {
 
         Runnable movements = () -> {
             log.info("running movement stream");
-            new TrainMovementStream(kafkaServers, new TrainMovementProcessor(movementRepo, activationRepo))
+            new TrainMovementStream(kafkaServers, new TrainMovementProcessor(movementRepo, activationRepo, departuresRepo))
                     .processMessages();
         };
 

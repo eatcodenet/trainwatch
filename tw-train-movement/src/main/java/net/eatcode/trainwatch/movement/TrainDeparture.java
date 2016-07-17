@@ -22,6 +22,8 @@ public class TrainDeparture implements Serializable, Comparable<TrainDeparture> 
 
     private final LocalDateTime wtt;
 
+    private final long cutOffInMins = 3;
+
     // TODO: check whether expected departure is needed...
     public TrainDeparture(String trainId, String expectedDeparture, Schedule schedule) {
         this.trainId = trainId;
@@ -70,10 +72,6 @@ public class TrainDeparture implements Serializable, Comparable<TrainDeparture> 
         return departure;
     }
 
-    public LocalDateTime wtt() {
-        return this.wtt;
-    }
-
     private LocalDateTime makeDateFrom(String timestamp) {
         return LocalDateTime.ofEpochSecond(Long.parseLong(timestamp) / 1000, 0, ZoneOffset.UTC);
     }
@@ -96,6 +94,11 @@ public class TrainDeparture implements Serializable, Comparable<TrainDeparture> 
     @Override
     public int compareTo(TrainDeparture o) {
         return scheduledDeparture().compareTo(o.scheduledDeparture());
+    }
+
+    public boolean hasDepartedAccordingToSchedule() {
+        LocalTime cutOff = departure.plusMinutes(cutOffInMins);
+        return LocalTime.now().isAfter(cutOff);
     }
 
     static class Formatted {

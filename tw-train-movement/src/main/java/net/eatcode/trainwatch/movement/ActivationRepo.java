@@ -8,5 +8,5 @@ public interface ActivationRepo {
 
     void put(TrainActivation activation);
 
-    void delete(TrainMovement tm);
+    void delete(String trainId);
 }

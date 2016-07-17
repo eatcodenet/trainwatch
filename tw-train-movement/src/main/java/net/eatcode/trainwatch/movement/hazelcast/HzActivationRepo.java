@@ -10,7 +10,6 @@ import com.hazelcast.core.IMap;
 
 import net.eatcode.trainwatch.movement.ActivationRepo;
 import net.eatcode.trainwatch.movement.TrainActivation;
-import net.eatcode.trainwatch.movement.TrainMovement;
 
 public class HzActivationRepo implements ActivationRepo {
 
@@ -25,15 +24,15 @@ public class HzActivationRepo implements ActivationRepo {
     @Override
     public Optional<TrainActivation> get(String trainId) {
         TrainActivation value = map.get(trainId);
-        if (value == null ) {
+        if (value == null) {
             return Optional.empty();
         }
         return Optional.of(value);
     }
 
     @Override
-    public void delete(TrainMovement tm) {
-        map.delete(tm.trainId());
+    public void delete(String trainId) {
+        map.delete(trainId);
     }
 
     @Override

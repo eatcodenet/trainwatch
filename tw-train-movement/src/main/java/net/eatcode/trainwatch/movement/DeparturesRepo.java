@@ -4,4 +4,7 @@ public interface DeparturesRepo {
 
     void put(TrainDeparture td);
 
+    void delete(String trainId);
+
+
 }
