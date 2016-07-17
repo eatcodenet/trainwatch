@@ -22,17 +22,17 @@ public class Topics {
         this.zkServers = zkServers;
     }
 
-    public void createTopic(Topic topic) {
+    public void createTopic(String topic) {
         ZkUtils zkUtils = zkUtils();
         Properties topicConfig = new Properties();
         topicConfig.put("retention.ms", "86400000");
-        AdminUtils.createTopic(zkUtils, topic.topicName(), partitions, replication, topicConfig, null);
+        AdminUtils.createTopic(zkUtils, topic, partitions, replication, topicConfig, null);
         zkUtils.close();
     }
 
-    public boolean topicExists(Topic topic) {
+    public boolean topicExists(String topic) {
         ZkUtils zkUtils = zkUtils();
-        return AdminUtils.topicExists(zkUtils, topic.topicName());
+        return AdminUtils.topicExists(zkUtils, topic);
     }
 
     private ZkUtils zkUtils() {

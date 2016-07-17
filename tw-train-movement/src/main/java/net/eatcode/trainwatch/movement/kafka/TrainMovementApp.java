@@ -36,20 +36,20 @@ public class TrainMovementApp {
         MovementRepo movementRepo = new HzMovementRepo(hzClient);
 
         Runnable movementProducer = () -> {
-            log.info("running producer");
+            log.info("running train movement producer");
             new TrainMovementProducer(kafkaServers, activationRepo,
                     new HzScheduleRepo(hzClient), new HzLocationRepo(hzClient), departuresRepo)
                             .produceMessages(networkRailUsername, networkRailPassword);
         };
 
-       /* Runnable movements = () -> {
-            log.info("running movements");
-            TrainMovementProcessor processor = new TrainMovementProcessor(movementRepo, activationRepo);
-            new TrainMovementStream(kafkaServers, processor).process();
+        Runnable movements = () -> {
+            log.info("running movement stream");
+            new TrainMovementStream(kafkaServers, new TrainMovementProcessor(movementRepo, activationRepo))
+                    .processMessages();
         };
-        */
+
         new Thread(movementProducer).start();
-        //new Thread(movements).start();
+        new Thread(movements).start();
         new HzCleanup(movementRepo).start();
     }
 

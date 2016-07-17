@@ -27,12 +27,12 @@ public class TrainMovementSpikeApp {
         properties.put("group.id", "net.eatcode3");
         properties.put("auto.offset.reset", "earliest");
         KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<>(properties);
-        consumer.subscribe(Arrays.asList(Topic.trainMovement.topicName()));
+        consumer.subscribe(Arrays.asList(Topic.trainMovement));
 
         log.info("Starting train movement consumer...");
         for (int i = 0; i < 10; i++) {
             ConsumerRecords<String, byte[]> poll = consumer.poll(1000);
-            for (ConsumerRecord<String, byte[]> rec : poll.records(Topic.trainMovement.topicName())) {
+            for (ConsumerRecord<String, byte[]> rec : poll.records(Topic.trainMovement)) {
                 TrainMovement tm = SerializationUtils.deserialize(rec.value());
                 log.info("{}", tm);
             }

@@ -1,7 +1,5 @@
 package net.eatcode.trainwatch.movement.kafka;
 
-import static net.eatcode.trainwatch.movement.kafka.Topic.trainMovement;
-
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Optional;
@@ -71,7 +69,7 @@ public class TrainMovementProducer {
             try {
                 trainMovementFrom(msg).map(this::toByteArray).ifPresent(data -> {
                     producer.send(
-                            new ProducerRecord<>(trainMovement.topicName(), msg.body.train_service_code, data.get()));
+                            new ProducerRecord<>(Topic.trainMovement, msg.body.train_service_code, data.get()));
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -123,8 +121,8 @@ public class TrainMovementProducer {
 
     private static void checkTopicExists(String zookeeperServers) {
         Topics topics = new Topics(zookeeperServers);
-        if (!topics.topicExists(trainMovement)) {
-            throw new RuntimeException("Topic does not exist: " + trainMovement);
+        if (!topics.topicExists(Topic.trainMovement)) {
+            throw new RuntimeException("Topic does not exist: " + Topic.trainMovement);
         }
 
     }

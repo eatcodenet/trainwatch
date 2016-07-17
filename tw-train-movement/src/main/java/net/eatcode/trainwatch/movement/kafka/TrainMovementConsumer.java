@@ -22,7 +22,7 @@ public class TrainMovementConsumer {
     }
 
     public void subscribeToTrainMovementTopic() {
-        consumer.subscribe(Arrays.asList(Topic.trainMovement.topicName()));
+        consumer.subscribe(Arrays.asList(Topic.trainMovement));
         log.debug("Waiting...");
         while (true) {
             consumer.poll(200).forEach(record -> consume(record));
