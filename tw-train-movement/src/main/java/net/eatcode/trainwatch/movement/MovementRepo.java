@@ -6,5 +6,5 @@ public interface MovementRepo {
 
     void delete(TrainMovement tm);
 
-    void evictOlderThan(int ttlHours);
+    void evictOlderThan(int ageInHours);
 }

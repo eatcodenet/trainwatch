@@ -44,13 +44,14 @@ public class TrainMovementApp {
 
         Runnable movements = () -> {
             log.info("running movement stream");
-            new TrainMovementStream(kafkaServers, new TrainMovementProcessor(movementRepo, activationRepo, departuresRepo))
-                    .processMessages();
+            new TrainMovementStream(kafkaServers,
+                    new TrainMovementProcessor(movementRepo, activationRepo, departuresRepo))
+                            .processMessages();
         };
 
         new Thread(movementProducer).start();
         new Thread(movements).start();
-        new HzCleanup(movementRepo).start();
+        new HzCleanup(movementRepo, activationRepo).start();
     }
 
     private static void checkTopicExists(String zookeeperServers) {

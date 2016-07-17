@@ -34,9 +34,9 @@ public class HzMovementRepo implements MovementRepo {
     }
 
     @Override
-    public void evictOlderThan(int ttlHours) {
-        log.info("evicting with timestamp older than {} hours", ttlHours);
-        LocalDateTime cutoff = LocalDateTime.now().minusHours(ttlHours);
+    public void evictOlderThan(int ageInHours) {
+        log.info("evicting with timestamp older than {} hours", ageInHours);
+        LocalDateTime cutoff = LocalDateTime.now().minusHours(ageInHours);
         List<TrainMovement> stale = map.values().stream()
                 .filter(tm -> tm.timestamp().isBefore(cutoff))
                 .collect(Collectors.toList());

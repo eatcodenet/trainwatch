@@ -36,17 +36,21 @@ public class TrainMovementProcessor implements Processor<String, TrainMovement> 
     public void process(String key, TrainMovement tm) {
         log.debug("Movement {}", tm);
         if (tm.hasArrivedAtDest()) {
-            log.debug("Deleting arrived movement: {}, {} - {}", tm.trainId(), tm.originCrs(), tm.destCrs());
-            movementRepo.delete(tm);
+            deleteArriveTrain(tm);
         } else {
             if (tm.isPassenger()) {
                 movementRepo.put(tm);
                 departuresRepo.delete(tm.trainId());
-                activationRepo.delete(tm.trainId());
             } else {
                 log.debug("Skipping non passenger train - {}", tm.trainId());
             }
         }
+    }
+
+    private void deleteArriveTrain(TrainMovement tm) {
+        log.debug("Deleting arrived train: {}, {} - {}", tm.trainId(), tm.originCrs(), tm.destCrs());
+        movementRepo.delete(tm);
+        activationRepo.delete(tm.trainId());
     }
 
     @Override

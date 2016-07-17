@@ -1,6 +1,7 @@
 package net.eatcode.trainwatch.movement;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class TrainActivation implements Serializable {
@@ -10,6 +11,7 @@ public class TrainActivation implements Serializable {
     private final String trainId;
     private final String scheduleId;
     private final String serviceCode;
+    private final LocalDateTime timestamp = LocalDateTime.now();
 
     public TrainActivation(String trainId, String serviceCode, String scheduleId) {
         this.trainId = trainId;
@@ -42,10 +44,16 @@ public class TrainActivation implements Serializable {
                 && Objects.equals(scheduleId, other.scheduleId);
     }
 
+    public LocalDateTime timestamp() {
+        return this.timestamp;
+    }
+
     @Override
     public String toString() {
         return "TrainActivation [trainId=" + trainId + ", scheduleId=" + scheduleId + ", serviceCode=" + serviceCode
                 + "]";
     }
+
+
 
 }

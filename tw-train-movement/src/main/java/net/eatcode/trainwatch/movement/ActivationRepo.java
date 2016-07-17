@@ -9,4 +9,6 @@ public interface ActivationRepo {
     void put(TrainActivation activation);
 
     void delete(String trainId);
+
+    void evictOlderThan(int ageInHours);
 }
