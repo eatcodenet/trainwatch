@@ -5,12 +5,8 @@ import static net.eatcode.trainwatch.movement.kafka.Topic.trainMovement;
 import java.util.Properties;
 
 import org.apache.commons.lang3.SerializationUtils;
-import org.apache.kafka.common.serialization.ByteArrayDeserializer;
-import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KStreamBuilder;
@@ -42,11 +38,8 @@ public class TrainMovementStream {
             log.info("Kafka servers: {}", kafkaServers);
             Properties props = new PropertiesBuilder().forStream(kafkaServers, "trainMovements").build();
 
-            Serde<String> kSerde = Serdes.serdeFrom(new StringSerializer(), new StringDeserializer());
-            Serde<byte[]> vSerde = Serdes.serdeFrom(new ByteArraySerializer(), new ByteArrayDeserializer());
-
             KStreamBuilder builder = new KStreamBuilder();
-            KStream<String, byte[]> movements = builder.stream(kSerde, vSerde, trainMovement.topicName());
+            KStream<String, byte[]> movements = builder.stream(Serdes.String(), Serdes.ByteArray(), trainMovement.topicName());
             movements
                     .mapValues(value -> (TrainMovement) SerializationUtils.deserialize(value))
                     .process(() -> movementProcessor);
@@ -54,8 +47,7 @@ public class TrainMovementStream {
             log.info("Starting train movement stream...");
             new KafkaStreams(builder, props).start();
         } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
+            log.error("{}", e);
         }
     }
 
