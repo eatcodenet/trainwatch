@@ -16,3 +16,9 @@ This project uses the source code for the [Stomp](https://stomp.github.io/) clie
 
 The source code is included as Java code as there is no maven/gradle repository for it :(
 
+
+##TODO
+Add crontab to pull files regularly
+
+''(crontab -u ayub -l; echo '*/1 * * * * /tmp/hello.sh') | crontab -u ayub -
+
