@@ -1,4 +1,8 @@
 #!/bin/bash
+#!/bin/bash
+
+# ensure the gradle artifacts below have been built, i.e ./gradlew build
+
 base_dir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 src_dir=$(cd ${base_dir}/.. && pwd )
 build_dir=${src_dir}/build/awscodedeploy
@@ -17,7 +21,7 @@ echo "Source dir: ${src_dir}"
 username=${nr_username}
 password=${nr_password}
 if [[ -z "${username}" || -z "${password}" ]];then
-  echo "ERROR: Credentials not fully set. Set nr_username/nr_password to create creds.txt"
+  echo "ERROR: Credentials not fully set. Export nr_username/nr_password to create creds.txt"
   exit 0
 else 
   echo "Creating creds.txt"
