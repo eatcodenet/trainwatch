@@ -20,5 +20,5 @@ The source code is included as Java code as there is no maven/gradle repository 
 ##TODO
 Add crontab to pull files regularly
 
-''(crontab -u ayub -l; echo '*/1 * * * * /tmp/hello.sh') | crontab -u ayub -
+'''(crontab -u ayub -l; echo '*/1 * * * * /tmp/hello.sh') | crontab -u ayub -
 

@@ -19,6 +19,8 @@ case "${command}" in
 	rm -rf ${kafka_home}/config/server.properties
 	rm -rf ${kafka_home}/bin/kafka-server-stop.sh
 	rm -rf ${kafka_home}/bin/zookeeper-server-stop.sh
+	(echo '0 4 * * * /var/trainwatch/download_all_ref_data.sh') | crontab -u ec2-user -
+	(crontab -u ec2-user -l; echo '15 4 * * * /var/trainwatch/populate_ref_data.sh') | crontab -u ec2-user -
     ;;
 
   after-install)
