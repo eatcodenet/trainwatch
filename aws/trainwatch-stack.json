@@ -297,6 +297,46 @@
     "EC2Host":{
       "Type":"AWS::EC2::Instance",
       "DependsOn":"GatewayToInternetAttachment",
+      "Metadata":{
+        "Comment":"Install a simple application",
+        "AWS::CloudFormation::Init":{
+          "config":{
+            "packages":{
+              "yum":{
+                "httpd":[
+
+                ],
+                "curl":[
+
+                ]
+              }
+            },
+            "files":{
+              "/var/www/html/index.html":{
+                "content":{
+                  "Fn::Join":[
+                    "\n",
+                    [
+                      "<h1>Congratulations, you have successfully launched the AWS Eatcode CloudFormation sample.</h1>"
+                    ]
+                  ]
+                },
+                "mode":"000644",
+                "owner":"root",
+                "group":"root"
+              }
+            },
+            "services":{
+              "sysvinit":{
+                "httpd":{
+                  "enabled":"true",
+                  "ensureRunning":"true"
+                }
+              }
+            }
+          }
+        }
+      },
       "Properties":{
         "InstanceType":{
           "Ref":"EC2InstanceType"
@@ -327,7 +367,18 @@
               "Ref":"PublicSubnet"
             }
           }
-        ]
+        ],
+        "UserData":{
+          "Fn::Base64":{
+            "Fn::Join":[
+              "",
+              [
+                "#!/bin/bash -xe\n",
+                "touch /tmp/eatcode.txt"
+              ]
+            ]
+          }
+        }
       }
     },
     "EC2SecurityGroup":{
@@ -345,6 +396,12 @@
             "CidrIp":{
               "Ref":"SSHLocation"
             }
+          },
+          {
+            "IpProtocol":"tcp",
+            "FromPort":"80",
+            "ToPort":"80",
+            "CidrIp":"0.0.0.0/0"
           }
         ]
       }
