@@ -5,7 +5,8 @@
     "KeyName":{
       "Description":"Name of an existing EC2 KeyPair to enable SSH access to the bastion host",
       "Type":"AWS::EC2::KeyPair::KeyName",
-      "ConstraintDescription":"must be the name of an existing EC2 KeyPair."
+      "ConstraintDescription":"must be the name of an existing EC2 KeyPair.",
+      "Default":"aws-temp-scg"
     },
     "SSHLocation":{
       "Description":"Lockdown SSH access to the bastion host (default can be accessed from anywhere)",
@@ -19,7 +20,7 @@
     "EC2InstanceType":{
       "Description":"EC2 instance type",
       "Type":"String",
-      "Default":"t2.small",
+      "Default":"t2.micro",
       "AllowedValues":[
         "t2.micro",
         "t2.small",
@@ -297,46 +298,6 @@
     "EC2Host":{
       "Type":"AWS::EC2::Instance",
       "DependsOn":"GatewayToInternetAttachment",
-      "Metadata":{
-        "Comment":"Install a simple application",
-        "AWS::CloudFormation::Init":{
-          "config":{
-            "packages":{
-              "yum":{
-                "httpd":[
-
-                ],
-                "curl":[
-
-                ]
-              }
-            },
-            "files":{
-              "/var/www/html/index.html":{
-                "content":{
-                  "Fn::Join":[
-                    "\n",
-                    [
-                      "<h1>Congratulations, you have successfully launched the AWS Eatcode CloudFormation sample.</h1>"
-                    ]
-                  ]
-                },
-                "mode":"000644",
-                "owner":"root",
-                "group":"root"
-              }
-            },
-            "services":{
-              "sysvinit":{
-                "httpd":{
-                  "enabled":"true",
-                  "ensureRunning":"true"
-                }
-              }
-            }
-          }
-        }
-      },
       "Properties":{
         "InstanceType":{
           "Ref":"EC2InstanceType"
@@ -371,10 +332,11 @@
         "UserData":{
           "Fn::Base64":{
             "Fn::Join":[
-              "",
+              "\n",
               [
-                "#!/bin/bash -xe\n",
-                "touch /tmp/eatcode.txt"
+                "#!/bin/bash -xe",
+                "touch /tmp/eatcode.txt",
+                "yum -y install vim curl wget java-1.8.0-openjdk-headless"
               ]
             ]
           }
