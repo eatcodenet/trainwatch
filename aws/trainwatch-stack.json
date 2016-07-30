@@ -380,7 +380,7 @@
                 "Ref":"EC2SecurityGroupWeb"
               }
             ],
-            "AssociatePublicIpAddress":"false",
+            "AssociatePublicIpAddress":"true",
             "DeviceIndex":"0",
             "DeleteOnTermination":"true",
             "SubnetId":{
@@ -460,7 +460,7 @@
       }
     },
     "DNSNameWeb":{
-      "Description":"DNS Name of the EC2 host",
+      "Description":"DNS name",
       "Value":{
         "Fn::GetAtt":[
           "EC2HostWeb",
@@ -468,12 +468,12 @@
         ]
       }
     },
-    "IPBackend":{
-      "Description":"Private IP of the EC2 host",
+    "DNSNameBackend":{
+      "Description":"DNS name",
       "Value":{
         "Fn::GetAtt":[
           "EC2HostBackend",
-          "PrivateIp"
+          "PublicDnsName"
         ]
       }
     }
