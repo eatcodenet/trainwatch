@@ -6,7 +6,7 @@
       "Description":"Name of an existing EC2 KeyPair to enable SSH access to the bastion host",
       "Type":"AWS::EC2::KeyPair::KeyName",
       "ConstraintDescription":"must be the name of an existing EC2 KeyPair.",
-      "Default":"aws-temp-scg"
+      "Default":"aws-eatcode"
     },
     "SSHLocation":{
       "Description":"Lockdown SSH access to the bastion host (default can be accessed from anywhere)",
@@ -295,7 +295,7 @@
         }
       }
     },
-    "EC2Host":{
+    "EC2HostWeb":{
       "Type":"AWS::EC2::Instance",
       "DependsOn":"GatewayToInternetAttachment",
       "Properties":{
@@ -318,7 +318,7 @@
           {
             "GroupSet":[
               {
-                "Ref":"EC2SecurityGroup"
+                "Ref":"EC2SecurityGroupWeb"
               }
             ],
             "AssociatePublicIpAddress":"true",
@@ -329,13 +329,78 @@
             }
           }
         ],
+        "Tags":[
+          {
+            "Key":"Name",
+            "Value":"trainwatch"
+          }
+        ],
         "UserData":{
           "Fn::Base64":{
             "Fn::Join":[
               "\n",
               [
                 "#!/bin/bash -xe",
-                "touch /tmp/eatcode.txt",
+                "yum -y remove java-1.7.0-openjdk",
+                "yum -y install vim curl wget ruby java-1.8.0-openjdk-headless",
+                "curl -L -k https://aws-codedeploy-eu-west-1.s3.amazonaws.com/latest/install > /tmp/codedeploy-install",
+                "chmod +x /tmp/codedeploy-install",
+                "/tmp/codedeploy-install auto",
+                "export default_user=ec2_user",
+                "echo $default_user > /tmp/eatcode.txt"
+              ]
+            ]
+          }
+        }
+      }
+    },
+    "EC2HostBackend":{
+      "Type":"AWS::EC2::Instance",
+      "DependsOn":"GatewayToInternetAttachment",
+      "Properties":{
+        "InstanceType":{
+          "Ref":"EC2InstanceType"
+        },
+        "KeyName":{
+          "Ref":"KeyName"
+        },
+        "ImageId":{
+          "Fn::FindInMap":[
+            "AWSRegion2AMI",
+            {
+              "Ref":"AWS::Region"
+            },
+            "AMI"
+          ]
+        },
+        "NetworkInterfaces":[
+          {
+            "GroupSet":[
+              {
+                "Ref":"EC2SecurityGroupWeb"
+              }
+            ],
+            "AssociatePublicIpAddress":"false",
+            "DeviceIndex":"0",
+            "DeleteOnTermination":"true",
+            "SubnetId":{
+              "Ref":"PublicSubnet"
+            }
+          }
+        ],
+        "Tags":[
+          {
+            "Key":"Name",
+            "Value":"trainwatch"
+          }
+        ],
+        "UserData":{
+          "Fn::Base64":{
+            "Fn::Join":[
+              "\n",
+              [
+                "#!/bin/bash -xe",
+                "yum -y remove java-1.7.0-openjdk",
                 "yum -y install vim curl wget ruby java-1.8.0-openjdk-headless",
                 "curl -L -k https://aws-codedeploy-eu-west-1.s3.amazonaws.com/latest/install > /tmp/codedeploy-install",
                 "chmod +x /tmp/codedeploy-install",
@@ -347,7 +412,7 @@
                 "tar -xz -C /opt -f /tmp/kafka.tgz",
                 "chown -R ec2-user:ec2-user /opt/kafka_2.11-0.10.0.0",
                 "ln -s /opt/kafka_2.11-0.10.0.0 /opt/kafka",
-                "export default_user=ec2_user"
+                "export default_user=ec2_user",
                 "echo $default_user > /tmp/eatcode.txt"
               ]
             ]
@@ -355,7 +420,7 @@
         }
       }
     },
-    "EC2SecurityGroup":{
+    "EC2SecurityGroupWeb":{
       "Type":"AWS::EC2::SecurityGroup",
       "Properties":{
         "GroupDescription":"Enable access to the EC2 host",
@@ -394,12 +459,21 @@
         "Ref":"PublicSubnet"
       }
     },
-    "DNSName":{
+    "DNSNameWeb":{
       "Description":"DNS Name of the EC2 host",
       "Value":{
         "Fn::GetAtt":[
-          "EC2Host",
+          "EC2HostWeb",
           "PublicDnsName"
+        ]
+      }
+    },
+    "IPBackend":{
+      "Description":"Private IP of the EC2 host",
+      "Value":{
+        "Fn::GetAtt":[
+          "EC2HostBackend",
+          "PrivateIp"
         ]
       }
     }

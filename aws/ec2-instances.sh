@@ -2,7 +2,7 @@
 base_dir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 command=${1}
-if [[ -z "${command}" ]];then
+if [[ -z "${command}" ]]; then
   echo "usage: ${0} <start | stop | run>"
   exit 1
 fi
@@ -10,7 +10,7 @@ fi
 shopt -s expand_aliases
 alias ec2='aws --profile eatcode ec2 --output text'
 
-if [ "${command}" == "run" ];then
+if [ "${command}" == "run" ]; then
   echo "${command} instances..."
   user_data_file="${base_dir}/user-data.yml"
   aws_result=$(ec2 run-instances \
