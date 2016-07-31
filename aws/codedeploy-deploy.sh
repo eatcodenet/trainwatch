@@ -1,20 +1,19 @@
 #!/bin/bash
-#!/bin/bash
 
 # ensure the gradle artifacts below have been built, i.e ./gradlew build
 
 base_dir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 src_dir=$(cd ${base_dir}/.. && pwd )
-build_dir=${src_dir}/build/awscodedeploy
+aws_build_dir=${src_dir}/build/awscodedeploy
 
-rm -rf ${build_dir}
-mkdir -p ${build_dir}/libs
-cp ${src_dir}/tw-train-movement/build/libs/tw-train-movement-1.0-SNAPSHOT.jar ${build_dir}/libs
-cp ${src_dir}/tw-search-api/build/libs/tw-search-api-1.0-SNAPSHOT.jar ${build_dir}/libs
-cp -R ${src_dir}/tw-train-movement/tools ${build_dir}
-cp -R ${src_dir}/tw-ref-data/tools ${build_dir}
-cp -R ${src_dir}/aws ${build_dir}
-cp ${src_dir}/appspec.yml ${build_dir}
+rm -rf ${aws_build_dir}
+mkdir -p ${aws_build_dir}/libs
+cp ${src_dir}/tw-train-movement/build/libs/tw-train-movement-1.0-SNAPSHOT.jar ${aws_build_dir}/libs
+cp ${src_dir}/tw-search-api/build/libs/tw-search-api-1.0-SNAPSHOT.jar ${aws_build_dir}/libs
+cp -R ${src_dir}/tw-train-movement/tools ${aws_build_dir}
+cp -R ${src_dir}/tw-ref-data/tools ${aws_build_dir}
+cp -R ${src_dir}/aws ${aws_build_dir}
+cp ${src_dir}/appspec.yml ${aws_build_dir}
 
 echo "Source dir: ${src_dir}"
 
@@ -25,13 +24,13 @@ if [[ -z "${username}" || -z "${password}" ]];then
   exit 0
 else 
   echo "Creating creds.txt"
-  echo "username=${username}" >  ${build_dir}/creds.txt
-  echo "password=${password}" >> ${build_dir}/creds.txt
+  echo "username=${username}" >  ${aws_build_dir}/creds.txt
+  echo "password=${password}" >> ${aws_build_dir}/creds.txt
 fi
 
 echo "Pushing to S3"
 bundle_name=${1:-"LatestBundle.zip"}
-aws_result=$(aws --profile eatcode deploy push --source ${build_dir} --application-name TrainWatch --ignore-hidden-files --s3-location s3://eatcode-trainwatch-deploy/${bundle_name})
+aws_result=$(aws --profile eatcode deploy push --source ${aws_build_dir} --application-name TrainWatch --ignore-hidden-files --s3-location s3://eatcode-trainwatch-deploy/${bundle_name})
 etag=$(sed 's/.*eTag="\(.*\)".*/\1/g' <<< ${aws_result})
 
 echo "Deploying revision..."
