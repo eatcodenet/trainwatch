@@ -347,6 +347,7 @@
                 "chmod +x /tmp/codedeploy-install",
                 "/tmp/codedeploy-install auto",
                 "curl -L -o /tmp/hazelcast.tgz \"http://download.hazelcast.com/download.jsp?version=hazelcast-3.6.4&type=tar&p=177120386177120386\"",
+                "tar -xz -C /opt -f /tmp/hazelcast.tgz",
                 "chown -R ec2-user:ec2-user /opt/hazelcast-3.6.4",
                 "ln -s /opt/hazelcast-3.6.4 /opt/hazelcast"
                ]
