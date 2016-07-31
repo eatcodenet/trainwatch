@@ -346,9 +346,10 @@
                 "curl -L -k https://aws-codedeploy-eu-west-1.s3.amazonaws.com/latest/install > /tmp/codedeploy-install",
                 "chmod +x /tmp/codedeploy-install",
                 "/tmp/codedeploy-install auto",
-                "export default_user=ec2_user",
-                "echo $default_user > /tmp/eatcode.txt"
-              ]
+                "curl -L -o /tmp/hazelcast.tgz \"http://download.hazelcast.com/download.jsp?version=hazelcast-3.6.4&type=tar&p=177120386177120386\"",
+                "chown -R ec2-user:ec2-user /opt/hazelcast-3.6.4",
+                "ln -s /opt/hazelcast-3.6.4 /opt/hazelcast"
+               ]
             ]
           }
         }
@@ -405,15 +406,10 @@
                 "curl -L -k https://aws-codedeploy-eu-west-1.s3.amazonaws.com/latest/install > /tmp/codedeploy-install",
                 "chmod +x /tmp/codedeploy-install",
                 "/tmp/codedeploy-install auto",
-                "curl -L -o /tmp/hazelcast.tgz \"http://download.hazelcast.com/download.jsp?version=hazelcast-3.6.4&type=tar&p=177120386177120386\"",
-                "chown -R ec2-user:ec2-user /opt/hazelcast-3.6.4",
-                "ln -s /opt/hazelcast-3.6.4 /opt/hazelcast",
                 "curl -L -o /tmp/kafka.tgz http://mirrors.ukfast.co.uk/sites/ftp.apache.org/kafka/0.10.0.0/kafka_2.11-0.10.0.0.tgz",
                 "tar -xz -C /opt -f /tmp/kafka.tgz",
                 "chown -R ec2-user:ec2-user /opt/kafka_2.11-0.10.0.0",
-                "ln -s /opt/kafka_2.11-0.10.0.0 /opt/kafka",
-                "export default_user=ec2_user",
-                "echo $default_user > /tmp/eatcode.txt"
+                "ln -s /opt/kafka_2.11-0.10.0.0 /opt/kafka"
               ]
             ]
           }
