@@ -295,6 +295,15 @@
         }
       }
     },
+    "InstanceRoleInstanceProfile":{
+      "Type":"AWS::IAM::InstanceProfile",
+      "Properties":{
+        "Path":"/",
+        "Roles":[
+          ""
+        ]
+      }
+    },
     "EC2Webapp":{
       "Type":"AWS::EC2::Instance",
       "DependsOn":"GatewayToInternetAttachment",
@@ -350,7 +359,7 @@
                 "tar -xz -C /opt -f /tmp/hazelcast.tgz",
                 "chown -R ec2-user:ec2-user /opt/hazelcast-3.6.4",
                 "ln -s /opt/hazelcast-3.6.4 /opt/hazelcast"
-               ]
+              ]
             ]
           }
         }
@@ -396,6 +405,9 @@
             "Value":"trainwatch-backend"
           }
         ],
+        "IamInstanceProfile": {
+          "Ref": "InstanceRoleInstanceProfile"
+        },
         "UserData":{
           "Fn::Base64":{
             "Fn::Join":[

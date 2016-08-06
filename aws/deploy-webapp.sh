@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 # ensure the gradle artifacts below have been built, i.e ./gradlew build
 
 base_dir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -10,7 +10,7 @@ rm -rf ${aws_build_dir}
 mkdir -p ${aws_build_dir}/libs
 cp ${src_dir}/tw-search-api/build/libs/tw-search-api*.jar ${aws_build_dir}/libs
 cp ${src_dir}/tw-webapp/target/scala-2.11/tw-webapp*.jar ${aws_build_dir}/libs
-cp -R ${src_dir}/aws/codeploy ${aws_build_dir}
+cp -R ${src_dir}/aws/codedeploy ${aws_build_dir}
 
 echo "Source dir: ${src_dir}"
 

@@ -13,7 +13,8 @@ cp ${src_dir}/tw-train-movement/build/libs/tw-train-movement*.jar ${aws_build_di
 cp -R ${src_dir}/tw-train-movement/tools ${aws_build_dir}
 cp ${src_dir}/tw-ref-data/build/libs/tw-ref-data*.jar ${aws_build_dir}/libs
 cp -R ${src_dir}/tw-ref-data/tools ${aws_build_dir}
-cp -R ${src_dir}/aws/codeploy ${aws_build_dir}
+cp -R ${src_dir}/aws/codedeploy/*.sh ${aws_build_dir}
+cp -R ${src_dir}/aws/codedeploy/appspec-backend.yml ${aws_build_dir}/appspec.yml
 
 echo "Source dir: ${src_dir}"
 
