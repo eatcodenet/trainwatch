@@ -295,46 +295,12 @@
         }
       }
     },
-    "InstanceRole":{
-      "Type":"AWS::IAM::Role",
-      "Properties":{
-        "AssumeRolePolicyDocument":{
-          "Statement":[
-            {
-              "Effect":"Allow",
-              "Action":[
-                "s3:Get*",
-                "s3:List*"
-              ],
-              "Resource":"*"
-            },
-            {
-              "Action":[
-                "autoscaling:PutLifecycleHook",
-                "autoscaling:DeleteLifecycleHook",
-                "autoscaling:RecordLifecycleActionHeartbeat",
-                "autoscaling:CompleteLifecycleAction",
-                "autoscaling:DescribeAutoscalingGroups",
-                "autoscaling:PutInstanceInStandby",
-                "autoscaling:PutInstanceInService",
-                "ec2:*"
-              ],
-              "Effect":"Allow",
-              "Resource":"*"
-            }
-          ]
-        },
-        "Path":"/"
-      }
-    },
-    "InstanceRoleInstanceProfile":{
+    "InstanceProfile":{
       "Type":"AWS::IAM::InstanceProfile",
       "Properties":{
         "Path":"/",
         "Roles":[
-          {
-            "Ref":"InstanceRole"
-          }
+          "Eatcode-EC2-deploy"
         ]
       }
     },
@@ -378,6 +344,9 @@
             "Value":"trainwatch-webapp"
           }
         ],
+        "IamInstanceProfile":{
+          "Ref":"InstanceProfile"
+        },        
         "UserData":{
           "Fn::Base64":{
             "Fn::Join":[
@@ -440,7 +409,7 @@
           }
         ],
         "IamInstanceProfile":{
-          "Ref":"InstanceRoleInstanceProfile"
+          "Ref":"InstanceProfile"
         },
         "UserData":{
           "Fn::Base64":{
