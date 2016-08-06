@@ -7,4 +7,4 @@ alias cfn='aws --profile eatcode cloudformation --output text'
 template_file="${base_dir}/trainwatch-stack.json"
 
 aws_result=$(cfn create-stack --stack-name 'TrainwatchStack' --capabilities CAPABILITY_IAM --template-body file://${template_file})
-echo "${aws_result} instances: ${instance_ids}"
+echo "${aws_result}"
