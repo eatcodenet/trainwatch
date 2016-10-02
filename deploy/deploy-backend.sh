@@ -3,14 +3,12 @@ set -e
 # ensure the gradle artifacts below have been built, i.e ./gradlew build
 
 base_dir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-src_dir=$(cd ${base_dir}/.. && pwd )
-aws_build_dir=${src_dir}/build/awscodedeploy
-
 
 host=${1:-""}
-if [[ -z "" ]]; then
+if [[ -z "${host}" ]]; then
   echo "Host needs to be first parameter. Bye!"
-]]
+  exit 1
+fi
 
 rm -rf ${aws_build_dir}
 mkdir -p ${aws_build_dir}/libs
