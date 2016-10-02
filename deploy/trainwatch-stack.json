@@ -354,14 +354,17 @@
               [
                 "#!/bin/bash -xe",
                 "yum -y remove java-1.7.0-openjdk",
-                "yum -y install vim curl wget ruby java-1.8.0-openjdk-headless",
-                "curl -L -k https://aws-codedeploy-eu-west-1.s3.amazonaws.com/latest/install > /tmp/codedeploy-install",
-                "chmod +x /tmp/codedeploy-install",
-                "/tmp/codedeploy-install auto",
+                "yum -y install vim curl wget java-1.8.0-openjdk-headless",
+                "mkdir /var/trainwatch",
+                "chown ec2-user /var/trainwatch",
                 "curl -L -o /tmp/hazelcast.tgz \"http://download.hazelcast.com/download.jsp?version=hazelcast-3.6.4&type=tar&p=177120386177120386\"",
                 "tar -xz -C /opt -f /tmp/hazelcast.tgz",
                 "chown -R ec2-user:ec2-user /opt/hazelcast-3.6.4",
-                "ln -s /opt/hazelcast-3.6.4 /opt/hazelcast"
+                "ln -s /opt/hazelcast-3.6.4 /opt/hazelcast",
+                "curl -L -o /tmp/kafka.tgz http://mirrors.ukfast.co.uk/sites/ftp.apache.org/kafka/0.10.0.0/kafka_2.11-0.10.0.0.tgz",
+                "tar -xz -C /opt -f /tmp/kafka.tgz",
+                "chown -R ec2-user:ec2-user /opt/kafka_2.11-0.10.0.0",
+                "ln -s /opt/kafka_2.11-0.10.0.0 /opt/kafka"
               ]
             ]
           }
@@ -418,13 +421,17 @@
               [
                 "#!/bin/bash -xe",
                 "yum -y remove java-1.7.0-openjdk",
-                "yum -y install vim curl wget ruby java-1.8.0-openjdk-headless",
+                "yum -y install vim curl wget java-1.8.0-openjdk-headless",
+                "mkdir /var/trainwatch",
+                "chown ec2-user /var/trainwatch",
+                "curl -L -o /tmp/hazelcast.tgz \"http://download.hazelcast.com/download.jsp?version=hazelcast-3.6.4&type=tar&p=177120386177120386\"",
+                "tar -xz -C /opt -f /tmp/hazelcast.tgz",
+                "chown -R ec2-user:ec2-user /opt/hazelcast-3.6.4",
+                "ln -s /opt/hazelcast-3.6.4 /opt/hazelcast",
                 "curl -L -o /tmp/kafka.tgz http://mirrors.ukfast.co.uk/sites/ftp.apache.org/kafka/0.10.0.0/kafka_2.11-0.10.0.0.tgz",
                 "tar -xz -C /opt -f /tmp/kafka.tgz",
                 "chown -R ec2-user:ec2-user /opt/kafka_2.11-0.10.0.0",
-                "ln -s /opt/kafka_2.11-0.10.0.0 /opt/kafka",
-                "mkdir /var/trainwatch",
-                "chown ec2-user /var/trainwatch"
+                "ln -s /opt/kafka_2.11-0.10.0.0 /opt/kafka"
               ]
             ]
           }
