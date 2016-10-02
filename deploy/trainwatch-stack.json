@@ -304,73 +304,6 @@
         ]
       }
     },
-    "EC2Webapp":{
-      "Type":"AWS::EC2::Instance",
-      "DependsOn":"GatewayToInternetAttachment",
-      "Properties":{
-        "InstanceType":{
-          "Ref":"EC2InstanceType"
-        },
-        "KeyName":{
-          "Ref":"KeyName"
-        },
-        "ImageId":{
-          "Fn::FindInMap":[
-            "AWSRegion2AMI",
-            {
-              "Ref":"AWS::Region"
-            },
-            "AMI"
-          ]
-        },
-        "NetworkInterfaces":[
-          {
-            "GroupSet":[
-              {
-                "Ref":"EC2SecurityGroupWeb"
-              }
-            ],
-            "AssociatePublicIpAddress":"true",
-            "DeviceIndex":"0",
-            "DeleteOnTermination":"true",
-            "SubnetId":{
-              "Ref":"PublicSubnet"
-            }
-          }
-        ],
-        "Tags":[
-          {
-            "Key":"Name",
-            "Value":"trainwatch-webapp"
-          }
-        ],
-        "IamInstanceProfile":{
-          "Ref":"InstanceProfile"
-        },
-        "UserData":{
-          "Fn::Base64":{
-            "Fn::Join":[
-              "\n",
-              [
-                "#!/bin/bash -xe",
-                "yum -y remove java-1.7.0-openjdk",
-                "yum -y install vim curl wget java-1.8.0-openjdk-headless",
-                "mkdir /var/trainwatch",
-                "chown ec2-user /var/trainwatch",
-                "curl -L -o /tmp/hazelcast.tgz \"http://download.hazelcast.com/download.jsp?version=hazelcast-3.6.4&type=tar&p=177120386177120386\"",
-                "tar -xz -C /opt -f /tmp/hazelcast.tgz",
-                "chown -R ec2-user:ec2-user /opt/hazelcast-3.6.4",
-                "ln -s /opt/hazelcast-3.6.4 /opt/hazelcast",
-                "curl -L -o /tmp/kafka.tgz http://mirrors.ukfast.co.uk/sites/ftp.apache.org/kafka/0.10.0.0/kafka_2.11-0.10.0.0.tgz",
-                "tar -xz -C /opt -f /tmp/kafka.tgz",
-                "chown -R ec2-user:ec2-user /opt/kafka_2.11-0.10.0.0",
-                "ln -s /opt/kafka_2.11-0.10.0.0 /opt/kafka"
-              ]
-            ]
-          }
-        }
-      }
-    },
     "EC2Backend":{
       "Type":"AWS::EC2::Instance",
       "DependsOn":"GatewayToInternetAttachment",
@@ -424,10 +357,10 @@
                 "yum -y install vim curl wget java-1.8.0-openjdk-headless",
                 "mkdir /var/trainwatch",
                 "chown ec2-user /var/trainwatch",
-                "curl -L -o /tmp/hazelcast.tgz \"http://download.hazelcast.com/download.jsp?version=hazelcast-3.6.4&type=tar&p=177120386177120386\"",
+                "curl -L -o /tmp/hazelcast.tgz \"http://download.hazelcast.com/download.jsp?version=hazelcast-3.7&type=tar&p=177120386177120386\"",
                 "tar -xz -C /opt -f /tmp/hazelcast.tgz",
-                "chown -R ec2-user:ec2-user /opt/hazelcast-3.6.4",
-                "ln -s /opt/hazelcast-3.6.4 /opt/hazelcast",
+                "chown -R ec2-user:ec2-user /opt/hazelcast-3.7.1",
+                "ln -s /opt/hazelcast-3.7.1 /opt/hazelcast",
                 "curl -L -o /tmp/kafka.tgz http://mirrors.ukfast.co.uk/sites/ftp.apache.org/kafka/0.10.0.0/kafka_2.11-0.10.0.0.tgz",
                 "tar -xz -C /opt -f /tmp/kafka.tgz",
                 "chown -R ec2-user:ec2-user /opt/kafka_2.11-0.10.0.0",
@@ -475,15 +408,6 @@
       "Description":"SubnetId of the public subnet",
       "Value":{
         "Ref":"PublicSubnet"
-      }
-    },
-    "DNSNameWeb":{
-      "Description":"DNS name",
-      "Value":{
-        "Fn::GetAtt":[
-          "EC2Webapp",
-          "PublicDnsName"
-        ]
       }
     },
     "DNSNameBackend":{
