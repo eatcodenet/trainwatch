@@ -1,8 +1,9 @@
 #!/bin/bash
 base_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-app_home=/var/trainwatch
-creds=${app_home}/creds.txt
 
+deploy_dir=/var/trainwatch/deploy
+data_dir=/var/trainwatch/data
+creds=${deploy_dir}/creds.txt
 if [ ! -r ${creds} ]; then
   echo "no readable creds. see ya!"
   exit 1

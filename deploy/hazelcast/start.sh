@@ -59,4 +59,3 @@ else
     echo "Another hazelcast instance is already started in this folder. To start a new instance, please unzip 3.6.2.zip/tar.gz in a new folder."
     exit 0
 fi
-

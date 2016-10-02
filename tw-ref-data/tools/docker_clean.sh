@@ -1,7 +1,7 @@
 #!/bin/bash
 base_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-remote_host=$1
 
+remote_host=$1
 if [ -z "${remote_host}" ]; then
   echo "Usage: docker_clean.sh <host>"
   exit 1

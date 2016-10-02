@@ -1,8 +1,9 @@
 #!/bin/bash
-set -e
-# ensure the gradle artifacts below have been built, i.e ./gradlew build
-
 base_dir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+src_dir=$(cd ${base_dir}/.. && pwd )
+deploy_dir=/var/trainwatch/deploy
+kafka_dir=/opt/kafka/
+hazelcast_dir=/opt/hazelcast
 
 host=${1:-""}
 if [[ -z "${host}" ]]; then
@@ -10,21 +11,26 @@ if [[ -z "${host}" ]]; then
   exit 1
 fi
 
-rm -rf ${aws_build_dir}
-mkdir -p ${aws_build_dir}/libs
-cp ${src_dir}/tw-search-api/build/libs/tw-search-api*.jar ${aws_build_dir}/libs
-cp ${src_dir}/tw-webapp/target/scala-2.11/tw-webapp*.jar ${aws_build_dir}/libs
-cp -R ${src_dir}/aws/codedeploy ${aws_build_dir}
+if [[ -z "${nr_username}" || -z "${nr_password}" ]]; then
+  echo "WARNING: set nr_username and nr_password to enable download of data"
+else
+  echo "Creating creds.txt..."
+fi
 
-echo "Source dir: ${src_dir}"
+ssh -o StrictHostKeyChecking=no ${host} "touch ${deploy_dir}/start.txt"
+scp ${src_dir}/tw-ref-data/tools/download*.sh ${host}:${deploy_dir}
+scp ${src_dir}/tw-ref-data/build/libs/*.jar ${host}:${deploy_dir}/libs
+scp ${src_dir}/tw-train-movement/build/libs/*.jar ${host}:${deploy_dir}/libs
+scp ${src_dir}/tw-search-api/build/libs/*.jar ${host}:${deploy_dir}/libs
 
-echo "Pushing to S3"
-bundle_name="TrainWatchWebappLatestBundle.zip"
-aws_result=$(aws --profile eatcode deploy push --source ${aws_build_dir} --application-name TrainWatchWebapp --ignore-hidden-files --s3-location s3://eatcode-trainwatch-deploy/${bundle_name})
-etag=$(sed 's/.*eTag="\(.*\)".*/\1/g' <<< ${aws_result})
+scp ${base_dir}/kafka/*.sh ${host}:${kafka_dir}/bin
+scp ${base_dir}/kafka/*.properties ${host}:${kafka_dir}/config
+scp ${base_dir}/hazelcast/* ${host}:${hazelcast_dir}/bin
 
-echo "Deploying revision..."
-aws --profile eatcode deploy create-deployment --application-name TrainWatchWebApp --s3-location bucket=eatcode-trainwatch-deploy,key=${bundle_name},bundleType=zip,eTag=\"${etag}\" --deployment-group TrainWatch
-echo "To deploy same revision again run:"
-echo "aws --profile eatcode deploy create-deployment --application-name TrainWatchWebapp --s3-location bucket=eatcode-trainwatch-deploy,key=${bundle_name},bundleType=zip,eTag=\"${etag}\" --deployment-group TrainWatch"
-echo
+data_files=$(ssh -o StrictHostKeyChecking=no ${host} "ls ${data_dir}")
+echo "data_files: ${data_files}"
+if [[ -z "${data_files}" ]]; then
+  echo "no data will download now. may take some time..."
+fi
+
+echo "done"

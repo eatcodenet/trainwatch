@@ -3,7 +3,6 @@ base_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 full_schedule_file=${1}
 cleaned_file="${full_schedule_file}.cleaned"
-
 if [ -z "${full_schedule_file}" ];then
   echo "usage: ${BASH_SOURCE[0]} <schedule file>"
   exit 1
