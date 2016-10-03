@@ -11,13 +11,16 @@ if [[ -z "${host}" ]]; then
   exit 1
 fi
 
+ssh -o StrictHostKeyChecking=no ${host} "touch ${deploy_dir}/start.txt"
+
 if [[ -z "${nr_username}" || -z "${nr_password}" ]]; then
   echo "WARNING: set nr_username and nr_password to enable download of data"
 else
   echo "Creating creds.txt..."
+  ssh ${host} "echo 'username=${nr_username}' >  ${deploy_dir}/creds.txt"
+  ssh ${host} "echo 'password=${nr_username}' >> ${deploy_dir}/creds.txt"
 fi
 
-ssh -o StrictHostKeyChecking=no ${host} "touch ${deploy_dir}/start.txt"
 scp ${src_dir}/tw-ref-data/tools/download*.sh ${host}:${deploy_dir}
 scp ${src_dir}/tw-ref-data/build/libs/*.jar ${host}:${deploy_dir}/libs
 scp ${src_dir}/tw-train-movement/build/libs/*.jar ${host}:${deploy_dir}/libs
