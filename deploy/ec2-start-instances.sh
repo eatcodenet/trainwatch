@@ -5,4 +5,4 @@ aws_result=$(aws ec2 describe-instances --filters "Name=tag-value,Values=trainwa
 instance_ids=$(echo "${aws_result}" | grep INSTANCES | cut -f8)
 echo "instances: ${instance_ids}"
 
-aws ec2 describe-instances --instance-ids ${instance_ids}
+aws ec2 stop-instances --instance-ids ${instance_ids}
