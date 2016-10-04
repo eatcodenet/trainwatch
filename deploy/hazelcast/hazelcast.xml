@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- ~ Copyright (c) 2008-2016, Hazelcast, Inc. All Rights Reserved. ~ ~ Licensed 
-  under the Apache License, Version 2.0 (the "License"); ~ you may not use this file 
-  except in compliance with the License. ~ You may obtain a copy of the License at 
-  ~ ~ http://www.apache.org/licenses/LICENSE-2.0 ~ ~ Unless required by applicable 
-  law or agreed to in writing, software ~ distributed under the License is distributed 
-  on an "AS IS" BASIS, ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express 
-  or implied. ~ See the License for the specific language governing permissions and 
+<!-- ~ Copyright (c) 2008-2016, Hazelcast, Inc. All Rights Reserved. ~ ~ Licensed
+  under the Apache License, Version 2.0 (the "License"); ~ you may not use this file
+  except in compliance with the License. ~ You may obtain a copy of the License at
+  ~ ~ http://www.apache.org/licenses/LICENSE-2.0 ~ ~ Unless required by applicable
+  law or agreed to in writing, software ~ distributed under the License is distributed
+  on an "AS IS" BASIS, ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+  or implied. ~ See the License for the specific language governing permissions and
   ~ limitations under the License. -->
 
-<!-- The default Hazelcast configuration. This is used when no hazelcast.xml is present. 
-  Please see the schema for how to configure Hazelcast at https://hazelcast.com/schema/config/hazelcast-config-3.6.xsd 
+<!-- The default Hazelcast configuration. This is used when no hazelcast.xml is present.
+  Please see the schema for how to configure Hazelcast at https://hazelcast.com/schema/config/hazelcast-config-3.6.xsd
   or the documentation at https://hazelcast.org/documentation/ -->
 <hazelcast xsi:schemaLocation="http://www.hazelcast.com/schema/config hazelcast-config-3.6.xsd"
   xmlns="http://www.hazelcast.com/schema/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -22,7 +22,7 @@
   <network>
     <port auto-increment="true" port-count="100">5701</port>
     <outbound-ports>
-      <!-- Allowed port range when connecting to other nodes. 0 or * means use system 
+      <!-- Allowed port range when connecting to other nodes. 0 or * means use system
         provided port. -->
       <ports>0</ports>
     </outbound-ports>
@@ -42,10 +42,10 @@
         <secret-key>my-secret-key</secret-key>
         <!--optional, default is us-east-1 -->
         <region>us-west-1</region>
-        <!--optional, default is ec2.amazonaws.com. If set, region shouldn't be set 
+        <!--optional, default is ec2.amazonaws.com. If set, region shouldn't be set
           as it will override this property -->
         <host-header>ec2.amazonaws.com</host-header>
-        <!-- optional, only instances belonging to this group will be discovered, 
+        <!-- optional, only instances belonging to this group will be discovered,
           default will try all running instances -->
         <security-group-name>hazelcast-sg</security-group-name>
         <tag-key>type</tag-key>
@@ -60,7 +60,7 @@
     <ssl enabled="false" />
     <socket-interceptor enabled="false" />
     <symmetric-encryption enabled="false">
-      <!-- encryption algorithm such as DES/ECB/PKCS5Padding, PBEWithMD5AndDES, AES/CBC/PKCS5Padding, 
+      <!-- encryption algorithm such as DES/ECB/PKCS5Padding, PBEWithMD5AndDES, AES/CBC/PKCS5Padding,
         Blowfish, DESede -->
       <algorithm>PBEWithMD5AndDES</algorithm>
       <!-- salt value to use when generating the secret key -->
@@ -78,12 +78,12 @@
     <queue-capacity>0</queue-capacity>
   </executor-service>
   <queue name="default">
-    <!-- Maximum size of the queue. When a JVM's local queue size reaches the maximum, 
-      all put/offer operations will get blocked until the queue size of the JVM goes down 
-      below the maximum. Any integer between 0 and Integer.MAX_VALUE. 0 means Integer.MAX_VALUE. 
+    <!-- Maximum size of the queue. When a JVM's local queue size reaches the maximum,
+      all put/offer operations will get blocked until the queue size of the JVM goes down
+      below the maximum. Any integer between 0 and Integer.MAX_VALUE. 0 means Integer.MAX_VALUE.
       Default is 0. -->
     <max-size>0</max-size>
-    <!-- Number of backups. If 1 is set as the backup-count for example, then all 
+    <!-- Number of backups. If 1 is set as the backup-count for example, then all
       entries of the map will be copied to another JVM for fail-safety. 0 means no backup. -->
     <backup-count>1</backup-count>
 
@@ -93,57 +93,57 @@
     <empty-queue-ttl>-1</empty-queue-ttl>
   </queue>
   <map name="default">
-    <!-- Data type that will be used for storing recordMap. Possible values: BINARY 
-      (default): keys and values will be stored as binary data OBJECT : values will be 
-      stored in their object forms NATIVE : values will be stored in non-heap region of 
+    <!-- Data type that will be used for storing recordMap. Possible values: BINARY
+      (default): keys and values will be stored as binary data OBJECT : values will be
+      stored in their object forms NATIVE : values will be stored in non-heap region of
       JVM -->
     <in-memory-format>BINARY</in-memory-format>
 
-    <!-- Number of backups. If 1 is set as the backup-count for example, then all 
+    <!-- Number of backups. If 1 is set as the backup-count for example, then all
       entries of the map will be copied to another JVM for fail-safety. 0 means no backup. -->
     <backup-count>1</backup-count>
     <!-- Number of async backups. 0 means no backup. -->
     <async-backup-count>0</async-backup-count>
-    <!-- Maximum number of seconds for each entry to stay in the map. Entries that 
-      are older than <time-to-live-seconds> and not updated for <time-to-live-seconds> 
-      will get automatically evicted from the map. Any integer between 0 and Integer.MAX_VALUE. 
+    <!-- Maximum number of seconds for each entry to stay in the map. Entries that
+      are older than <time-to-live-seconds> and not updated for <time-to-live-seconds>
+      will get automatically evicted from the map. Any integer between 0 and Integer.MAX_VALUE.
       0 means infinite. Default is 0. -->
     <time-to-live-seconds>0</time-to-live-seconds>
-    <!-- Maximum number of seconds for each entry to stay idle in the map. Entries 
-      that are idle(not touched) for more than <max-idle-seconds> will get automatically 
-      evicted from the map. Entry is touched if get, put or containsKey is called. Any 
+    <!-- Maximum number of seconds for each entry to stay idle in the map. Entries
+      that are idle(not touched) for more than <max-idle-seconds> will get automatically
+      evicted from the map. Entry is touched if get, put or containsKey is called. Any
       integer between 0 and Integer.MAX_VALUE. 0 means infinite. Default is 0. -->
     <max-idle-seconds>0</max-idle-seconds>
-    <!-- Valid values are: NONE (no eviction), LRU (Least Recently Used), LFU (Least 
+    <!-- Valid values are: NONE (no eviction), LRU (Least Recently Used), LFU (Least
       Frequently Used). NONE is the default. -->
     <eviction-policy>NONE</eviction-policy>
-    <!-- Maximum size of the map. When max size is reached, map is evicted based 
-      on the policy defined. Any integer between 0 and Integer.MAX_VALUE. 0 means Integer.MAX_VALUE. 
+    <!-- Maximum size of the map. When max size is reached, map is evicted based
+      on the policy defined. Any integer between 0 and Integer.MAX_VALUE. 0 means Integer.MAX_VALUE.
       Default is 0. -->
     <max-size policy="PER_NODE">0</max-size>
-    <!-- When max. size is reached, specified percentage of the map will be evicted. 
-      Any integer between 0 and 100. If 25 is set for example, 25% of the entries will 
+    <!-- When max. size is reached, specified percentage of the map will be evicted.
+      Any integer between 0 and 100. If 25 is set for example, 25% of the entries will
       get evicted. -->
     <eviction-percentage>25</eviction-percentage>
-    <!-- Minimum time in milliseconds which should pass before checking if a partition 
+    <!-- Minimum time in milliseconds which should pass before checking if a partition
       of this map is evictable or not. Default value is 100 millis. -->
     <min-eviction-check-millis>100</min-eviction-check-millis>
-    <!-- While recovering from split-brain (network partitioning), map entries in 
-      the small cluster will merge into the bigger cluster based on the policy set here. 
-      When an entry merge into the cluster, there might an existing entry with the same 
-      key already. Values of these entries might be different for that same key. Which 
-      value should be set for the key? Conflict is resolved by the policy set here. Default 
-      policy is PutIfAbsentMapMergePolicy There are built-in merge policies such as com.hazelcast.map.merge.PassThroughMergePolicy; 
-      entry will be overwritten if merging entry exists for the key. com.hazelcast.map.merge.PutIfAbsentMapMergePolicy 
-      ; entry will be added if the merging entry doesn't exist in the cluster. com.hazelcast.map.merge.HigherHitsMapMergePolicy 
-      ; entry with the higher hits wins. com.hazelcast.map.merge.LatestUpdateMapMergePolicy 
+    <!-- While recovering from split-brain (network partitioning), map entries in
+      the small cluster will merge into the bigger cluster based on the policy set here.
+      When an entry merge into the cluster, there might an existing entry with the same
+      key already. Values of these entries might be different for that same key. Which
+      value should be set for the key? Conflict is resolved by the policy set here. Default
+      policy is PutIfAbsentMapMergePolicy There are built-in merge policies such as com.hazelcast.map.merge.PassThroughMergePolicy;
+      entry will be overwritten if merging entry exists for the key. com.hazelcast.map.merge.PutIfAbsentMapMergePolicy
+      ; entry will be added if the merging entry doesn't exist in the cluster. com.hazelcast.map.merge.HigherHitsMapMergePolicy
+      ; entry with the higher hits wins. com.hazelcast.map.merge.LatestUpdateMapMergePolicy
       ; entry with the latest update wins. -->
     <merge-policy>com.hazelcast.map.merge.PutIfAbsentMapMergePolicy
     </merge-policy>
 
-    <!-- Control caching of de-serialized values. Caching makes query evaluation 
-      faster, but it cost memory. Possible Values: NEVER: Never cache deserialized object 
-      INDEX-ONLY: Caches values only when they are inserted into an index. ALWAYS: Always 
+    <!-- Control caching of de-serialized values. Caching makes query evaluation
+      faster, but it cost memory. Possible Values: NEVER: Never cache deserialized object
+      INDEX-ONLY: Caches values only when they are inserted into an index. ALWAYS: Always
       cache deserialized values. -->
     <cache-deserialized-values>INDEX-ONLY</cache-deserialized-values>
 
@@ -192,16 +192,6 @@
     <in-memory-format>BINARY</in-memory-format>
   </ringbuffer>
 
-  <serialization>
-    <serializers>
-      <serializer type-class="net.eatcode.trainwatch.nr.Location" class-name="net.eatcode.trainwatch.nr.hazelcast.LocationSerializer" />
-      <serializer type-class="net.eatcode.trainwatch.nr.Schedule" class-name="net.eatcode.trainwatch.nr.hazelcast.ScheduleSerializer" />
-      <serializer type-class="net.eatcode.trainwatch.movement.TrainDeparture" class-name="net.eatcode.trainwatch.movement.hazelcast.TrainDepartureSerializer" />
-      <serializer type-class="net.eatcode.trainwatch.movement.TrainMovement" class-name="net.eatcode.trainwatch.movement.hazelcast.TrainMovementSerializer" />
-      <serializer type-class="net.eatcode.trainwatch.movement.Stats" class-name="net.eatcode.trainwatch.movement.hazelcast.StatsSerializer" />
-    </serializers>
-  </serialization>
-
   <services enable-defaults="true" />
 
   <lite-member enabled="false" />
@@ -232,7 +222,7 @@
     <min-eviction-check-millis>30000</min-eviction-check-millis>
     <merge-policy>com.hazelcast.map.merge.PutIfAbsentMapMergePolicy</merge-policy>
   </map>
-  
+
   <map name="trainDeparture">
     <!--  3 days TTL -->
     <time-to-live-seconds>259200</time-to-live-seconds>

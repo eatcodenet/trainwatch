@@ -28,7 +28,9 @@ scp ${src_dir}/tw-search-api/build/libs/*.jar ${host}:${deploy_dir}/libs
 
 scp ${base_dir}/kafka/*.sh ${host}:${kafka_dir}/bin
 scp ${base_dir}/kafka/*.properties ${host}:${kafka_dir}/config
-scp ${base_dir}/hazelcast/* ${host}:${hazelcast_dir}/bin
+scp ${base_dir}/hazelcast/*.sh ${host}:${hazelcast_dir}/bin
+scp ${base_dir}/hazelcast/*.xml ${host}:${hazelcast_dir}/bin
+scp ${base_dir}/hazelcast/*.jar ${host}:${hazelcast_dir}/lib
 
 data_files=$(ssh -o StrictHostKeyChecking=no ${host} "ls ${data_dir}")
 echo "data_files: ${data_files}"

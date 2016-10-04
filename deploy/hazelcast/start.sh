@@ -32,6 +32,7 @@ MIN_HEAP_SIZE=512m
 #### maximum heap size
 MAX_HEAP_SIZE=1g
 
+
 if [ "x$MIN_HEAP_SIZE" != "x" ]; then
 	JAVA_OPTS="$JAVA_OPTS -Xms${MIN_HEAP_SIZE}"
 fi
@@ -41,6 +42,7 @@ if [ "x$MAX_HEAP_SIZE" != "x" ]; then
 fi
 
 export CLASSPATH=$HAZELCAST_HOME/lib/hazelcast-all-3.7.1.jar
+export CLASSPATH=$CLASSPATH:$HAZELCAST_HOME/lib/slf4j-api-1.7.10.jar:$HAZELCAST_HOME/lib/logback-core-1.0.13.jar:$HAZELCAST_HOME/lib/logback-classic-1.0.13.jar
 export CLASSPATH=$CLASSPATH:/var/trainwatch/deploy/libs/tw-train-movement-1.0-SNAPSHOT.jar
 export CLASSPATH=$CLASSPATH:/var/trainwatch/deploy/libs/tw-search-api-1.0-SNAPSHOT.jar
 
