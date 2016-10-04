@@ -40,9 +40,9 @@ if [ "x$MAX_HEAP_SIZE" != "x" ]; then
 	JAVA_OPTS="$JAVA_OPTS -Xmx${MAX_HEAP_SIZE}"
 fi
 
-export CLASSPATH=$HAZELCAST_HOME/lib/hazelcast-all-3.6.2.jar
-export CLASSPATH=$CLASSPATH:/var/trainwatch/libs/tw-train-movement-1.0-SNAPSHOT.jar
-export CLASSPATH=$CLASSPATH:/var/trainwatch/libs/tw-search-api-1.0-SNAPSHOT.jar
+export CLASSPATH=$HAZELCAST_HOME/lib/hazelcast-all-3.7.1.jar
+export CLASSPATH=$CLASSPATH:/var/trainwatch/deploy/libs/tw-train-movement-1.0-SNAPSHOT.jar
+export CLASSPATH=$CLASSPATH:/var/trainwatch/deploy/libs/tw-search-api-1.0-SNAPSHOT.jar
 
 echo "########################################"
 echo "# RUN_JAVA=$RUN_JAVA"

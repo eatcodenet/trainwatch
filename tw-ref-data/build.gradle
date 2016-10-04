@@ -1,5 +1,5 @@
 dependencies {
-  compile 'com.hazelcast:hazelcast-client:3.6.4'
+  compile 'com.hazelcast:hazelcast-client:3.7.1'
 }
 
 task(copyrefData, type: Copy) {
@@ -7,8 +7,8 @@ task(copyrefData, type: Copy) {
   into(buildDir)
 }
 
-task dockerBuild(dependsOn: ["build", "copyrefData"]) << { 
-  println "*** building docker tw-populate-ref-data ***" 
+task dockerBuild(dependsOn: ["build", "copyrefData"]) << {
+  println "*** building docker tw-populate-ref-data ***"
   exec {
     executable "docker"
     args "build","--no-cache", "-q", "-t", "eatcode/tw-populate-ref-data", "."
@@ -22,4 +22,3 @@ task dockerPush(dependsOn: []) << {
     args "push", "eatcode/tw-populate-ref-data"
   }
 }
-
