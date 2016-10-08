@@ -357,7 +357,7 @@
                 "yum -y install vim curl wget java-1.8.0-openjdk-headless",
                 "mkdir -p /var/trainwatch/deploy",
                 "chown -R ec2-user:ec2-user /var/trainwatch",
-                "curl -L -o /tmp/hazelcast.tgz \"http://download.hazelcast.com/download.jsp?version=hazelcast-3.7.1&type=tar&p=177120386177120386\"",
+                "curl -L -o /tmp/hazelcast.tgz \"http://download.hazelcast.com/download.jsp?version=hazelcast-3.7.2&type=tar&p=177120386177120386\"",
                 "tar -xz -C /opt -f /tmp/hazelcast.tgz",
                 "chown -R ec2-user:ec2-user /opt/hazelcast*",
                 "mv /opt/hazelcast* /opt/hazelcast",
