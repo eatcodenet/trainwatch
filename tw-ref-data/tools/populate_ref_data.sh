@@ -8,7 +8,6 @@ class_path=${deploy_dir}/libs/tw-train-movement-1.0-SNAPSHOT.jar
 stations_file=${data_dir}/stations.json
 tiploc_file=${data_dir}/tiplocs.json
 schedule_file=${data_dir}/full-train-schedules
-uname=$(uname)
 
 function clean_up() {
   echo "clean_up..."
@@ -22,7 +21,7 @@ trap clean_up SIGINT
 
 echo "class_path is ${class_path}"
 echo "Populating locations..."
-java -cp ${class_path} net.eatcode.trainwatch.nr.dataimport.PopulateLocationsApp ${hazelcast_servers} ${stations_file} ${tiploc_file}
+java -Xms512m -Xmx1g -cp ${class_path} net.eatcode.trainwatch.nr.dataimport.PopulateLocationsApp ${hazelcast_servers} ${stations_file} ${tiploc_file}
 
 if [ $? -ne 0 ];then
   echo "Populating locations failed!"

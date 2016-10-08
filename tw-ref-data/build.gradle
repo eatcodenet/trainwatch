@@ -1,7 +1,3 @@
-dependencies {
-  compile 'com.hazelcast:hazelcast-client:3.7.1'
-}
-
 task(copyrefData, type: Copy) {
   from(file('/var/trainwatch/data'))
   into(buildDir)
