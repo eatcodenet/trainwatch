@@ -21,6 +21,7 @@ else
   ssh ${host} "echo 'password=${nr_username}' >> ${deploy_dir}/creds.txt"
 fi
 
+ssh ${host} "mkdir -p ${deploy_dir}/{data,libs}"
 scp ${src_dir}/tw-ref-data/tools/download*.sh ${host}:${deploy_dir}
 scp ${src_dir}/tw-ref-data/build/libs/*.jar ${host}:${deploy_dir}/libs
 scp ${src_dir}/tw-train-movement/build/libs/*.jar ${host}:${deploy_dir}/libs
@@ -28,6 +29,12 @@ scp ${src_dir}/tw-search-api/build/libs/*.jar ${host}:${deploy_dir}/libs
 
 scp ${base_dir}/kafka/*.sh ${host}:${kafka_dir}/bin
 scp ${base_dir}/kafka/*.properties ${host}:${kafka_dir}/config
+scp ${base_dir}/hazelcast/hazelcast.sh ${host}:${deploy_dir}
+scp ${base_dir}/ref-data/*.json ${host}:${deploy_dir}/data
+
+# TODO use heredoc syntax
+ssh ${host} "sudo cp -f ${deploy_dir}/hazelcast.sh /etc/init.d/hazelcast"
+ssh ${host} "sudo chkconfig --add /etc/init.d/hazelcast"
 
 data_files=$(ssh -o StrictHostKeyChecking=no ${host} "ls ${data_dir}")
 echo "data_files: ${data_files}"
