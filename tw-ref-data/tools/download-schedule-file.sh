@@ -34,4 +34,4 @@ fi
 echo "Download complete"
 
 echo "Removing non schedule data"
-${base_dir}/clean_full_schedule.sh ${full_path%%.gz}
+${base_dir}/clean-schedule-file.sh ${full_path%%.gz}

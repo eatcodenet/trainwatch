@@ -12,6 +12,5 @@ fi
 username=$(grep username ${creds} | cut -d'=' -f2)
 password=$(grep password ${creds} | cut -d'=' -f2)
 
-${base_dir}/download_full_schedule.sh ${username} ${password}
-${base_dir}/download_tiplocs.sh ${username} ${password}
-${base_dir}/download_stations.sh ${username} ${password}
+${base_dir}/download-schedule-file.sh ${username} ${password}
+

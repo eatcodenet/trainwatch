@@ -13,8 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 kill_pid=$(ps -ef | grep [z]ookeeper | awk '{print $2}')
-if [ ! -z "${kill_pid}" ]; then
-  kill ${kill_pid}
-fi
+#if [ ! -z "${kill_pid}" ]; then
+#  kill ${kill_pid}
+#fi
 
