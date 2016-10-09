@@ -21,9 +21,7 @@ scp ${src_dir}/tw-ref-data/build/libs/*.jar ${host}:${deploy_dir}/libs
 scp ${src_dir}/tw-train-movement/build/libs/*.jar ${host}:${deploy_dir}/libs
 scp ${src_dir}/tw-search-api/build/libs/*.jar ${host}:${deploy_dir}/libs
 scp ${base_dir}/ref-data/*.json ${host}:${deploy_dir}/data
-scp ${base_dir}/hazelcast/hazelcast-service.sh ${host}:${deploy_dir}
-ssh ${host} "sudo cp -f ${deploy_dir}/hazelcast-service.sh /etc/init.d/hazelcast"
-ssh ${host} "sudo chkconfig --add /etc/init.d/hazelcast"
+
 
 if [[ -z "${nr_username}" || -z "${nr_password}" ]]; then
   echo "WARNING: set nr_username and nr_password to enable download of data"
@@ -40,14 +38,19 @@ if [[ -z "${schedule_file}" ]]; then
   ssh ${host} "/var/trainwatch/deploy/get-schedule-file-only.sh"
 fi
 
-echo "Stoppping Kafka/Zookeeper"
+echo "Stopping Kafka/Zookeeper/Hazelcast"
 ssh ${host} "${kafka_dir}/bin/kafka-server-stop.sh"
 ssh ${host} "${kafka_dir}/bin/zookeeper-server-stop.sh"
- 
-echo "Starting Zookeeper/Kafka"
+ssh ${host} "${hazelcast_dir}/bin/stop.sh"
+
+echo "Starting Hazelcast/Zookeeper/Kafka"
+ssh ${host} "sed -i 's/^# MAX_HEAP_SIZE=1G/MAX_HEAP_SIZE=256M/g' ${hazelcast_dir}/bin/start.sh"
 ssh ${host} "sed -i 's/Xms512M/Xms256M/g; s/Xmx512M/Xmx256m/g' ${kafka_dir}/bin/zookeeper-server-start.sh"
 ssh ${host} "sed -i 's/Xms1G/Xms256M/g; s/Xmx1G/Xmx256m/g' ${kafka_dir}/bin/kafka-server-start.sh"
-ssh ${host} -f "nohup ${kafka_dir}/bin/zookeeper-server-start.sh ${kafka_dir}/config/zookeeper.properties >${logs_dir}/zk.log"
+ssh ${host} -f "nohup ${hazelcast_dir}/bin/start.sh >${logs_dir}/hazelcast.log"
+ssh ${host} -f "nohup ${kafka_dir}/bin/zookeeper-server-start.sh ${kafka_dir}/config/zookeeper.properties >${logs_dir}/zookeeper.log"
+# dirty hack
+sleep 1
 ssh ${host} -f "nohup ${kafka_dir}/bin/kafka-server-start.sh ${kafka_dir}/config/server.properties >${logs_dir}/kafka.log"
 
 echo "Deploy complete."
