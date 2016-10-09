@@ -2,7 +2,9 @@
 base_dir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 src_dir=$(cd ${base_dir}/.. && pwd )
 deploy_dir=/var/trainwatch/deploy
-kafka_dir=/opt/kafka/
+data_dir=/var/trainwatch/data
+logs_dir=/var/trainwatch/logs
+kafka_dir=/opt/kafka
 hazelcast_dir=/opt/hazelcast
 
 host=${1:-""}
@@ -12,7 +14,7 @@ if [[ -z "${host}" ]]; then
 fi
 
 ssh -o StrictHostKeyChecking=no ${host} "touch ${deploy_dir}/start.txt"
-ssh ${host} "mkdir -p ${deploy_dir}/{data,libs}"
+ssh ${host} "mkdir -p ${deploy_dir}/{data,libs,../logs}"
 
 scp ${src_dir}/tw-ref-data/tools/*.sh ${host}:${deploy_dir}
 scp ${src_dir}/tw-ref-data/build/libs/*.jar ${host}:${deploy_dir}/libs
@@ -28,7 +30,7 @@ if [[ -z "${nr_username}" || -z "${nr_password}" ]]; then
 else
   echo "Creating creds.txt..."
   ssh ${host} "echo 'username=${nr_username}' >  ${deploy_dir}/creds.txt"
-ssh ${host} "echo 'password=${nr_password}' >> ${deploy_dir}/creds.txt"
+  ssh ${host} "echo 'password=${nr_password}' >> ${deploy_dir}/creds.txt"
 fi
 
 schedule_file=$(ssh ${host} "ls ${data_dir} | grep full-train-schedules")
@@ -38,4 +40,14 @@ if [[ -z "${schedule_file}" ]]; then
   ssh ${host} "/var/trainwatch/deploy/get-schedule-file-only.sh"
 fi
 
-echo "Done"
+echo "Stoppping Kafka/Zookeeper"
+ssh ${host} "${kafka_dir}/bin/kafka-server-stop.sh"
+ssh ${host} "${kafka_dir}/bin/zookeeper-server-stop.sh"
+ 
+echo "Starting Zookeeper/Kafka"
+ssh ${host} "sed -i 's/Xms512M/Xms256M/g; s/Xmx512M/Xmx256m/g' ${kafka_dir}/bin/zookeeper-server-start.sh"
+ssh ${host} "sed -i 's/Xms1G/Xms256M/g; s/Xmx1G/Xmx256m/g' ${kafka_dir}/bin/kafka-server-start.sh"
+ssh ${host} -f "nohup ${kafka_dir}/bin/zookeeper-server-start.sh ${kafka_dir}/config/zookeeper.properties >${logs_dir}/zk.log"
+ssh ${host} -f "nohup ${kafka_dir}/bin/kafka-server-start.sh ${kafka_dir}/config/server.properties >${logs_dir}/kafka.log"
+
+echo "Deploy complete."
