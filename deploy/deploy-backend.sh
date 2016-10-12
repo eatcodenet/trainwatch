@@ -32,13 +32,6 @@ else
   ssh ${host} "echo 'password=${nr_password}' >> ${deploy_dir}/creds.txt"
 fi
 
-schedule_file=$(ssh ${host} "ls ${data_dir} | grep full-train-schedules")
-echo "Schedule_file: ${schedule_file}"
-if [[ -z "${schedule_file}" ]]; then
-  echo "No schedule_file, will download now. This may take some time..."
-  ssh ${host} "/var/trainwatch/deploy/get-schedule-file-only.sh"
-fi
-
 # Change memory settings
 ssh ${host} "sed -i 's/^# MAX_HEAP_SIZE=1G/MAX_HEAP_SIZE=256M/g' ${hazelcast_dir}/bin/start.sh"
 ssh ${host} "sed -i 's/Xms512M/Xms256M/g; s/Xmx512M/Xmx256m/g' ${kafka_dir}/bin/zookeeper-server-start.sh"
@@ -58,5 +51,13 @@ ssh ${host} -f "nohup ${hazelcast_dir}/bin/start.sh >${logs_dir}/hazelcast.log"
 #hack
 sleep 5
 ssh ${host} -f "nohup ${kafka_dir}/bin/kafka-server-start.sh ${kafka_dir}/config/server.properties >${logs_dir}/kafka.log"
+
+schedule_file=$(ssh ${host} "ls ${data_dir} | grep full-train-schedules")
+echo "Schedule_file: ${schedule_file}"
+if [[ -z "${schedule_file}" ]]; then
+  echo "No schedule_file, will download now. This may take some time..."
+  ssh ${host} "/var/trainwatch/deploy/get-schedule-file-only.sh"
+fi
+
 
 echo "Deploy complete."
