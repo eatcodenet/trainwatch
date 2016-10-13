@@ -33,5 +33,5 @@ if [ "${is_zipped}" == "true" ];then
 fi
 echo "Download complete"
 
-echo "Removing non schedule data"
-${base_dir}/clean-schedule-file.sh ${full_path%%.gz}
+#echo "Removing non schedule data"
+#${base_dir}/clean-schedule-file.sh ${full_path%%.gz}

@@ -1,24 +1,34 @@
 #!/usr/bin/env python3
+import sys
+import time
+from os import path
 
-def clean(schedule_file):
+
+def extract_schedule(schedule_file):
+    start = time.time()
+    cleaned_file = path.dirname(schedule_file) + path.sep + "schedules.cleaned"
     with open(schedule_file, "r") as schedule:
-        with open(schedule_file + ".cleaned") as cleaned:
+        with open(cleaned_file, "w") as cleaned:
             for line in schedule:
-                if "JsonScheduleV1" in line:
+                if "JsonScheduleV1" and "schedule_location" in line:
                     cleaned.write(line)
+    return time.time() - start
 
-base_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-full_schedule_file=${1}
-cleaned_file="${full_schedule_file}.cleaned"
-if [ -z "${full_schedule_file}" ];then
-  echo "usage: ${BASH_SOURCE[0]} <schedule file>"
-  exit 1
-fi
+def extract_tiplocs(schedule_file):
+    start = time.time()
+    tiploc_file = path.dirname(schedule_file) + path.sep + "tiplocs.cleaned"
+    with open(schedule_file, "r") as schedule:
+        with open(tiploc_file, "w") as tiplocs:
+            for line in schedule:
+                if "TiplocV" in line:
+                    tiplocs.write(line)
+    return time.time() - start
 
-echo "Current dir is ${PWD}"
-echo "Writing to file ${cleaned_file}"
-grep JsonScheduleV1 < ${full_schedule_file} | grep schedule_location > ${cleaned_file}
-echo "Renaming ${cleaned_file} to ${full_schedule_file}"
-rm -f ${full_schedule_file}
-mv ${cleaned_file} ${full_schedule_file}
+print("Cleaning schedules")
+time_taken = extract_schedule(sys.argv[1])
+print("Took {0:.2f}s".format(time_taken))
+
+print("Extracting tiplocs")
+time_taken = extract_tiplocs(sys.argv[1])
+print("Took {0:.2f}s".format(time_taken))
