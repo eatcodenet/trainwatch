@@ -20,7 +20,31 @@ def stations_by_crs(data_file):
         station_list = json.load(lines)["locations"]
         for value in station_list:
             key = value["crs"]
+            result[key] = value
     return result
+
+
+def create_locations(tiploc_map, station_map):
+    result = []
+    for key in tiploc_map:
+        station = station_map.get(key, None)
+        lat_lon = {"lat": "0.0", "lon": "0.0"}
+        if station:
+            lat_lon = {"lat": station["lat"], "lon": station["lat"]}
+
+        t = tiploc_map.get(key)
+        result.append({"stanox": t["stanox"],
+                       "description": t["tps_description"],
+                       "crs": t["crs_code"],
+                       "tiploc": t["tiploc_code"],
+                       "latLon": lat_lon})
+    return result
+
+
+def write_locations(data_file, location_list):
+    locations_wrapper = {"locations": location_list}
+    with open(data_file, 'w') as outfile:
+        json.dump(locations_wrapper, outfile)
 
 
 print("Loading tiplocs")
@@ -30,3 +54,10 @@ print("len tiplocs", len(tiplocs))
 print("Loading stations")
 stations = stations_by_crs(sys.argv[2])
 print("len stations", len(stations))
+
+print("Creating locations")
+locations = create_locations(tiplocs, stations)
+print("len locations", len(locations))
+
+print("Writing location to file")
+write_locations(sys.argv[3], locations)
