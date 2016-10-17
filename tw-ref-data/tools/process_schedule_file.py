@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import json
 import sys
 import time
 from os import path
@@ -6,7 +7,7 @@ from os import path
 
 def extract_schedule(schedule_file):
     start = time.time()
-    cleaned_file = path.dirname(schedule_file) + path.sep + "schedules.cleaned"
+    cleaned_file = path.dirname(schedule_file) + path.sep + "schedules.json"
     with open(schedule_file, "r") as schedule:
         with open(cleaned_file, "w") as cleaned:
             for line in schedule:
@@ -17,13 +18,14 @@ def extract_schedule(schedule_file):
 
 def extract_tiplocs(schedule_file):
     start = time.time()
-    tiploc_file = path.dirname(schedule_file) + path.sep + "tiplocs.cleaned"
+    tiploc_file = path.dirname(schedule_file) + path.sep + "tiplocs.json"
     with open(schedule_file, "r") as schedule:
         with open(tiploc_file, "w") as tiplocs:
             for line in schedule:
                 if "TiplocV" in line:
                     tiplocs.write(line)
     return time.time() - start
+
 
 print("Cleaning schedules")
 time_taken = extract_schedule(sys.argv[1])
@@ -32,3 +34,4 @@ print("Took {0:.2f}s".format(time_taken))
 print("Extracting tiplocs")
 time_taken = extract_tiplocs(sys.argv[1])
 print("Took {0:.2f}s".format(time_taken))
+
