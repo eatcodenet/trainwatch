@@ -22,7 +22,7 @@ def extract_tiplocs(schedule_file):
     with open(schedule_file, "r") as schedule:
         with open(tiploc_file, "w") as tiplocs:
             for line in schedule:
-                if "TiplocV" in line:
+                if "TiplocV" in line and "stanox\":\"" in line:
                     tiplocs.write(line)
     return time.time() - start
 
@@ -34,4 +34,3 @@ print("Took {0:.2f}s".format(time_taken))
 print("Extracting tiplocs")
 time_taken = extract_tiplocs(sys.argv[1])
 print("Took {0:.2f}s".format(time_taken))
-
