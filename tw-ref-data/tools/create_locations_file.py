@@ -27,11 +27,8 @@ def stations_by_crs(data_file):
 def create_locations(tiploc_map, station_map):
     result = []
     for key in tiploc_map:
-        lat_lon = {"lat": "0.0", "lon": "0.0"}
-        station = station_map.get(key, None)
-        if station:
-            lat_lon = {"lat": station["lat"], "lon": station["lat"]}
-
+        station = station_map.get(key, {"lat": "0.0", "lon": "0.0"})
+        lat_lon = {"lat": station["lat"], "lon": station["lat"]}
         tiploc = tiploc_map.get(key)
         result.append({"stanox": tiploc["stanox"],
                        "description": tiploc["tps_description"],
