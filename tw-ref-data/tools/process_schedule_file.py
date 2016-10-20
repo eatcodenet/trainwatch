@@ -27,10 +27,15 @@ def extract_tiplocs(schedule_file):
     return time.time() - start
 
 
-print("Cleaning schedules")
-time_taken = extract_schedule(sys.argv[1])
-print("Took {0:.2f}s".format(time_taken))
+def main():
+    print("Cleaning schedules")
+    time_taken = extract_schedule(sys.argv[1])
+    print("Took {0:.2f}s".format(time_taken))
 
-print("Extracting tiplocs")
-time_taken = extract_tiplocs(sys.argv[1])
-print("Took {0:.2f}s".format(time_taken))
+    print("Extracting tiplocs")
+    time_taken = extract_tiplocs(sys.argv[1])
+    print("Took {0:.2f}s".format(time_taken))
+
+
+if __name__ == '__main__':
+    main()
