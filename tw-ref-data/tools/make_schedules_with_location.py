@@ -20,7 +20,7 @@ def load_schedules(data_file):
 def make_schedule(line):
     s = json.loads(line)["JsonScheduleV1"]
     locs = s["schedule_segment"]["schedule_location"]
-    id = s["CIF_train_uid"]
+    s_id = s["CIF_train_uid"]
     orig = next((l for l in locs if l["location_type"] == "LO"))
     dest = next((l for l in locs if l["location_type"] == "LT"))
     start_date = s["schedule_start_date"]
@@ -30,7 +30,7 @@ def make_schedule(line):
     is_passenger = "true" if sig_id else "false"
     service_code = s["schedule_segment"]["CIF_train_service_code"]
     atoc_code = ""
-    return {"id": id, "startDate": start_date, "endDate": end_date,
+    return {"id": s_id, "startDate": start_date, "endDate": end_date,
             "origin": orig["tiploc_code"],
             "destination": dest["tiploc_code"], "departure": orig["departure"],
             "arrival": dest["arrival"],
@@ -53,8 +53,11 @@ def main():
     start = time.time()
     schedules = load_schedules("/var/trainwatch/data/schedules.json")
     end = time.time() - start
-    print("took {0:.2f}s".format(end))
+    print("load schedules took {0:.2f}s".format(end))
+    start = time.time()
     write_to_file(schedules, locations)
+    end = time.time() - start
+    print("write schedules took {0:.2f}s".format(end))
 
 
 if __name__ == '__main__':
