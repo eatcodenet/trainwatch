@@ -44,7 +44,6 @@ def write_to_file(schedules, locations):
         for s in schedules:
             s["origin"] = locations.get(s["origin"])
             s["destination"] = locations.get(s["destination"])
-            print(s)
             json.dump(s, out)
             out.write("\n")
 
