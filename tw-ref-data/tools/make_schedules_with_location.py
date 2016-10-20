@@ -1,6 +1,5 @@
 import json
 import time
-from itertools import izip
 
 
 def load_locations(data_file):
@@ -10,11 +9,8 @@ def load_locations(data_file):
 
 
 def load_schedules(data_file):
-    schedules = []
     with open(data_file, "r") as sched_file:
-        for line in sched_file:
-            schedules.append(make_schedule(line))
-    return schedules
+        return list([make_schedule(line) for line in sched_file])
 
 
 def make_schedule(line):
@@ -26,7 +22,7 @@ def make_schedule(line):
     start_date = s["schedule_start_date"]
     end_date = s["schedule_end_date"]
     run_days = s["schedule_days_runs"]
-    sig_id = s["schedule_segment"]["signalling_id"];
+    sig_id = s["schedule_segment"]["signalling_id"]
     is_passenger = "true" if sig_id else "false"
     service_code = s["schedule_segment"]["CIF_train_service_code"]
     atoc_code = ""
