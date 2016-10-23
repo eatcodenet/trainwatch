@@ -36,10 +36,11 @@ def create_locations(tiploc_map, station_map):
     return result
 
 
-def write_locations(data_file, location_list):
-    locations_wrapper = {"locations": location_list}
-    with open(data_file, 'w') as outfile:
-        json.dump(locations_wrapper, outfile)
+def write_locations(data_file, locations):
+    with open(data_file, 'w') as out:
+        for l in locations:
+            json.dump(l, out)
+            out.write("\n")
 
 
 def main():

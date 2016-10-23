@@ -4,7 +4,7 @@ import time
 
 def load_locations(data_file):
     with open(data_file, "r") as loc_file:
-        locations = json.load(loc_file)["locations"]
+        locations = [json.loads(line) for line in loc_file]
         return {loc["tiploc"]: loc for loc in locations}
 
 
@@ -23,13 +23,15 @@ def make_schedule(line):
     end_date = s["schedule_end_date"]
     run_days = s["schedule_days_runs"]
     sig_id = s["schedule_segment"]["signalling_id"]
-    is_passenger = "true" if sig_id else "false"
     service_code = s["schedule_segment"]["CIF_train_service_code"]
-    atoc_code = ""
+    atoc_code = s["atoc_code"] 
+    is_passenger = "true" if sig_id else "false"
+    departure = orig["departure"][:2] + ":" + orig["departure"][-2:] 
+    arrival = dest["arrival"][:2] + ":" + dest["arrival"][-2:] 
     return {"id": s_id, "startDate": start_date, "endDate": end_date,
             "origin": orig["tiploc_code"],
-            "destination": dest["tiploc_code"], "departure": orig["departure"],
-            "arrival": dest["arrival"],
+            "destination": dest["tiploc_code"], "departure": departure,
+            "arrival": arrival,
             "runDays": run_days, "trainServiceCode": service_code,
             "atocCode": atoc_code, "isPassenger": is_passenger}
 

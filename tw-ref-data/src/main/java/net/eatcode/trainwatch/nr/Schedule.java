@@ -10,19 +10,19 @@ public class Schedule implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public String id;
-    public LocalDate startDate;
-    public LocalDate endDate;
-    public Location origin;
-    public Location destination;
-    public LocalTime departure;
-    public LocalTime arrival;
+//    public LocalDate startDate;
+//    public LocalDate endDate;
+//    public Location origin;
+//    public Location destination;
+//    public LocalTime departure;
+    public String arrival = null;
     public String trainServiceCode;
     public String atocCode;
     public String runDays;
     public Boolean isPassenger = Boolean.TRUE;
 
     public boolean isRunning() {
-        return endDate.isAfter(LocalDate.now());
+        return false;
     }
 
     public boolean isPassenger() {
@@ -42,11 +42,11 @@ public class Schedule implements Serializable {
                 Objects.equals(runDays, other.runDays);
     }
 
-    @Override
-    public String toString() {
-        return "Schedule [id=" + id + ", startDate=" + startDate + ", endDate=" + endDate + ", origin=" + origin
-                + ", departure=" + departure + ", destination=" + destination + ", arrival=" + arrival
-                + ", trainServiceCode=" + trainServiceCode + ", atocCode=" + atocCode + "]";
-    }
+//    @Override
+//    public String toString() {
+//        return "Schedule [id=" + id + ", startDate=" + startDate + ", endDate=" + endDate + ", origin=" + origin
+//                + ", departure=" + departure + ", destination=" + destination + ", arrival=" + arrival
+//                + ", trainServiceCode=" + trainServiceCode + ", atocCode=" + atocCode + "]";
+//    }
 
 }
