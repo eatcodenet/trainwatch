@@ -29,7 +29,7 @@ public class PopulateSchedulesApp {
 		new ScheduleRepositoryPopulator(scheduleRepo).populateFromFile(scheduleFileName)
 				.whenCompleteAsync((v, error) -> {
 					if (error == null) {
-						log.info("Done populating schedules!");
+						log.info("Done populating {} schedules", scheduleRepo.count());
 					} else {
 						log.error("Error populating schedules!", error);
 					}
@@ -42,7 +42,7 @@ public class PopulateSchedulesApp {
 
 	private static void checkUsage(String[] args) {
 		if (args.length != 2) {
-			System.out.println("USAGE: PopulateSchedulesApp hazelcastServers schedule-file");
+			System.err.println("USAGE: PopulateSchedulesApp hazelcastServers schedule-file");
 			System.exit(1);
 		}
 	}

@@ -21,30 +21,33 @@ def make_schedule(line):
     dest = next((l for l in locs if l["location_type"] == "LT"))
     start_date = s["schedule_start_date"]
     end_date = s["schedule_end_date"]
-    run_days = s["schedule_days_runs"]
+    #run_days = s["schedule_days_runs"]
     sig_id = s["schedule_segment"]["signalling_id"]
     service_code = s["schedule_segment"]["CIF_train_service_code"]
     atoc_code = s["atoc_code"] 
     is_passenger = "true" if sig_id else "false"
     return {"id": s_id,
+            "trainServiceCode": service_code,
             "startDate": start_date,
             "endDate": end_date,
             "origin": orig["tiploc_code"],
             "destination": dest["tiploc_code"],
             "departure": orig["departure"][:4],
             "arrival": dest["arrival"][:4],
-            "runDays": run_days, "trainServiceCode": service_code,
-            "atocCode": atoc_code, "isPassenger": is_passenger}
+            #"runDays": run_days,
+            "atocCode": atoc_code,
+            "isPassenger": is_passenger}
 
 
 def write_to_file(schedules, locations):
     with open("/var/trainwatch/data/schedules_with_locations.json",
               "w") as out:
         for s in schedules:
-            s["origin"] = locations.get(s["origin"])
-            s["destination"] = locations.get(s["destination"])
-            json.dump(s, out)
-            out.write("\n")
+            if s["isPassenger"] == "true":
+                s["origin"] = locations.get(s["origin"])
+                s["destination"] = locations.get(s["destination"])
+                json.dump(s, out)
+                out.write("\n")
 
 
 def main():

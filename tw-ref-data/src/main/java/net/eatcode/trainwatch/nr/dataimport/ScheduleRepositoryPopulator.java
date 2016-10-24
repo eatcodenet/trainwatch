@@ -38,13 +38,9 @@ class ScheduleRepositoryPopulator {
 	private CompletableFuture<Void> populateAsync(String scheduleFile) {
 		return CompletableFuture.runAsync(() -> {
 			try (Stream<String> lines = Files.lines(Paths.get(scheduleFile))) {
-				lines.map(this::toSchedule).forEach(this::addToRepo);
+				lines.parallel().map(this::toSchedule).forEach(this::addToRepo);
 			} catch (Exception e) {
 				log.error("location file parse error", e);
-			}
-		}).whenComplete((r, e) -> {
-			if (e != null) {
-				log.error("{}", e);
 			}
 		});
 	}

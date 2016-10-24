@@ -34,7 +34,7 @@ public class LocationPopulator {
 	private void populateAsync(String locationsFile, CompletableFuture<Void> result) {
 		CompletableFuture.runAsync(() -> {
 			try (Stream<String> lines = Files.lines(Paths.get(locationsFile))) {
-				lines.map(this::toLocation).forEach(this::addToRepo);
+				lines.parallel().map(this::toLocation).forEach(this::addToRepo);
 				result.complete(null);
 			} catch (Exception e) {
 				log.error("location file parse error", e);

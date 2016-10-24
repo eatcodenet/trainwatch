@@ -10,16 +10,16 @@ public class Schedule implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public String id;
+	public String trainServiceCode;
 	public LocalDate startDate;
 	public LocalDate endDate;
 	public Location origin;
 	public Location destination;
 	public LocalTime departure;
 	public LocalTime arrival;
-	public String trainServiceCode;
+	// public String runDays;
 	public String atocCode;
-	public String runDays;
-	public Boolean isPassenger = Boolean.TRUE;
+	public Boolean isPassenger;
 
 	public boolean isRunning() {
 		return endDate.isAfter(LocalDate.now().minusDays(1));
@@ -31,21 +31,24 @@ public class Schedule implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, trainServiceCode, runDays);
+		return Objects.hash(uniqueKey());
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		Schedule other = (Schedule) obj;
-		return Objects.equals(id, other.id) && Objects.equals(trainServiceCode, other.trainServiceCode)
-				&& Objects.equals(runDays, other.runDays);
+		return Objects.equals(uniqueKey(), other.uniqueKey());
 	}
 
 	@Override
 	public String toString() {
-		return "Schedule [id=" + id + ", startDate=" + startDate + ", endDate=" + endDate + ", origin=" + origin
-				+ ", departure=" + departure + ", destination=" + destination + ",	 arrival=" + arrival
-				+ ", trainServiceCode=" + trainServiceCode + ", atocCode=" + atocCode + "]";
+		return "Schedule [id=" + id + ", trainServiceCode=" + trainServiceCode + ", startDate=" + startDate
+				+ ", endDate=" + endDate + ", origin=" + origin + ", destination=" + destination + ", departure="
+				+ departure + ", arrival=" + arrival + ", atocCode=" + atocCode + ", isPassenger=" + isPassenger + "]";
+	}
+
+	public String uniqueKey() {
+		return id + "-" + trainServiceCode + "-" + startDate + "-" + endDate;
 	}
 
 }

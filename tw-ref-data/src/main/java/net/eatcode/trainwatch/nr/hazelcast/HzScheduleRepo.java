@@ -8,24 +8,26 @@ import net.eatcode.trainwatch.nr.ScheduleRepo;
 
 public class HzScheduleRepo implements ScheduleRepo {
 
-    private final IMap<String, Schedule> map;
+	private final IMap<String, Schedule> map;
 
-    public HzScheduleRepo(HazelcastInstance client) {
-        this.map = client.getMap("schedule");
-    }
+	public HzScheduleRepo(HazelcastInstance client) {
+		this.map = client.getMap("schedule");
+	}
 
-    @Override
-    public void put(Schedule schedule) {
-        map.set(schedule.id + schedule.trainServiceCode, schedule);
-    }
+	@Override
+	public void put(Schedule schedule) {
+		map.set(schedule.uniqueKey(), schedule);
+	}
 
-    @Override
-    public Schedule getByIdAndServiceCode(String id, String serviceCode) {
-        return map.get(id + serviceCode);
-    }
+	@Override
+	@Deprecated
+	// use start date etc
+	public Schedule getByIdAndServiceCode(String id, String serviceCode) {
+		return map.get(id + serviceCode);
+	}
 
-    @Override
-    public Integer count() {
-        return map.size();
-    }
+	@Override
+	public Integer count() {
+		return map.size();
+	}
 }
