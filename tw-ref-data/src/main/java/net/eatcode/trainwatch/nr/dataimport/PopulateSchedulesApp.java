@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import com.hazelcast.core.HazelcastInstance;
 
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
-import net.eatcode.trainwatch.nr.hazelcast.HzLocationRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
 
 public class PopulateSchedulesApp {

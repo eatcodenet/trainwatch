@@ -2,6 +2,8 @@ package net.eatcode.trainwatch.nr.dataimport;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
@@ -18,7 +20,8 @@ class ScheduleRepositoryPopulator {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-	private final Gson gson = new GsonBuilder().create();
+	private final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+			.registerTypeAdapter(LocalTime.class, new LocalTimeDeserializer()).create();
 
 	private final ScheduleRepo scheduleRepo;
 
@@ -47,13 +50,11 @@ class ScheduleRepositoryPopulator {
 	}
 
 	private Schedule toSchedule(String json) {
-		System.err.println(json);
 		return gson.fromJson(json, Schedule.class);
 
 	}
 
 	private void addToRepo(Schedule schedule) {
-		System.err.println(schedule);
-		// scheduleRepo.put(schedule);
+		scheduleRepo.put(schedule);
 	}
 }

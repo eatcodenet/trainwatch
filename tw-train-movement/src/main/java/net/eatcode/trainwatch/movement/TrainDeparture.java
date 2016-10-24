@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 import net.eatcode.trainwatch.nr.Location;
@@ -11,106 +12,111 @@ import net.eatcode.trainwatch.nr.Schedule;
 
 public class TrainDeparture implements Serializable, Comparable<TrainDeparture> {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private final String trainId;
-    private final Location origin;
-    private final LocalTime departure;
+	private final String trainId;
+	private final Location origin;
+	private final LocalTime departure;
 
-    private final Location destination;
-    private final LocalTime arrival;
+	private final Location destination;
+	private final LocalTime arrival;
 
-    private final LocalDateTime wtt;
+	private final LocalDateTime wtt;
 
-    private final long cutOffInMins = 3;
+	private final long cutOffInMins = 3;
 
-    // TODO: check whether expected departure is needed...
-    public TrainDeparture(String trainId, String expectedDeparture, Schedule schedule) {
-        this.trainId = trainId;
-        this.origin = schedule.origin;
-        this.wtt = makeDateFrom(expectedDeparture);
-        this.departure = wtt.toLocalTime();
-        this.destination = schedule.destination;
-        this.arrival = schedule.arrival;
-    }
+	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
-    public LocalDateTime scheduledDeparture() {
-        return wtt;
-    }
+	public TrainDeparture(String trainId, String expectedDeparture, Schedule schedule) {
+		this.trainId = trainId;
+		this.origin = schedule.origin;
+		this.wtt = makeDateTimeFrom(expectedDeparture);
+		this.departure = wtt.toLocalTime();
+		this.destination = schedule.destination;
+		this.arrival = makeTimeFrom(expectedDeparture);
+	}
 
-    public String trainId() {
-        return trainId;
-    }
+	public LocalDateTime scheduledDeparture() {
+		return wtt;
+	}
 
-    public String originCrs() {
-        if (origin == null) {
-            return "";
-        }
-        return origin.crs;
-    }
+	public String trainId() {
+		return trainId;
+	}
 
-    public String originName() {
-        return origin.description;
-    }
+	public String originCrs() {
+		if (origin == null) {
+			return "";
+		}
+		return origin.crs;
+	}
 
-    public Location origin() {
-        return origin;
-    }
+	public String originName() {
+		return origin.description;
+	}
 
-    public String destCrs() {
-        if (destination == null) {
-            return "";
-        }
-        return destination.crs;
-    }
+	public Location origin() {
+		return origin;
+	}
 
-    public String destName() {
-        return destination.description;
-    }
+	public String destCrs() {
+		if (destination == null) {
+			return "";
+		}
+		return destination.crs;
+	}
 
-    public LocalTime departure() {
-        return departure;
-    }
+	public String destName() {
+		return destination.description;
+	}
 
-    private LocalDateTime makeDateFrom(String timestamp) {
-        return LocalDateTime.ofEpochSecond(Long.parseLong(timestamp) / 1000, 0, ZoneOffset.UTC);
-    }
+	public LocalTime departure() {
+		return departure;
+	}
 
-    @Override
-    public String toString() {
-        return new Formatted().format(this);
-    }
+	private LocalDateTime makeDateTimeFrom(String timestamp) {
+		return LocalDateTime.ofEpochSecond(Long.parseLong(timestamp) / 1000, 0, ZoneOffset.UTC);
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(trainId);
-    }
+	private LocalTime makeTimeFrom(String timestamp) {
+		return LocalTime.parse(timestamp, formatter);
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        return Objects.equals(trainId, ((TrainDeparture) obj).trainId);
-    }
+	@Override
+	public String toString() {
+		return new Formatted().format(this);
+	}
 
-    @Override
-    public int compareTo(TrainDeparture o) {
-        return scheduledDeparture().compareTo(o.scheduledDeparture());
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(trainId);
+	}
 
-    public boolean hasDepartedAccordingToSchedule() {
-        LocalTime cutOff = departure.plusMinutes(cutOffInMins);
-        return LocalTime.now().isAfter(cutOff);
-    }
+	@Override
+	public boolean equals(Object obj) {
+		return Objects.equals(trainId, ((TrainDeparture) obj).trainId);
+	}
 
-    static class Formatted {
+	@Override
+	public int compareTo(TrainDeparture o) {
+		return scheduledDeparture().compareTo(o.scheduledDeparture());
+	}
 
-        public String format(TrainDeparture t) {
-            String orig = t.origin == null ? "N/A" : t.origin.description;
-            String oCrs = t.originCrs().equals("") ? "---" : t.originCrs();
-            String dCrs = t.destCrs().equals("") ? "---" : t.destCrs();
-            String dest = t.destination == null ? "N/A" : t.destination.description;
-            return String.format("%1$s %2$-3s %3$-32s %4$s %5$-3s %6$-32s",
-                    t.departure, oCrs, orig, t.arrival, dCrs, dest);
-        }
-    }
+	public boolean hasDepartedAccordingToSchedule() {
+		LocalTime cutOff = departure.plusMinutes(cutOffInMins);
+		return LocalTime.now().isAfter(cutOff);
+	}
+
+	static class Formatted {
+
+		public String format(TrainDeparture t) {
+			String orig = t.origin == null ? "N/A" : t.origin.description;
+			String oCrs = t.originCrs().equals("") ? "---" : t.originCrs();
+			String dCrs = t.destCrs().equals("") ? "---" : t.destCrs();
+			String dest = t.destination == null ? "N/A" : t.destination.description;
+			return String.format("%1$s %2$-3s %3$-32s %4$s %5$-3s %6$-32s", t.departure, oCrs, orig, t.arrival, dCrs,
+					dest);
+		}
+	}
 
 }

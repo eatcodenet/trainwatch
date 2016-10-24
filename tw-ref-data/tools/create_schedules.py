@@ -15,8 +15,8 @@ def load_schedules(data_file):
 
 def make_schedule(line):
     s = json.loads(line)["JsonScheduleV1"]
-    locs = s["schedule_segment"]["schedule_location"]
     s_id = s["CIF_train_uid"]
+    locs = s["schedule_segment"]["schedule_location"]
     orig = next((l for l in locs if l["location_type"] == "LO"))
     dest = next((l for l in locs if l["location_type"] == "LT"))
     start_date = s["schedule_start_date"]
@@ -26,12 +26,13 @@ def make_schedule(line):
     service_code = s["schedule_segment"]["CIF_train_service_code"]
     atoc_code = s["atoc_code"] 
     is_passenger = "true" if sig_id else "false"
-    departure = orig["departure"][:2] + ":" + orig["departure"][-2:] 
-    arrival = dest["arrival"][:2] + ":" + dest["arrival"][-2:] 
-    return {"id": s_id, "startDate": start_date, "endDate": end_date,
+    return {"id": s_id,
+            "startDate": start_date,
+            "endDate": end_date,
             "origin": orig["tiploc_code"],
-            "destination": dest["tiploc_code"], "departure": departure,
-            "arrival": arrival,
+            "destination": dest["tiploc_code"],
+            "departure": orig["departure"][:4],
+            "arrival": dest["arrival"][:4],
             "runDays": run_days, "trainServiceCode": service_code,
             "atocCode": atoc_code, "isPassenger": is_passenger}
 

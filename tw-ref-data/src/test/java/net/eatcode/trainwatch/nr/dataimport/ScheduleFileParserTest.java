@@ -13,6 +13,7 @@ import net.eatcode.trainwatch.nr.TrustSchedule;
 public class ScheduleFileParserTest {
 
     @Test
+    // TODO : update
     public void parsesFile() throws Exception {
         List<TrustSchedule> result = new ArrayList<>();
         ScheduleFileParser parse = new ScheduleFileParser("src/test/resources/sampledata/10-valid-schedules.json");
