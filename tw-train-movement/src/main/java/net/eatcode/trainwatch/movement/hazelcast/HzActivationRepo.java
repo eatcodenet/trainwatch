@@ -40,7 +40,7 @@ public class HzActivationRepo implements ActivationRepo {
 
 	@Override
 	public void put(TrainActivation activation) {
-		log.debug("PUT: {} {}", activation.trainId, activation.scheduleId);
+		log.debug("PUT: {} {} {} {}", activation.trainId, activation.scheduleId, activation.startDate, activation.endDate);
 		map.set(activation.trainId, activation);
 	}
 
