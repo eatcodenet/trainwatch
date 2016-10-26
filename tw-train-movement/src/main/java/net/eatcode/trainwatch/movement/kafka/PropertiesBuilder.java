@@ -42,6 +42,7 @@ class PropertiesBuilder {
 		properties.put(StreamsConfig.APPLICATION_ID_CONFIG, streamName);
 		properties.put(StreamsConfig.KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
 		properties.put(StreamsConfig.VALUE_SERDE_CLASS_CONFIG, Serdes.ByteArray().getClass().getName());
+		System.err.println(properties);
 		return this;
 	}
 
