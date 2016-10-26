@@ -15,15 +15,15 @@ public class HzCleanup {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final long interval = 60 * 3;
+    private final long interval = 60 * 5;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     private final MovementRepo movementRepo;
 
     private final ActivationRepo activationRepo;
 
-    private final int _2hrs = 2;
-    private final int _36hrs = 36;
+    private final int hours12 = 12;
+    private final int hours36 = 36;
 
     public HzCleanup(MovementRepo movementRepo, ActivationRepo activationRepo) {
         this.movementRepo = movementRepo;
@@ -32,8 +32,8 @@ public class HzCleanup {
 
     public void start() {
         log.info("Starting movement cleanup thread");
-        scheduler.scheduleAtFixedRate(() -> movementRepo.evictOlderThan(_2hrs), interval, interval, SECONDS);
-        scheduler.scheduleAtFixedRate(() -> activationRepo.evictOlderThan(_36hrs), interval, interval, SECONDS);
+        scheduler.scheduleAtFixedRate(() -> movementRepo.evictOlderThan(hours12), interval, interval, SECONDS);
+        scheduler.scheduleAtFixedRate(() -> activationRepo.evictOlderThan(hours36), interval, interval, SECONDS);
     }
 
 }
