@@ -20,44 +20,43 @@ import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
 
 public class TrainMovementApp {
 
-    private static final Logger log = LoggerFactory.getLogger(TrainMovementApp.class);
+	private static final Logger log = LoggerFactory.getLogger(TrainMovementApp.class);
 
-    public static void main(String[] args) throws InterruptedException {
-        String kafkaServers = args[0];
-        String zookeeperServers = args[1];
-        String hazelcastServers = args[2];
-        String networkRailUsername = args[3];
-        String networkRailPassword = args[4];
-        checkTopicExists(zookeeperServers);
+	public static void main(String[] args) throws InterruptedException {
+		String kafkaServers = args[0];
+		String zookeeperServers = args[1];
+		String hazelcastServers = args[2];
+		String networkRailUsername = args[3];
+		String networkRailPassword = args[4];
+		checkTopicExists(zookeeperServers);
 
-        HazelcastInstance hzClient = new HzClientBuilder().build(hazelcastServers);
-        ActivationRepo activationRepo = new HzActivationRepo(hzClient);
-        DeparturesRepo departuresRepo = new HzDeparturesRepo(hzClient);
-        MovementRepo movementRepo = new HzMovementRepo(hzClient);
+		HazelcastInstance hzClient = new HzClientBuilder().build(hazelcastServers);
+		ActivationRepo activationRepo = new HzActivationRepo(hzClient);
+		DeparturesRepo departuresRepo = new HzDeparturesRepo(hzClient);
+		MovementRepo movementRepo = new HzMovementRepo(hzClient);
 
-        Runnable movementProducer = () -> {
-            log.info("running train movement producer");
-            new TrainMovementProducer(kafkaServers, activationRepo,
-                    new HzScheduleRepo(hzClient), new HzLocationRepo(hzClient), departuresRepo)
-                            .produceMessages(networkRailUsername, networkRailPassword);
-        };
+		Runnable movementProducer = () -> {
+			log.info("running train movement producer");
+			new TrainMovementProducer(kafkaServers, activationRepo, new HzScheduleRepo(hzClient),
+					new HzLocationRepo(hzClient), departuresRepo).produceMessages(networkRailUsername,
+							networkRailPassword);
+		};
 
-        Runnable movements = () -> {
-            log.info("running movement stream");
-            new TrainMovementStream(kafkaServers,
-                    new TrainMovementProcessor(movementRepo, activationRepo, departuresRepo))
-                            .processMessages();
-        };
+		Runnable movementStream = () -> {
+			log.info("running movement stream");
+			new TrainMovementStream(kafkaServers,
+					new TrainMovementProcessor(movementRepo, activationRepo, departuresRepo)).processMessages();
+		};
 
-        new Thread(movementProducer).start();
-        new Thread(movements).start();
-        new HzCleanup(movementRepo, activationRepo).start();
-    }
+		new Thread(movementProducer).start();
+		new Thread(movementStream).start();
+		new HzCleanup(movementRepo, activationRepo).start();
+	}
 
-    private static void checkTopicExists(String zookeeperServers) {
-        Topics topics = new Topics(zookeeperServers);
-        if (!topics.topicExists(trainMovement)) {
-            throw new RuntimeException("Topic does not exist: " + trainMovement);
-        }
-    }
+	private static void checkTopicExists(String zookeeperServers) {
+		Topics topics = new Topics(zookeeperServers);
+		if (!topics.topicExists(trainMovement)) {
+			throw new RuntimeException("Topic does not exist: " + trainMovement);
+		}
+	}
 }

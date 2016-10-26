@@ -14,35 +14,34 @@ import net.eatcode.trainwatch.movement.TrainMovement;
 
 public class TrainMovementStream {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
-    private final String kafkaServers;
-    private final TrainMovementProcessor movementProcessor;
+	private final Logger log = LoggerFactory.getLogger(getClass());
+	private final String kafkaServers;
+	private final TrainMovementProcessor movementProcessor;
 
-    public TrainMovementStream(String kafkaServers, TrainMovementProcessor processor) {
-        this.kafkaServers = kafkaServers;
-        this.movementProcessor = processor;
-    }
+	public TrainMovementStream(String kafkaServers, TrainMovementProcessor processor) {
+		this.kafkaServers = kafkaServers;
+		this.movementProcessor = processor;
+	}
 
-    public void processMessages() {
-        try {
-            startStreaming();
-        } catch (Exception e) {
-            log.error("{}", e);
-        }
-    }
+	public void processMessages() {
+		try {
+			startStreaming();
+		} catch (Exception e) {
+			log.error("{}", e);
+		}
+	}
 
-    private void startStreaming() {
-        log.info("Kafka servers: {}", kafkaServers);
-        Properties props = new PropertiesBuilder().forStream(kafkaServers, "trainMovements").build();
+	private void startStreaming() {
+		log.info("Kafka servers: {}", kafkaServers);
+		Properties props = new PropertiesBuilder().forStream(kafkaServers, "trainMovements").build();
 
-        KStreamBuilder builder = new KStreamBuilder();
-        KStream<String, byte[]> movements = builder.stream(Serdes.String(), Serdes.ByteArray(), Topic.trainMovement);
-        movements
-                .mapValues(value -> (TrainMovement) SerializationUtils.deserialize(value))
-                .process(() -> movementProcessor);
+		KStreamBuilder builder = new KStreamBuilder();
+		KStream<String, byte[]> movements = builder.stream(Serdes.String(), Serdes.ByteArray(), Topic.trainMovement);
+		movements.mapValues(value -> (TrainMovement) SerializationUtils.deserialize(value))
+				.process(() -> movementProcessor);
 
-        log.info("Starting train movement stream...");
-        new KafkaStreams(builder, props).start();
-    }
+		log.info("Starting train movement stream...");
+		new KafkaStreams(builder, props).start();
+	}
 
 }

@@ -105,10 +105,11 @@ public class TrainMovement implements Serializable, Comparable<TrainMovement> {
 		private final DateTimeFormatter sdf = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm");
 
 		public String format(TrainMovement t) {
+			System.err.println("TM: " + t.trainId() + "|" + t.originCrs() + "|" +t.destCrs());
 			String orig = t.origin == null ? "N/A" : t.origin.description;
+			String dest = t.destination == null ? "N/A" : t.destination.description;
 			String oCrs = t.originCrs().equals("") ? "---" : t.originCrs();
 			String dCrs = t.destCrs().equals("") ? "---" : t.destCrs();
-			String dest = t.destination == null ? "N/A" : t.destination.description;
 			String tstm = sdf.format(t.timestamp);
 			String trid = t.trainId;
 			return String.format("%1$s %2$-3s %3$-32s %4$s %5$-3s %6$-32s %7$2dm %8$s %9$s", t.departure, oCrs, orig,
