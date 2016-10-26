@@ -17,16 +17,11 @@ public class Schedule implements Serializable {
 	public Location destination;
 	public LocalTime departure;
 	public LocalTime arrival;
-	// public String runDays;
 	public String atocCode;
-	public Boolean isPassenger;
+	public Boolean isPassenger = Boolean.TRUE;
 
 	public boolean isRunning() {
 		return endDate.isAfter(LocalDate.now().minusDays(1));
-	}
-
-	public boolean isPassenger() {
-		return isPassenger;
 	}
 
 	@Override
@@ -48,7 +43,7 @@ public class Schedule implements Serializable {
 	}
 
 	public String uniqueKey() {
-		return id + "-" + trainServiceCode + "-" + startDate + "-" + endDate;
+		return id + trainServiceCode + startDate + endDate;
 	}
 
 }

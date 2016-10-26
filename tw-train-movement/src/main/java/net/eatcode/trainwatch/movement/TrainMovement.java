@@ -39,7 +39,7 @@ public class TrainMovement implements Serializable, Comparable<TrainMovement> {
 		this.arrival = schedule.arrival;
 		this.hasArrived = Boolean.valueOf(terminated);
 		this.delay = Integer.parseInt(delay == null ? "0" : delay);
-		this.isPassenger = schedule.isPassenger();
+		this.isPassenger = schedule.isPassenger;
 	}
 
 	public LocalTime departure() {

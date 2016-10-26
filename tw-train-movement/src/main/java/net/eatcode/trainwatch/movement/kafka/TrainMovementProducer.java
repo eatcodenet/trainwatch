@@ -33,97 +33,96 @@ import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
 
 public class TrainMovementProducer {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final KafkaProducer<String, byte[]> producer;
-    private final TrustMessageParser parser = new GsonTrustMessageParser();
-    private final ActivationRepo activationRepo;
-    private final LocationRepo locationRepo;
-    private final ScheduleRepo scheduleRepo;
-    private final DeparturesRepo departuresRepo;
+	private final KafkaProducer<String, byte[]> producer;
+	private final TrustMessageParser parser = new GsonTrustMessageParser();
+	private final ActivationRepo activationRepo;
+	private final LocationRepo locationRepo;
+	private final ScheduleRepo scheduleRepo;
+	private final DeparturesRepo departuresRepo;
 
-    public TrainMovementProducer(String kafkaServers, ActivationRepo activationRepo, ScheduleRepo scheduleRepo,
-            LocationRepo locationRepo, DeparturesRepo departuresRepo) {
-        this.activationRepo = activationRepo;
-        this.scheduleRepo = scheduleRepo;
-        this.locationRepo = locationRepo;
-        this.departuresRepo = departuresRepo;
-        this.producer = new KafkaProducer<>(new PropertiesBuilder().forProducer(kafkaServers).build());
-    }
+	public TrainMovementProducer(String kafkaServers, ActivationRepo activationRepo, ScheduleRepo scheduleRepo,
+			LocationRepo locationRepo, DeparturesRepo departuresRepo) {
+		this.activationRepo = activationRepo;
+		this.scheduleRepo = scheduleRepo;
+		this.locationRepo = locationRepo;
+		this.departuresRepo = departuresRepo;
+		this.producer = new KafkaProducer<>(new PropertiesBuilder().forProducer(kafkaServers).build());
+	}
 
-    public void produceMessages(String nrUsername, String nrPassword) {
-        TrustMessagesStomp stomp = new TrustMessagesStomp(nrUsername, nrPassword);
-        log.info("created stomp service");
-        stomp.subscribe(movements -> {
-            parser.parseJsonArray(movements).forEach((tm) -> sendMessage(tm));
-        });
-    }
+	public void produceMessages(String nrUsername, String nrPassword) {
+		TrustMessagesStomp stomp = new TrustMessagesStomp(nrUsername, nrPassword);
+		log.info("created stomp service");
+		stomp.subscribe(movements -> {
+			parser.parseJsonArray(movements).forEach((tm) -> sendMessage(tm));
+		});
+	}
 
-    private void sendMessage(TrustMovementMessage msg) {
-        if (msg.isActivation()) {
-            activationRepo.put(new TrainActivation(msg.body.train_id, msg.body.train_service_code, msg.body.train_uid));
-            Optional<Schedule> schedule = lookupSchedule(msg);
-            departuresRepo.put(schedule
-                    .map(s -> new TrainDeparture(msg.body.train_id, msg.body.origin_dep_timestamp, s)).get());
-        } else {
-            try {
-                trainMovementFrom(msg).map(this::toByteArray).ifPresent(data -> {
-                    producer.send(
-                            new ProducerRecord<>(Topic.trainMovement, msg.body.train_service_code, data.get()));
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
+	private void sendMessage(TrustMovementMessage msg) {
+		if (msg.isActivation()) {
+			activationRepo.put(new TrainActivation(msg.body.train_id, msg.body.train_service_code, msg.body.train_uid,
+					msg.body.schedule_start_date, msg.body.schedule_end_date));
+			Optional<Schedule> schedule = lookupSchedule(msg);
+			departuresRepo.put(
+					schedule.map(s -> new TrainDeparture(msg.body.train_id, msg.body.origin_dep_timestamp, s)).get());
+		} else {
+			try {
+				trainMovementFrom(msg).map(this::toByteArray).ifPresent(data -> {
+					producer.send(new ProducerRecord<>(Topic.trainMovement, msg.body.train_service_code, data.get()));
+				});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-    private Optional<byte[]> toByteArray(TrainMovement msg) {
-        return Optional.of(SerializationUtils.serialize(msg));
-    }
+	private Optional<byte[]> toByteArray(TrainMovement msg) {
+		return Optional.of(SerializationUtils.serialize(msg));
+	}
 
-    private Optional<TrainMovement> trainMovementFrom(TrustMovementMessage msg) {
-        Optional<Schedule> schedule = lookupSchedule(msg);
-        return schedule.map(s -> {
-            Location current = locationRepo.getByStanox(msg.body.loc_stanox);
-            return new TrainMovement(msg.body.train_id, dateTime(msg),
-                    current, msg.body.timetable_variation, msg.body.train_terminated, s);
-        });
-    }
+	private Optional<TrainMovement> trainMovementFrom(TrustMovementMessage msg) {
+		Optional<Schedule> schedule = lookupSchedule(msg);
+		return schedule.map(s -> {
+			Location current = locationRepo.getByStanox(msg.body.loc_stanox);
+			return new TrainMovement(msg.body.train_id, dateTime(msg), current, msg.body.timetable_variation,
+					msg.body.train_terminated, s);
+		});
+	}
 
-    public Optional<Schedule> lookupSchedule(TrustMovementMessage msg) {
-        Optional<TrainActivation> optional = activationRepo.get(msg.body.train_id);
-        return optional
-                .map(ta -> scheduleRepo.getByIdAndServiceCode(ta.scheduleId(), ta.serviceCode()));
-    }
+	public Optional<Schedule> lookupSchedule(TrustMovementMessage msg) {
+		Optional<TrainActivation> optional = activationRepo.get(msg.body.train_id);
+		return optional.map(ta -> scheduleRepo.getBy(ta.scheduleId, ta.serviceCode, ta.startDate, ta.endDate));
+	}
 
-    private LocalDateTime dateTime(TrustMovementMessage msg) {
-        if (msg.body.actual_timestamp == null) {
-            return LocalDateTime.now();
-        }
-        return LocalDateTime.ofEpochSecond(Long.parseLong(msg.body.actual_timestamp) / 1000, 0, ZoneOffset.UTC);
-    }
+	private LocalDateTime dateTime(TrustMovementMessage msg) {
+		if (msg.body.actual_timestamp == null) {
+			return LocalDateTime.now();
+		}
+		return LocalDateTime.ofEpochSecond(Long.parseLong(msg.body.actual_timestamp) / 1000, 0, ZoneOffset.UTC);
+	}
 
-    public static void main(String[] args) {
-        String kafkaServers = args[0];
-        String zookeeperServers = args[1];
-        String hazelcastServers = args[2];
-        String networkRailUsername = args[3];
-        String networkRailPassword = args[4];
-        checkTopicExists(zookeeperServers);
-        HazelcastInstance hzClient = new HzClientBuilder().build(hazelcastServers);
-        ActivationRepo activationRepo = new HzActivationRepo(hzClient);
-        ScheduleRepo scheduleRepo = new HzScheduleRepo(hzClient);
-        LocationRepo locationRepo = new HzLocationRepo(hzClient);
-        DeparturesRepo departuresRepo = new HzDeparturesRepo(hzClient);
-        new TrainMovementProducer(kafkaServers, activationRepo, scheduleRepo, locationRepo, departuresRepo)
-                .produceMessages(networkRailUsername, networkRailPassword);
-    }
+	public static void main(String[] args) {
+		String kafkaServers = args[0];
+		String zookeeperServers = args[1];
+		String hazelcastServers = args[2];
+		String networkRailUsername = args[3];
+		String networkRailPassword = args[4];
+		checkTopicExists(zookeeperServers);
+		HazelcastInstance hzClient = new HzClientBuilder().build(hazelcastServers);
+		ActivationRepo activationRepo = new HzActivationRepo(hzClient);
+		ScheduleRepo scheduleRepo = new HzScheduleRepo(hzClient);
+		LocationRepo locationRepo = new HzLocationRepo(hzClient);
+		DeparturesRepo departuresRepo = new HzDeparturesRepo(hzClient);
+		new TrainMovementProducer(kafkaServers, activationRepo, scheduleRepo, locationRepo, departuresRepo)
+				.produceMessages(networkRailUsername, networkRailPassword);
+	}
 
-    private static void checkTopicExists(String zookeeperServers) {
-        Topics topics = new Topics(zookeeperServers);
-        if (!topics.topicExists(Topic.trainMovement)) {
-            throw new RuntimeException("Topic does not exist: " + Topic.trainMovement);
-        }
+	private static void checkTopicExists(String zookeeperServers) {
+		Topics topics = new Topics(zookeeperServers);
+		if (!topics.topicExists(Topic.trainMovement)) {
+			throw new RuntimeException("Topic does not exist: " + Topic.trainMovement);
+		}
 
-    }
+	}
 }

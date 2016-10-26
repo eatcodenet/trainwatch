@@ -6,54 +6,44 @@ import java.util.Objects;
 
 public class TrainActivation implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private final String trainId;
-    private final String scheduleId;
-    private final String serviceCode;
-    private final LocalDateTime timestamp = LocalDateTime.now();
+	public final String trainId;
+	public final String scheduleId;
+	public final String serviceCode;
+	public final String startDate;
+	public final String endDate;
 
-    public TrainActivation(String trainId, String serviceCode, String scheduleId) {
-        this.trainId = trainId;
-        this.serviceCode = serviceCode;
-        this.scheduleId = scheduleId;
-    }
+	private final LocalDateTime timestamp = LocalDateTime.now();
 
-    public String trainId() {
-        return trainId;
-    }
+	public TrainActivation(String trainId, String serviceCode, String scheduleId, String start, String end) {
+		this.trainId = trainId;
+		this.serviceCode = serviceCode;
+		this.scheduleId = scheduleId;
+		this.startDate = start;
+		this.endDate = end;
+	}
 
-    public String serviceCode() {
-        return serviceCode;
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(trainId, serviceCode, scheduleId);
+	}
 
-    public String scheduleId() {
-        return scheduleId;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		TrainActivation other = (TrainActivation) obj;
+		return Objects.equals(trainId, other.trainId) && Objects.equals(serviceCode, other.serviceCode)
+				&& Objects.equals(scheduleId, other.scheduleId);
+	}
 
+	public LocalDateTime timestamp() {
+		return this.timestamp;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(trainId, serviceCode, scheduleId);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        TrainActivation other = (TrainActivation) obj;
-        return Objects.equals(trainId, other.trainId) && Objects.equals(serviceCode, other.serviceCode)
-                && Objects.equals(scheduleId, other.scheduleId);
-    }
-
-    public LocalDateTime timestamp() {
-        return this.timestamp;
-    }
-
-    @Override
-    public String toString() {
-        return "TrainActivation [trainId=" + trainId + ", scheduleId=" + scheduleId + ", serviceCode=" + serviceCode
-                + "]";
-    }
-
-
+	@Override
+	public String toString() {
+		return "TrainActivation [trainId=" + trainId + ", scheduleId=" + scheduleId + ", serviceCode=" + serviceCode
+				+ "]";
+	}
 
 }

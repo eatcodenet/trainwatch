@@ -4,7 +4,8 @@ public interface ScheduleRepo {
 
     void put(Schedule schedule);
 
-    Schedule getByIdAndServiceCode(String id, String trainServiceCode);
+    Schedule getBy(String id, String trainServiceCode, String start, String end);
+    
 
     Integer count();
 }

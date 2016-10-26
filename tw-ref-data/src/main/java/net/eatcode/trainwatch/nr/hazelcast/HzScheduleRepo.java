@@ -20,10 +20,9 @@ public class HzScheduleRepo implements ScheduleRepo {
 	}
 
 	@Override
-	@Deprecated
-	// use start date etc
-	public Schedule getByIdAndServiceCode(String id, String serviceCode) {
-		return map.get(id + serviceCode);
+
+	public Schedule getBy(String id, String serviceCode, String start, String end) {
+		return map.get(id + serviceCode + start + end);
 	}
 
 	@Override
