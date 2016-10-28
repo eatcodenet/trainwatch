@@ -64,6 +64,7 @@ public class TrainMovementProducer {
 			activationRepo.put(new TrainActivation(msg.body.train_id, msg.body.train_service_code, msg.body.train_uid,
 					msg.body.schedule_start_date, msg.body.schedule_end_date));
 			Optional<Schedule> schedule = lookupSchedule(msg);
+			log.debug("SCHED: {}", schedule);
 			departuresRepo.put(
 					schedule.map(s -> new TrainDeparture(msg.body.train_id, msg.body.origin_dep_timestamp, s)).get());
 		} else {
@@ -72,7 +73,7 @@ public class TrainMovementProducer {
 					producer.send(new ProducerRecord<>(Topic.trainMovement, msg.body.train_service_code, data.get()));
 				});
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("{}, e);
 			}
 		}
 	}

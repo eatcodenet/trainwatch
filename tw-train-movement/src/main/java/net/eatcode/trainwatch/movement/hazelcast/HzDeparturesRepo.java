@@ -24,6 +24,8 @@ public class HzDeparturesRepo implements DeparturesRepo {
         if (hasBothCrsCodes(td)) {
             log.debug("PUT: {}", td);
             map.set(td.trainId(), td);
+        } else {
+        	log.warn("Departure does not gave both crs codes: {}", td);
         }
     }
 
@@ -31,8 +33,8 @@ public class HzDeparturesRepo implements DeparturesRepo {
     public void delete(String trainId) {
         TrainDeparture trainDeparture = map.get(trainId);
         if ((trainDeparture != null) && trainDeparture.hasDepartedAccordingToSchedule()) {
-            log.debug("DELETE {}", trainId);
-            map.delete(trainId);
+            //log.debug("DELETE {}", trainId);
+            //map.delete(trainId);
         }
     }
 
