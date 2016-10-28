@@ -71,7 +71,7 @@ public class TrustMovementMessage {
 		public String train_id;
 		public String train_service_code;
 		public String train_terminated;
-		// public String variation_status;
+		public String variation_status;
 
 	}
 

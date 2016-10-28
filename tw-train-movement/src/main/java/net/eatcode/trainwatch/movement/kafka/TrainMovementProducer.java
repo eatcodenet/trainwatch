@@ -85,8 +85,9 @@ public class TrainMovementProducer {
 		Optional<Schedule> schedule = lookupSchedule(msg);
 		return schedule.map(s -> {
 			Location current = locationRepo.getByStanox(msg.body.loc_stanox);
-			return new TrainMovement(msg.body.train_id, dateTime(msg), current, msg.body.timetable_variation,
-					msg.body.train_terminated, s);
+			String delay = msg.body.variation_status.equals("EARLY") ? "-" + msg.body.timetable_variation
+					: msg.body.timetable_variation;
+			return new TrainMovement(msg.body.train_id, dateTime(msg), current, delay, msg.body.train_terminated, s);
 		});
 	}
 
