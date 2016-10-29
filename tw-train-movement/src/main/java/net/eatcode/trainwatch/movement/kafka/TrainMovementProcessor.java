@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.eatcode.trainwatch.movement.ActivationRepo;
-import net.eatcode.trainwatch.movement.DeparturesRepo;
 import net.eatcode.trainwatch.movement.MovementRepo;
 import net.eatcode.trainwatch.movement.TrainMovement;
 
@@ -18,13 +17,9 @@ public class TrainMovementProcessor implements Processor<String, TrainMovement> 
 
 	private final ActivationRepo activationRepo;
 
-	private final DeparturesRepo departuresRepo;
-
-	public TrainMovementProcessor(MovementRepo movementRepo, ActivationRepo activationRepo,
-			DeparturesRepo departuresRepo) {
+	public TrainMovementProcessor(MovementRepo movementRepo, ActivationRepo activationRepo) {
 		this.movementRepo = movementRepo;
 		this.activationRepo = activationRepo;
-		this.departuresRepo = departuresRepo;
 	}
 
 	@Override
@@ -39,7 +34,6 @@ public class TrainMovementProcessor implements Processor<String, TrainMovement> 
 			deleteArriveTrain(tm);
 		} else {
 			movementRepo.put(tm);
-			departuresRepo.delete(tm.trainId());
 		}
 	}
 

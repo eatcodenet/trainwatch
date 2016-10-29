@@ -13,12 +13,9 @@ import org.slf4j.LoggerFactory;
 import com.hazelcast.core.HazelcastInstance;
 
 import net.eatcode.trainwatch.movement.ActivationRepo;
-import net.eatcode.trainwatch.movement.DeparturesRepo;
 import net.eatcode.trainwatch.movement.TrainActivation;
-import net.eatcode.trainwatch.movement.TrainDeparture;
 import net.eatcode.trainwatch.movement.TrainMovement;
 import net.eatcode.trainwatch.movement.hazelcast.HzActivationRepo;
-import net.eatcode.trainwatch.movement.hazelcast.HzDeparturesRepo;
 import net.eatcode.trainwatch.movement.trust.GsonTrustMessageParser;
 import net.eatcode.trainwatch.movement.trust.TrustMessageParser;
 import net.eatcode.trainwatch.movement.trust.TrustMessagesStomp;
@@ -40,14 +37,12 @@ public class TrainMovementProducer {
 	private final ActivationRepo activationRepo;
 	private final LocationRepo locationRepo;
 	private final ScheduleRepo scheduleRepo;
-	private final DeparturesRepo departuresRepo;
 
 	public TrainMovementProducer(String kafkaServers, ActivationRepo activationRepo, ScheduleRepo scheduleRepo,
-			LocationRepo locationRepo, DeparturesRepo departuresRepo) {
+			LocationRepo locationRepo) {
 		this.activationRepo = activationRepo;
 		this.scheduleRepo = scheduleRepo;
 		this.locationRepo = locationRepo;
-		this.departuresRepo = departuresRepo;
 		this.producer = new KafkaProducer<>(new PropertiesBuilder().forProducer(kafkaServers).build());
 	}
 
@@ -65,15 +60,13 @@ public class TrainMovementProducer {
 					msg.body.schedule_start_date, msg.body.schedule_end_date));
 			Optional<Schedule> schedule = lookupSchedule(msg);
 			log.debug("SCHED: {}", schedule);
-			departuresRepo.put(
-					schedule.map(s -> new TrainDeparture(msg.body.train_id, msg.body.origin_dep_timestamp, s)).get());
 		} else {
 			try {
 				trainMovementFrom(msg).map(this::toByteArray).ifPresent(data -> {
 					producer.send(new ProducerRecord<>(Topic.trainMovement, msg.body.train_service_code, data.get()));
 				});
 			} catch (Exception e) {
-				log.error("{}, e);
+				log.error("{}", e);
 			}
 		}
 	}
@@ -86,12 +79,13 @@ public class TrainMovementProducer {
 		Optional<Schedule> schedule = lookupSchedule(msg);
 		return schedule.map(s -> {
 			Location current = locationRepo.getByStanox(msg.body.loc_stanox);
-			return new TrainMovement(msg.body.train_id, dateTime(msg), current, calculateDelay(msg), msg.body.train_terminated, s);
+			return new TrainMovement(msg.body.train_id, dateTime(msg), current, calculateDelay(msg),
+					msg.body.train_terminated, s);
 		});
 	}
 
 	private String calculateDelay(TrustMovementMessage msg) {
-		if ( msg.body.variation_status == null ) {
+		if (msg.body.variation_status == null) {
 			return msg.body.timetable_variation;
 		}
 		return msg.body.variation_status.equals("EARLY") ? "-" + msg.body.timetable_variation
@@ -121,8 +115,7 @@ public class TrainMovementProducer {
 		ActivationRepo activationRepo = new HzActivationRepo(hzClient);
 		ScheduleRepo scheduleRepo = new HzScheduleRepo(hzClient);
 		LocationRepo locationRepo = new HzLocationRepo(hzClient);
-		DeparturesRepo departuresRepo = new HzDeparturesRepo(hzClient);
-		new TrainMovementProducer(kafkaServers, activationRepo, scheduleRepo, locationRepo, departuresRepo)
+		new TrainMovementProducer(kafkaServers, activationRepo, scheduleRepo, locationRepo)
 				.produceMessages(networkRailUsername, networkRailPassword);
 	}
 
