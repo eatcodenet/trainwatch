@@ -77,7 +77,6 @@ public class TrainMovementProducer {
 	private Optional<TrainMovement> trainMovementFrom(TrustMovementMessage msg) {
 		Optional<TrainActivation> ta = activationRepo.get(msg.body.train_id);
 		return ta.map(t -> {
-			System.err.println(t.trainId);
 			Location current = locationRepo.getByStanox(msg.body.loc_stanox);
 			return new TrainMovement(msg.body.train_id, dateTime(msg), current, calculateDelay(msg),
 					msg.body.train_terminated, t.schedule);
