@@ -56,10 +56,9 @@ public class TrainMovementProducer {
 
 	private void sendMessage(TrustMovementMessage msg) {
 		if (msg.isActivation()) {
-			activationRepo.put(new TrainActivation(msg.body.train_id, msg.body.train_service_code, msg.body.train_uid,
-					msg.body.schedule_start_date, msg.body.schedule_end_date));
-			Optional<Schedule> schedule = lookupSchedule(msg);
-			log.debug("SCHED: {}", schedule);
+			lookupSchedule(msg).ifPresent(s -> {
+				activationRepo.put(new TrainActivation(msg.body.train_id, s));
+			});
 		} else {
 			try {
 				trainMovementFrom(msg).map(this::toByteArray).ifPresent(data -> {
@@ -76,11 +75,12 @@ public class TrainMovementProducer {
 	}
 
 	private Optional<TrainMovement> trainMovementFrom(TrustMovementMessage msg) {
-		Optional<Schedule> schedule = lookupSchedule(msg);
-		return schedule.map(s -> {
+		Optional<TrainActivation> ta = activationRepo.get(msg.body.train_id);
+		return ta.map(t -> {
+			System.err.println(t.trainId);
 			Location current = locationRepo.getByStanox(msg.body.loc_stanox);
 			return new TrainMovement(msg.body.train_id, dateTime(msg), current, calculateDelay(msg),
-					msg.body.train_terminated, s);
+					msg.body.train_terminated, t.schedule);
 		});
 	}
 
@@ -93,8 +93,8 @@ public class TrainMovementProducer {
 	}
 
 	public Optional<Schedule> lookupSchedule(TrustMovementMessage msg) {
-		Optional<TrainActivation> optional = activationRepo.get(msg.body.train_id);
-		return optional.map(ta -> scheduleRepo.getBy(ta.scheduleId, ta.serviceCode, ta.startDate, ta.endDate));
+		return scheduleRepo.getBy(msg.body.train_uid, msg.body.train_service_code, msg.body.schedule_start_date,
+				msg.body.schedule_end_date);
 	}
 
 	private LocalDateTime dateTime(TrustMovementMessage msg) {

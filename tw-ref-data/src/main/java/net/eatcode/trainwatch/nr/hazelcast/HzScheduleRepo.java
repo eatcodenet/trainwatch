@@ -1,5 +1,7 @@
 package net.eatcode.trainwatch.nr.hazelcast;
 
+import java.util.Optional;
+
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 
@@ -21,8 +23,8 @@ public class HzScheduleRepo implements ScheduleRepo {
 
 	@Override
 
-	public Schedule getBy(String id, String serviceCode, String start, String end) {
-		return map.get(id + serviceCode + start + end);
+	public Optional<Schedule> getBy(String id, String serviceCode, String start, String end) {
+		return Optional.ofNullable(map.get(id + serviceCode + start + end));
 	}
 
 	@Override

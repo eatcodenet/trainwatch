@@ -26,11 +26,7 @@ public class HzActivationRepo implements ActivationRepo {
 
 	@Override
 	public Optional<TrainActivation> get(String trainId) {
-		TrainActivation value = map.get(trainId);
-		if (value == null) {
-			return Optional.empty();
-		}
-		return Optional.of(value);
+		return Optional.ofNullable(map.get(trainId));
 	}
 
 	@Override
@@ -39,9 +35,9 @@ public class HzActivationRepo implements ActivationRepo {
 	}
 
 	@Override
-	public void put(TrainActivation activation) {
-		log.debug("PUT: {} {} {} {}", activation.trainId, activation.scheduleId, activation.startDate, activation.endDate);
-		map.set(activation.trainId, activation);
+	public void put(TrainActivation t) {
+		log.debug("PUT: {} {}", t.trainId, t.schedule.id);
+		map.set(t.trainId, t);
 	}
 
 	@Override

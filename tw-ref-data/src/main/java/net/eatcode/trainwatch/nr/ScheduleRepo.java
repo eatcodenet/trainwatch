@@ -1,11 +1,12 @@
 package net.eatcode.trainwatch.nr;
 
+import java.util.Optional;
+
 public interface ScheduleRepo {
 
-    void put(Schedule schedule);
+	void put(Schedule schedule);
 
-    Schedule getBy(String id, String trainServiceCode, String start, String end);
-    
+	Optional<Schedule> getBy(String id, String trainServiceCode, String start, String end);
 
-    Integer count();
+	Integer count();
 }

@@ -29,7 +29,7 @@ public class PopulateLocationsApp {
 				log.info("Done populating!");
 			}
 
-			System.err.println("Count: " + client.getMap("locationByStanox").size());
+			log.info("Count: {}", client.getMap("locationByStanox").size());
 			client.shutdown();
 		}).get();
 

@@ -24,6 +24,6 @@ public class HzScheduleRepoIntegrationTest {
 		schedule.startDate = LocalDate.parse("2005-12-15");
 		schedule.endDate = LocalDate.parse("2005-12-22");
 		repo.put(schedule);
-		assertThat(repo.getBy("100", "abc", "2005-12-15", "2005-12-22").atocCode, is("hola!"));
+		assertThat(repo.getBy("100", "abc", "2005-12-15", "2005-12-22").get().atocCode, is("hola!"));
 	}
 }
