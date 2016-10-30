@@ -42,11 +42,12 @@ public class HzActivationRepo implements ActivationRepo {
 
 	@Override
 	public void evictOlderThan(int ageInHours) {
-		log.info("evicting older than {} hours", ageInHours);
 		LocalDateTime cutoff = LocalDateTime.now().minusHours(ageInHours);
 		List<TrainActivation> stale = map.values().stream().filter(ta -> ta.timestamp().isBefore(cutoff))
 				.collect(Collectors.toList());
+		int count = stale.size();
 		stale.forEach(ta -> map.evict(ta.trainId));
+		log.info("evicted {} activations older than {} hours. New size is {}", count, ageInHours, map.size());
 
 	}
 }

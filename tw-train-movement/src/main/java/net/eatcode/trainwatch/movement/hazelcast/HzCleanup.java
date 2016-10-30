@@ -23,7 +23,7 @@ public class HzCleanup {
     private final ActivationRepo activationRepo;
 
     private final int hours12 = 12;
-    private final int hours36 = 36;
+    private final int hours36 = 24;
 
     public HzCleanup(MovementRepo movementRepo, ActivationRepo activationRepo) {
         this.movementRepo = movementRepo;
