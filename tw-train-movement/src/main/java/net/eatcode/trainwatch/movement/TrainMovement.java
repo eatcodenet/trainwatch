@@ -3,7 +3,6 @@ package net.eatcode.trainwatch.movement;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 import net.eatcode.trainwatch.nr.Location;
@@ -115,9 +114,9 @@ public class TrainMovement implements Serializable, Comparable<TrainMovement> {
 			String dest = t.destination == null ? "N/A" : t.destination.description;
 			String oCrs = t.originCrs();
 			String dCrs = t.destCrs();
-			String trid = t.trainId;
+			String current = t.currentLocation.stanox;
 			return String.format("%1$s %2$-3s %3$-32s %4$s %5$-3s %6$-32s %7$2dm %8$s", t.departure, oCrs, orig,
-					t.arrival, dCrs, dest, t.delay, trid);
+					t.arrival, dCrs, dest, t.delay, current);
 		}
 	}
 
