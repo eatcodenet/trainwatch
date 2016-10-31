@@ -2,15 +2,15 @@ import json
 import time
 
 
-def load_locations(data_file):
-    with open(data_file, "r") as loc_file:
-        locations = [json.loads(line) for line in loc_file]
+def load_locations(locations_file):
+    with open(locations_file, "r") as in_file:
+        locations = [json.loads(line) for line in in_file]
         return {loc["tiploc"]: loc for loc in locations}
 
 
-def load_schedules(data_file):
-    with open(data_file, "r") as sched_file:
-        return list([make_schedule(line) for line in sched_file])
+def load_schedules(schedules_file):
+    with open(schedules_file, "r") as in_file:
+        return list([make_schedule(line) for line in in_file])
 
 
 def make_schedule(line):
@@ -21,7 +21,6 @@ def make_schedule(line):
     dest = next((l for l in locs if l["location_type"] == "LT"))
     start_date = s["schedule_start_date"]
     end_date = s["schedule_end_date"]
-    #run_days = s["schedule_days_runs"]
     sig_id = s["schedule_segment"]["signalling_id"]
     service_code = s["schedule_segment"]["CIF_train_service_code"]
     atoc_code = s["atoc_code"] 
@@ -34,7 +33,6 @@ def make_schedule(line):
             "destination": dest["tiploc_code"],
             "departure": orig["departure"][:4],
             "arrival": dest["arrival"][:4],
-            #"runDays": run_days,
             "atocCode": atoc_code,
             "isPassenger": is_passenger}
 
