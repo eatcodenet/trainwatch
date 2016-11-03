@@ -58,20 +58,23 @@ def main():
     (username, password) = check_args()
     
     print("Downloading stations")
-    time_taken = download_file(stations_url, stations_file, "", "")
-    print("Took {0:.2f}s".format(time_taken))
+    start = time.time()
+    download_file(stations_url, stations_file, "", "")
+    print("Took {0:.2f}s".format(time.time() - start))
     
     print("Downloading schedule file")
-    time_taken = download_file(schedule_url, schedule_gz_file, username, password)
-    print("Took {0:.2f}s".format(time_taken))
+    start = time.time()
+    download_file(schedule_url, schedule_gz_file, username, password)
+    print("Took {0:.2f}s".format(time.time() - start))
     
     print("Unzipping schedule file")
-    time_taken = unzip(schedule_gz_file, schedule_file)
-    print("Took {0:.2f}s".format(time_taken))
+    start = time.time()
+    unzip(schedule_gz_file, schedule_file)
+    print("Took {0:.2f}s".format(time.time() - start))
     
     print("Extracting schedules and tiplocs")
-    time_taken = extract_schedules_and_tiplocs(schedule_file, schedules_json, tiplocs_json)
-    print("Took {0:.2f}s".format(time_taken))
+    extract_schedules_and_tiplocs(schedule_file, schedules_json, tiplocs_json)
+    print("Took {0:.2f}s".format(time.time() - start))
 
 
 if __name__ == '__main__':

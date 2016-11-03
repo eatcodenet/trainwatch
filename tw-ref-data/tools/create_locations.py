@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import json
-import sys
 
 
 def tiplocs_map(data_file):
@@ -45,11 +44,11 @@ def write_locations(data_file, locations):
 
 def main():
     print("Loading tiplocs")
-    tiplocs = tiplocs_map(sys.argv[1])
+    tiplocs = tiplocs_map("/var/trainwatch/data/tiplocs.json")
     print("len tiplocs", len(tiplocs))
 
     print("Loading stations")
-    stations = stations_map(sys.argv[2])
+    stations = stations_map("/var/trainwatch/data/stations.json")
     print("len stations", len(stations))
 
     print("Creating locations")
@@ -57,7 +56,7 @@ def main():
     print("len locations", len(locations))
 
     print("Writing location to file")
-    write_locations(sys.argv[3], locations)
+    write_locations("/var/trainwatch/data/locations.json", locations)
 
 
 if __name__ == '__main__':
