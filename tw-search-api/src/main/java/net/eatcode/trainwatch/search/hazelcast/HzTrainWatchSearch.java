@@ -1,7 +1,5 @@
 package net.eatcode.trainwatch.search.hazelcast;
 
-import static com.hazelcast.mapreduce.aggregation.Aggregations.count;
-import static com.hazelcast.mapreduce.aggregation.Aggregations.integerMax;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.text.WordUtils.capitalize;
 
@@ -17,12 +15,12 @@ import org.slf4j.LoggerFactory;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
-import com.hazelcast.mapreduce.aggregation.Supplier;
 
 import net.eatcode.trainwatch.movement.DelayWindow;
-import net.eatcode.trainwatch.movement.Stats;
+import net.eatcode.trainwatch.movement.TrainActivation;
 import net.eatcode.trainwatch.movement.TrainDeparture;
 import net.eatcode.trainwatch.movement.TrainMovement;
+import net.eatcode.trainwatch.nr.Schedule;
 import net.eatcode.trainwatch.search.Station;
 import net.eatcode.trainwatch.search.TrainWatchSearch;
 
@@ -30,21 +28,22 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
-	private final IMap<String, TrainDeparture> departures;
+	private final IMap<String, TrainActivation> departures;
 	private final IMap<String, TrainMovement> movements;
 
 	public HzTrainWatchSearch(HazelcastInstance client) {
-		this.departures = client.getMap("trainDeparture");
+		this.departures = client.getMap("trainActivation");
 		this.movements = client.getMap("trainMovement");
 	}
 
 	@Override
 	public List<Station> listStations() {
-		return departures.values().stream().map(data -> makeStation(data)).distinct().sorted().collect(toList());
+		return departures.values().stream().map(this::makeStation).distinct().sorted().collect(toList());
 	}
 
-	private Station makeStation(TrainDeparture td) {
-		return new Station(capitalize(td.originName().toLowerCase()), td.originCrs());
+	private Station makeStation(TrainActivation ta) {
+		Schedule s = ta.schedule;
+		return new Station(capitalize(s.origin.description), s.origin.crs);
 	}
 
 	@Override
@@ -64,27 +63,37 @@ public class HzTrainWatchSearch implements TrainWatchSearch {
 		Map<DelayWindow, List<TrainMovement>> result = new HashMap<>();
 		DelayWindow.sortedValues().forEach(dw -> {
 			List<TrainMovement> values = movements.get(dw);
-			result.put(dw, values.subList(0, Math.min(max, values.size())));
+			if (values != null) {
+				result.put(dw, values.subList(0, Math.min(max, values.size())));
+			}
 		});
 		return result;
 	}
 
 	@Override
-	public List<TrainDeparture> departuresBy(Station station, int maxResults) {
-		LocalDateTime cutOff = LocalDateTime.now().minusMinutes(2);
+	public List<TrainDeparture> departuresWithinOneHour(int maxResults) {
+		LocalDateTime cutOff = LocalDateTime.now().plusMinutes(180);
 		StopWatch sw = startStopWatch();
-		List<TrainDeparture> result = departures.values().stream()
-				.filter(td -> td.origin().crs.equals(station.crs) && td.scheduledDeparture().isAfter(cutOff)).sorted()
-				.limit(maxResults).collect(toList());
+		List<TrainDeparture> result = departures.values().stream().limit(maxResults).map(this::toDeparture)
+				.filter(td -> td.scheduledDeparture().isBefore(cutOff)).sorted().collect(toList());
 		log.info("departures search took {}ms", sw.getTime());
 		return result;
 	}
 
 	@Override
-	public Stats getStats() {
-		Long numTrains = movements.aggregate(Supplier.all(), count());
-		Integer highestDelay = movements.aggregate(Supplier.all(value -> value.delayInMins()), integerMax());
-		return new Stats(numTrains, highestDelay);
+	public List<TrainDeparture> departuresWithinOneHour(Station station, int maxResults) {
+		LocalDateTime cutOff = LocalDateTime.now().plusMinutes(60);
+		StopWatch sw = startStopWatch();
+		List<TrainDeparture> result = departures.values().stream()
+				.filter(t -> t.schedule.origin.description.equals(station.name)).limit(maxResults)
+				.map(this::toDeparture).filter(td -> td.scheduledDeparture().isBefore(cutOff)).sorted()
+				.collect(toList());
+		log.info("departures search took {}ms", sw.getTime());
+		return result;
+	}
+
+	private TrainDeparture toDeparture(TrainActivation t) {
+		return new TrainDeparture(t.trainId, t.wttDeparture, t.schedule);
 	}
 
 	private StopWatch startStopWatch() {

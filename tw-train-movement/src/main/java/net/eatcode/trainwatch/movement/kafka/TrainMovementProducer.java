@@ -57,7 +57,7 @@ public class TrainMovementProducer {
 	private void sendMessage(TrustMovementMessage msg) {
 		if (msg.isActivation()) {
 			lookupSchedule(msg).ifPresent(s -> {
-				activationRepo.put(new TrainActivation(msg.body.train_id, s));
+				activationRepo.put(new TrainActivation(msg.body.train_id, s, msg.body.origin_dep_timestamp));
 			});
 		} else {
 			try {

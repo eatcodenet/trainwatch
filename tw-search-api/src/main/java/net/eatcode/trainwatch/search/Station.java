@@ -14,22 +14,22 @@ public class Station implements Comparable<Station> {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(crs);
+		return Objects.hash(name);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		return Objects.equals(crs, ((Station) obj).crs);
+		return Objects.equals(name, ((Station) obj).name);
 	}
 
 	@Override
 	public String toString() {
-		return "Station [" + crs + " " + name + "]";
+		return "Station [" + name + " " + crs + "]";
 	}
 
 	@Override
 	public int compareTo(Station o) {
-		return crs.compareTo(o.crs);
+		return name.compareTo(o.name);
 	}
 
 }

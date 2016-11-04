@@ -11,13 +11,14 @@ public class TrainActivation implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public final String trainId;
-	public Schedule schedule;
-
+	public final Schedule schedule;
+	public final String wttDeparture;
 	private final LocalDateTime timestamp = LocalDateTime.now();
 
-	public TrainActivation(String trainId, Schedule schedule) {
+	public TrainActivation(String trainId, Schedule schedule, String wttDeparture) {
 		this.trainId = trainId;
 		this.schedule = schedule;
+		this.wttDeparture = wttDeparture;
 	}
 
 	@Override

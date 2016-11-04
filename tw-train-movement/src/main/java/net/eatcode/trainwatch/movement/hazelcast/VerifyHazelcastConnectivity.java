@@ -33,10 +33,9 @@ public class VerifyHazelcastConnectivity {
 
 		IMap<String, Location> locations = client.getMap("locationByTiploc");
 		log.info("locations size: {}", locations.size());
-		log.info("{}", Location.class);
 
 		IMap<String, Schedule> schedules = client.getMap("schedule");
-		// schedules.clear();
+		//schedules.clear();
 		log.info("Schedule count: {} ", schedules.size());
 
 		IMap<String, TrainActivation> activations = client.getMap("trainActivation");

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 import net.eatcode.trainwatch.nr.Location;
@@ -25,15 +24,13 @@ public class TrainDeparture implements Serializable, Comparable<TrainDeparture> 
 
 	private final long cutOffInMins = 3;
 
-	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-
-	public TrainDeparture(String trainId, String expectedDeparture, Schedule schedule) {
+	public TrainDeparture(String trainId, String wttDeparture, Schedule schedule) {
 		this.trainId = trainId;
 		this.origin = schedule.origin;
-		this.wtt = makeDateTimeFrom(expectedDeparture);
+		this.wtt = makeDateTimeFrom(wttDeparture);
 		this.departure = wtt.toLocalTime();
 		this.destination = schedule.destination;
-		this.arrival = makeTimeFrom(expectedDeparture);
+		this.arrival = schedule.arrival;
 	}
 
 	public LocalDateTime scheduledDeparture() {
@@ -78,10 +75,6 @@ public class TrainDeparture implements Serializable, Comparable<TrainDeparture> 
 		return LocalDateTime.ofEpochSecond(Long.parseLong(timestamp) / 1000, 0, ZoneOffset.UTC);
 	}
 
-	private LocalTime makeTimeFrom(String timestamp) {
-		return LocalTime.parse(timestamp, formatter);
-	}
-
 	@Override
 	public String toString() {
 		return new Formatted().format(this);
@@ -111,11 +104,8 @@ public class TrainDeparture implements Serializable, Comparable<TrainDeparture> 
 
 		public String format(TrainDeparture t) {
 			String orig = t.origin == null ? "N/A" : t.origin.description;
-			String oCrs = t.originCrs().equals("") ? "---" : t.originCrs();
-			String dCrs = t.destCrs().equals("") ? "---" : t.destCrs();
 			String dest = t.destination == null ? "N/A" : t.destination.description;
-			return String.format("%1$s %2$-3s %3$-32s %4$s %5$-3s %6$-32s", t.departure, oCrs, orig, t.arrival, dCrs,
-					dest);
+			return String.format("%1$s %2$s %3$s %4$s %5$s", t.departure, orig, t.arrival, dest, t.wtt);
 		}
 	}
 

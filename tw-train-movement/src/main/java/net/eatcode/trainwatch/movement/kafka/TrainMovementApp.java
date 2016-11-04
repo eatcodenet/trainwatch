@@ -21,7 +21,7 @@ public class TrainMovementApp {
 	private static final Logger log = LoggerFactory.getLogger(TrainMovementApp.class);
 
 	public static void main(String[] args) throws InterruptedException {
-		String kafkaServers = args[0];
+		String kafkaServers = args[0] + ":9092";
 		String zookeeperServers = args[1];
 		String hazelcastServers = args[2];
 		String networkRailUsername = args[3];
