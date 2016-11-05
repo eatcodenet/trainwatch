@@ -12,16 +12,16 @@ import org.slf4j.LoggerFactory;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 
-import net.eatcode.trainwatch.movement.ActivationRepo;
+import net.eatcode.trainwatch.movement.TrainActivationRepo;
 import net.eatcode.trainwatch.movement.TrainActivation;
 
-public class HzActivationRepo implements ActivationRepo {
+public class HzTrainActivationRepo implements TrainActivationRepo {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final IMap<String, TrainActivation> map;
 
-    public HzActivationRepo(HazelcastInstance client) {
+    public HzTrainActivationRepo(HazelcastInstance client) {
         this.map = client.getMap("trainActivation");
     }
 

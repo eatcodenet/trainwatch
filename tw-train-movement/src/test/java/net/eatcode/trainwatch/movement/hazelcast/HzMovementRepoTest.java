@@ -27,7 +27,7 @@ public class HzMovementRepoTest {
         map.set("2", movement("2", LocalDateTime.now().minusHours(2)));
         map.set("3", movement("3", LocalDateTime.now().minusHours(3)));
 
-        HzMovementRepo repo = new HzMovementRepo(client);
+        HzTrainMovementRepo repo = new HzTrainMovementRepo(client);
         assertThat(map.size(), is(3));
         repo.evictOlderThan(1);
         assertThat(map.size(), is(1));

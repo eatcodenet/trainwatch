@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.IMap;
 
 import net.eatcode.trainwatch.movement.DelayWindow;
 import net.eatcode.trainwatch.movement.TrainDeparture;
@@ -16,9 +17,14 @@ public class ListTrainMovementsApp {
         HazelcastInstance client = null;
         try {
             client = new HzClientBuilder().build("localhost");
-            HzTrainWatchSearch search = new HzTrainWatchSearch(client);
-            listDepartures(search);
-            listTrainMovements(search);
+            IMap<String, TrainMovement> map = client.getMap("trainMovement");
+            System.out.println("SIZE: " + map.size());
+            map.values().stream().sorted().limit(100).forEach(t -> {
+                System.out.println(t);
+            });
+//            HzTrainWatchSearch search = new HzTrainWatchSearch(client);
+//            listDepartures(search);
+//            listTrainMovements(search);
         } finally {
             client.shutdown();
         }

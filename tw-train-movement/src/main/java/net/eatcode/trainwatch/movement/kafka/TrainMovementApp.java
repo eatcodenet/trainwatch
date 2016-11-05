@@ -7,11 +7,11 @@ import org.slf4j.LoggerFactory;
 
 import com.hazelcast.core.HazelcastInstance;
 
-import net.eatcode.trainwatch.movement.ActivationRepo;
-import net.eatcode.trainwatch.movement.MovementRepo;
-import net.eatcode.trainwatch.movement.hazelcast.HzActivationRepo;
+import net.eatcode.trainwatch.movement.TrainActivationRepo;
+import net.eatcode.trainwatch.movement.TrainMovementRepo;
+import net.eatcode.trainwatch.movement.hazelcast.HzTrainActivationRepo;
 import net.eatcode.trainwatch.movement.hazelcast.HzCleanup;
-import net.eatcode.trainwatch.movement.hazelcast.HzMovementRepo;
+import net.eatcode.trainwatch.movement.hazelcast.HzTrainMovementRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzClientBuilder;
 import net.eatcode.trainwatch.nr.hazelcast.HzLocationRepo;
 import net.eatcode.trainwatch.nr.hazelcast.HzScheduleRepo;
@@ -29,8 +29,8 @@ public class TrainMovementApp {
 		checkTopicExists(zookeeperServers);
 
 		HazelcastInstance hzClient = new HzClientBuilder().build(hazelcastServers);
-		ActivationRepo activationRepo = new HzActivationRepo(hzClient);
-		MovementRepo movementRepo = new HzMovementRepo(hzClient);
+		TrainActivationRepo activationRepo = new HzTrainActivationRepo(hzClient);
+		TrainMovementRepo movementRepo = new HzTrainMovementRepo(hzClient);
 
 		Runnable movementProducer = () -> {
 			log.info("running train movement producer");

@@ -1,6 +1,6 @@
 package net.eatcode.trainwatch.movement;
 
-public interface MovementRepo {
+public interface TrainMovementRepo {
 
     void put(TrainMovement tm);
 

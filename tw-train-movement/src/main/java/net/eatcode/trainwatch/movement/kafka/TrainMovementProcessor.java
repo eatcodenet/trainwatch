@@ -5,19 +5,19 @@ import org.apache.kafka.streams.processor.ProcessorContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.eatcode.trainwatch.movement.ActivationRepo;
-import net.eatcode.trainwatch.movement.MovementRepo;
+import net.eatcode.trainwatch.movement.TrainActivationRepo;
+import net.eatcode.trainwatch.movement.TrainMovementRepo;
 import net.eatcode.trainwatch.movement.TrainMovement;
 
 public class TrainMovementProcessor implements Processor<String, TrainMovement> {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
-	private final MovementRepo movementRepo;
+	private final TrainMovementRepo movementRepo;
 
-	private final ActivationRepo activationRepo;
+	private final TrainActivationRepo activationRepo;
 
-	public TrainMovementProcessor(MovementRepo movementRepo, ActivationRepo activationRepo) {
+	public TrainMovementProcessor(TrainMovementRepo movementRepo, TrainActivationRepo activationRepo) {
 		this.movementRepo = movementRepo;
 		this.activationRepo = activationRepo;
 	}

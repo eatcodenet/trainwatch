@@ -10,16 +10,16 @@ import org.slf4j.LoggerFactory;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 
-import net.eatcode.trainwatch.movement.MovementRepo;
 import net.eatcode.trainwatch.movement.TrainMovement;
+import net.eatcode.trainwatch.movement.TrainMovementRepo;
 
-public class HzMovementRepo implements MovementRepo {
+public class HzTrainMovementRepo implements TrainMovementRepo {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final IMap<String, TrainMovement> map;
 
-    public HzMovementRepo(HazelcastInstance client) {
+    public HzTrainMovementRepo(HazelcastInstance client) {
         this.map = client.getMap("trainMovement");
     }
 
@@ -35,8 +35,8 @@ public class HzMovementRepo implements MovementRepo {
 
     @Override
     public void evictOlderThan(int ageInHours) {
-        log.info("evicting with timestamp older than {} hours", ageInHours);
         LocalDateTime cutoff = LocalDateTime.now().minusHours(ageInHours);
+        log.info("evicting with timestamp older than {}", cutoff);
         List<TrainMovement> stale = map.values().stream()
                 .filter(tm -> tm.timestamp().isBefore(cutoff))
                 .collect(Collectors.toList());
