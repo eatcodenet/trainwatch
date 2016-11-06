@@ -31,7 +31,7 @@ class ScheduleRepositoryPopulator {
 
 	CompletableFuture<Void> populateFromFile(String scheduleFile) {
 		log.info("Starting populating from: {}", scheduleFile);
-		log.info("This will take a while!");
+		log.info("This may take a while!");
 		return populateAsync(scheduleFile);
 	}
 
