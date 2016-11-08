@@ -1,0 +1,25 @@
+.heading {
+  height: 81px;
+}
+
+.logo {
+  vertical-align: bottom;
+  margin-left: 20px;
+}
+
+.menu-left {
+ float: left;
+ height: 100%;
+ width: 17%;
+}
+  
+.menu-right {
+  float: left;
+  width: 83%;
+  height: 100%
+}
+ 
+#particle-js {
+  z-index: -1;
+}
+  

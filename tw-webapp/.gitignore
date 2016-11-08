@@ -9,3 +9,5 @@ target
 /libexec
 /.cache-main
 /.cache-tests
+venv
+*.pyc
